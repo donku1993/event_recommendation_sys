@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersGroupsRelationTable extends Migration
+class CreateParticipantsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateUsersGroupsRelationTable extends Migration
      */
     public function up()
     {
-        Schema::create('users_groups_relation', function (Blueprint $table) {
+        Schema::create('participants', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->integer('group_id')->unsigned();
-            $table->integer('type')->unsigned();
-
+            $table->integer('event_id')->unsigned();
+            $table->string('remark')->nullable();
+            
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('group_id')->references('id')->on('groups');
-            $table->unique(['user_id', 'group_id', 'type']);
+            $table->foreign('event_id')->references('id')->on('events');
+            $table->unique(['user_id', 'event_id']);
             $table->timestamps();
         });
     }
@@ -33,6 +33,6 @@ class CreateUsersGroupsRelationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users_groups_relation');
+        Schema::dropIfExists('participants');
     }
 }
