@@ -51,8 +51,17 @@ class DatabaseSeeder extends Seeder
                 'principal_name' => $group_manager->name
             ]);
 
-            $total_event = rand(1, 5);
-            factory(App\Models\Event::class, $total_event)->create()
+            factory(App\Models\Event::class, rand(1, 3))->create()
+                ->each(function($e) use ($group) {
+                    DB::table('groups_events_relation')->insert([
+                            'group_id' => $group->id,
+                            'event_id' => $e->id,
+                            'main' => 1,
+                            'created_at' => $e->created_at
+                        ]);
+                });
+
+            factory(App\Models\Event::class, rand(2, 4))->states('one_year_ago')->create()
                 ->each(function($e) use ($group) {
                     DB::table('groups_events_relation')->insert([
                             'group_id' => $group->id,
@@ -77,8 +86,27 @@ class DatabaseSeeder extends Seeder
                                 'created_at' => $event->created_at
                             ]);
                     } catch (Exception $e) {
-                        
+                        continue;
                     }
+                }
+            }
+        }
+
+        // add participant to ended events
+        $events = DB::table('events')->where('status', 2)->get();
+        foreach ($events as $event) {
+            $finalNumOfParticipant = rand(intval($event->numberOfPeople / 3), $event->numberOfPeople);
+
+            for ($i=0; $i < $finalNumOfParticipant; $i++) { 
+                $user = DB::table('users')->where('type', 1)->inRandomOrder()->first();
+
+                try {
+                    $result = DB::table('participants')->insert([
+                            'user_id' => $user->id,
+                            'event_id' => $event->id,
+                        ]);
+                } catch (Exception $e) {
+                    continue;
                 }
             }
         }

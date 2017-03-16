@@ -118,7 +118,7 @@ $factory->define(App\Models\Event::class, function(Faker\Generator $faker) {
     $bonus_skills = JsonSimilator(sizeof(Helper::getConstantArray('interest_skills')['value']));
 
     $now = Carbon::now();
-    $created_at = $faker->dateTimeBetween('-3 months', 'now');
+    $created_at = $faker->dateTimeBetween('-2 months', 'now');
 
     $signUpEndDate = new Carbon($created_at->format('Y-m-d H:i:s'));
     $signUpEndDate->addDays(rand(30, 70));
@@ -138,7 +138,7 @@ $factory->define(App\Models\Event::class, function(Faker\Generator $faker) {
     }
 
     return [
-        'numberOfPeople' => rand(2, 30),
+        'numberOfPeople' => 5 * rand(2, 6),
         'title' => 'Random Event: ' . str_random(5),
         'content' => $faker->realText(200),
         'location' => rand(0, 8),
@@ -146,6 +146,36 @@ $factory->define(App\Models\Event::class, function(Faker\Generator $faker) {
         'schedule' => $faker->realText(200),
         'requirement' => $faker->realText(200),
         'bonus_skills' => $bonus_skills,
+        'created_at' => $created_at,
+        'signUpEndDate' => $signUpEndDate,
+        'startDate' => $startDate,
+        'endDate' => $endDate,
+        'status' => $status
+    ];
+});
+
+$factory->state(App\Models\Event::class, 'one_year_ago', function(Faker\Generator $faker) {
+    $now = Carbon::now();
+    $created_at = $faker->dateTimeBetween('-1 years', 'now');
+
+    $signUpEndDate = new Carbon($created_at->format('Y-m-d H:i:s'));
+    $signUpEndDate->addDays(rand(30, 70));
+
+    $startDate = new Carbon($signUpEndDate->format('Y-m-d H:i:s'));
+    $startDate->addDays(rand(5, 10));
+
+    $endDate = new Carbon($startDate->format('Y-m-d H:i:s'));
+    $endDate->addDays(rand(1, 3));
+
+    if ($endDate->lt($now)) {
+        $status = 2;
+    } elseif ($signUpEndDate->lt($now)) {
+        $status = 1;
+    } else {
+        $status = 0;
+    }
+
+    return [
         'created_at' => $created_at,
         'signUpEndDate' => $signUpEndDate,
         'startDate' => $startDate,
