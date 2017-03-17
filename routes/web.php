@@ -13,7 +13,7 @@
 
 
 
-Route::get('/home', 'HomeController@index');
+Route::get('/', 'HomeController@index');
 Route::get('/event/info', 'HomeController@eventCreate');
 
 Auth::routes();
