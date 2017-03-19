@@ -161,7 +161,7 @@ class Helper extends Model
                 return null;
         }
     }
-
+/*
     public static function UserConstantArray() {
         return [ 'user_constant_array' => [
             self::$available_time_array['prefix'] => self::$available_time_array,
@@ -187,6 +187,19 @@ class Helper extends Model
             self::$group_status_array['prefix'] => self::$group_status_array,
         ]];
     }
+*/
+    public static function AllConstantArray() {
+        return ['constant_array' => [
+            self::$available_time_array['prefix'] => self::$available_time_array,
+            self::$location_array['prefix'] => self::$location_array,
+            self::$career_array['prefix'] => self::$career_array,
+            self::$interest_skills_array['prefix'] => self::$interest_skills_array,
+            self::$user_type_array['prefix'] => self::$user_type_array,
+            self::$event_type_array['prefix'] => self::$event_type_array,
+            self::$event_status_array['prefix'] => self::$event_status_array,
+            self::$group_status_array['prefix'] => self::$group_status_array,
+        ]];
+    }
 
     public static function JsonDataConverter(array $data, string $column, string $array_name) {
         $jsonData = null;
@@ -205,6 +218,6 @@ class Helper extends Model
 
         $data[$column] = $jsonData;
 
-        return $data;
+        return (object)$data;
     }
 }

@@ -25,34 +25,58 @@ class Group extends Model
     }
 
     public function applicant() {
-    	return $this->belongsTo('App\Models\User', 'user_id')->isGroupForm();
+        return $this->belongsTo('App\Models\User', 'user_id');
     }
 
     public function manager() {
-    	return $this->belongsTo('App\Models\User', 'user_id')->isGroup();
+        return $this->belongsTo('App\Models\User', 'user_id');
     }
 
     public function markedUsers() {
-    	return $this->belongsToMany('App\Models\User', 'users_groups_relation', 'group_id', 'user_id')->where('type', $this->users_groups_relation_type['marked']);
+    	return $this->belongsToMany('App\Models\User', 'users_groups_relation', 'group_id', 'user_id')->wherePivot('type', $this->users_groups_relation_type['marked']);
     }
 
     public function events() {
-    	return $this->hasMany('App\Models\Event', 'groups_events_relation', 'group_id', 'event_id');
+    	return $this->belongsToMany('App\Models\Event', 'groups_events_relation', 'group_id', 'event_id');
     }
-
+/*
     public function events_with_organizer() {
-    	return $this->hasMany('App\Models\Event', 'groups_events_relation', 'group_id', 'event_id')->where('main', 1);
+    	return $this->belongsToMany('App\Models\Event', 'groups_events_relation', 'group_id', 'event_id')->wherePivot('main', 1);
     }
 
     public function events_with_co_organizer() {
-    	return $this->hasMany('App\Models\Event', 'groups_events_relation', 'group_id', 'event_id')->where('main', 0);
+    	return $this->belongsToMany('App\Models\Event', 'groups_events_relation', 'group_id', 'event_id')->wherePivot('main', 0);
     }
-
+*/
     public function scopeIsGroupForm($query) {
     	return $query->whereIn('status', $this->form_status);
     }
 
     public function scopeIsGroup($query) {
     	return $query->whereNotIn('status', $this->form_status);
+    }
+
+    public function scopeSearch($query, Array $keywords) {
+        if (isset($keywords['group_name'])) {
+            $query->where('name', 'like', '%'.$keywords['group_name'].'%');
+        }
+
+        if (isset($keywords['activity_area'])) {
+            $query->where('activity_area->'.$keywords['activity_area'], true);
+        }
+
+        return $query;
+    }
+
+    public function scopeSearchForm($query, Array $keywords) {
+        if (isset($keywords['group_name'])) {
+            $query->where('name', 'like', '%'.$keywords['group_name'].'%');
+        }
+
+        if (isset($keywords['status'])) {
+            $query->where('status', $keywords['status']);
+        }
+
+        return $query;     
     }
 }
