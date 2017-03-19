@@ -58,11 +58,11 @@ class UserController extends Controller
             $data = [
                     'user' => $user,
                     'status_array' => $status_array
-                ]);
+                ];
 
             dd($data);
 
-            return view('user.eidt', $data);
+            return view('user.edit', $data);
         }
     }
 
