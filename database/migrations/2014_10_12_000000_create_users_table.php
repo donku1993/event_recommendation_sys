@@ -20,10 +20,10 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
 
-            $table->integer('status')->default(-1);
-            $table->string('phone', 20)->nullable();
-            $table->string('address')->nullable();
-            $table->boolean('gender')->nullable();
+            $table->integer('type')->default(1);
+            $table->string('phone', 20);
+            $table->integer('address_location')->nullable();
+            $table->boolean('gender');
             $table->mediumText('self_introduction')->nullable();
             $table->integer('career');
             $table->string('icon_image')->default('default.png');
@@ -32,8 +32,6 @@ class CreateUsersTable extends Migration
             $table->json('interest_skills')->nullable();
             $table->json('available_time')->nullable();
             $table->json('available_area')->nullable();
-
-            $table->string('active_code')->nullable()->default(null);
 
             $table->timestamps();
         });
