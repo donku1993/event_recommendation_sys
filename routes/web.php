@@ -35,7 +35,7 @@ Route::get('/event/{id}/edit', 'EventController@edit');
 
 Route::post('/event', 'EventController@store');
 Route::put('/event/{id}', 'EventController@update');
-Route::get('/event/{id}/mark', 'EventController@mark');
+Route::put('/event/{id}/mark', 'EventController@mark');
 Route::put('/event/{id}/join', 'EventController@join');
 
 Route::delete('/event/{id}', 'EventController@destroy');
