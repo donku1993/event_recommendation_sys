@@ -17,7 +17,7 @@
                     <!-- SIDEBAR USER TITLE -->
                     <div class="profile-usertitle">
                         <div class="profile-usertitle-name">
-                            Marcus Doe
+                            Daniel Lo
                         </div>
                         <div class="profile-usertitle-job">
                             Developer
@@ -26,8 +26,8 @@
                     <!-- END SIDEBAR USER TITLE -->
                     <!-- SIDEBAR BUTTONS -->
                     <div class="profile-userbuttons">
-                        <button type="button" class="btn btn-success btn-sm">Follow</button>
-                        <button type="button" class="btn btn-danger btn-sm">Message</button>
+                        <button type="button" class="btn btn-success btn-sm">追隨</button>
+                        <button type="button" class="btn btn-danger btn-sm">訊息</button>
                     </div>
                     <!-- END SIDEBAR BUTTONS -->
                     <!-- SIDEBAR MENU -->
@@ -74,7 +74,7 @@
 
 
             <div class="user-info-content" style="display: none">
-                <form class="form-horizontal" role="form" method="PUT" ">
+                <form id="user-info-form" class="form-horizontal" role="form" >
                     {{ csrf_field() }}
 
                     <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
@@ -148,10 +148,10 @@
 
                         <div class="col-md-6">
                             <label class="radio-inline">
-                                <input type="radio" id="gender-m" name="gender" value="1" checked> 男
+                                <input type="radio" id="gender-m" name="gender" value="0" checked> 男
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" id="gender-f" name="gender" value="0"> 女
+                                <input type="radio" id="gender-f" name="gender" value="1"> 女
                             </label>
                         </div>
                     </div>
@@ -161,7 +161,7 @@
 
                         <div class="col-md-6">
                             <select class="form-control" name="career" form="user_register_form" required>
-                                @foreach ($career as $key => $value)
+                                @foreach ($career_array['value'] as $key => $value)
                                     <option value="{{ $key }}">{{ $value }}</option>
                                 @endforeach
                             </select>
@@ -172,28 +172,28 @@
                         <label for="available-time" class="col-md-4 control-label">比較有空的時間:</label>
 
                         <div class="col-md-6">
-                            @foreach($available_time_array as $key => $value)
-                                <label class="checkbox-inline">
-                                    <input type="checkbox" name="$available_time_{{ $key }}" > {{ $value }}
+                            @foreach($available_time_array['value'] as $key => $value)
+                                <label class="checkbox">
+                                    <input type="checkbox" name="{{ $available_time_array['prefix'] }}_{{ $key }}" > {{ $value }}
                                 </label>
                             @endforeach
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="allow-email" class="col-md-4 control-label">經常活動地區:</label>
+                        <label for="available-area" class="col-md-4 control-label">經常活動的地區:</label>
 
                         <div class="col-md-6">
-                            @foreach($available_area_array as $key => $value)
-                                <label class="checkbox-inline">
-                                    <input type="checkbox" name="$available_area_{{ $key }}" > {{ $value }}
+                            @foreach($location_array['value'] as $key => $value)
+                                <label class="checkbox">
+                                    <input type="checkbox" name="{{ $location_array['prefix'] }}_{{ $key }}" > {{ $value }}
                                 </label>
                             @endforeach
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="available-area" class="col-md-4 control-label">通過E-mail發送活動邀請:</label>
+                        <label for="allow-email" class="col-md-4 control-label">通過E-mail發送活動邀請:</label>
 
                         <div class="col-md-6">
                             <label class="radio-inline">
@@ -208,7 +208,7 @@
 
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-4">
-                            <button type="submit" class="btn btn-primary">
+                            <button class="user-info-edit btn btn-primary">
                                 修改
                             </button>
                         </div>
@@ -232,8 +232,33 @@
             $('.profile-usermenu li').removeClass('active');
             user_info.parent().addClass('active');
             pro_content.html($('.user-info-content').html() );
-
         });
+
+        $('.user-info-edit').click(function () {
+            $(".submit").click(function () {
+
+                $.ajax({
+                    url: "/event",
+                    data: $('#user-info-form').serialize(),
+                    type:"POST",
+                    dataType:'text',
+
+                    success: function(data){
+                        if (data == "success"){
+
+                        }
+                    },
+
+                    error:function(data){
+                        $(".modal-title").text("建立失敗");
+                        $(".modal-body").text(data);
+                        $('#myModal').modal('show');
+                    }
+                });
+            });
+        })
+
+
 
     </script>
 

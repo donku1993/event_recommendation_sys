@@ -134,7 +134,7 @@ class Helper extends Model
                 return self::$location_array;
                 break;
             case 'career':
-                return self::$carrer_array;
+                return self::$career_array;
                 break;
             case 'interest_skills':
                 return self::$interest_skills_array;

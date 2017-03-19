@@ -15,6 +15,7 @@
 
 Route::get('/', 'HomeController@index');
 Route::get('/event/info', 'HomeController@eventInfo');
+Route::get('/event/create', 'HomeController@eventCreate');
 Route::get('/auth/info', 'HomeController@userInfo');
 
 Auth::routes();

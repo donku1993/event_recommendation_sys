@@ -81,10 +81,10 @@
 
                             <div class="col-md-6">
                                 <label class="radio-inline">
-                                    <input type="radio" id="gender-m" name="gender" value="1" checked> 男
+                                    <input type="radio" id="gender-m" name="gender" value="0" checked> 男
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" id="gender-f" name="gender" value="0"> 女
+                                    <input type="radio" id="gender-f" name="gender" value="1"> 女
                                 </label>
                             </div>
                         </div>
@@ -94,7 +94,7 @@
 
                             <div class="col-md-6">
                                 <select class="form-control" name="career" form="user_register_form" required>
-                                    @foreach ($career as $key => $value)
+                                    @foreach ($career_array['value'] as $key => $value)
                                         <option value="{{ $key }}">{{ $value }}</option>
                                     @endforeach
                                 </select>
@@ -105,9 +105,9 @@
                             <label for="available-time" class="col-md-4 control-label">比較有空的時間:</label>
 
                             <div class="col-md-6">
-                                @foreach($available_time_array as $key => $value)
+                                @foreach($available_time_array['value'] as $key => $value)
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" name="$available_time_{{ $key }}" > {{ $value }}
+                                        <input type="checkbox" name="{{ $available_time_array['prefix'] }}_{{ $key }}" > {{ $value }}
                                     </label>
                                 @endforeach
                             </div>
@@ -117,9 +117,9 @@
                             <label for="available-area" class="col-md-4 control-label">經常活動地區:</label>
 
                             <div class="col-md-6">
-                                @foreach($available_area_array as $key => $value)
+                                @foreach($available_area_array['value'] as $key => $value)
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" name="$available_area_{{ $key }}" > {{ $value }}
+                                        <input type="checkbox" name="{{ $available_area_array['prefix'] }}_{{ $key }}" > {{ $value }}
                                     </label>
                                 @endforeach
                             </div>
