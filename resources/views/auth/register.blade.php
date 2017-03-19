@@ -126,7 +126,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="available-area" class="col-md-4 control-label">通過E-mail發送活動邀請:</label>
+                            <label for="allow-email" class="col-md-4 control-label">通過E-mail發送活動邀請:</label>
 
                             <div class="col-md-6">
                                     <label class="radio-inline">

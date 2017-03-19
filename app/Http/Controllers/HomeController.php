@@ -28,4 +28,8 @@ class HomeController extends Controller
     public function eventInfo(){
         return view('event/info');
     }
+
+    public function userInfo(){
+        return  view('auth/info');
+    }
 }
