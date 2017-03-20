@@ -1,20 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">註冊帳號</div>
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" id="user_register_form" action="{{ route('register') }}">
+
+    <div class="container">
+        <div class="row profile">
+            @include('user.info-left')
+
+            <div class="col-md-9">
+                <div class="profile-content">
+                    <form id="user-info-form" class="form-horizontal" role="form" >
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                             <label for="name" class="col-md-4 control-label">姓名:</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
+                                <input id="name" type="text" class="form-control" name="name" value="{{ $data['user']->name }}" required autofocus>
 
                                 @if ($errors->has('name'))
                                     <span class="help-block">
@@ -28,7 +29,7 @@
                             <label for="email" class="col-md-4 control-label">E-Mail:</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                                <input id="email" type="email" class="form-control" name="email" value="{{ $data['user']->email }}" required>
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
@@ -42,7 +43,7 @@
                             <label for="password" class="col-md-4 control-label">密碼:</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
+                                <input id="password" type="password" class="form-control"  name="password" value="{{ $data['user']->password }}" required>
 
                                 @if ($errors->has('password'))
                                     <span class="help-block">
@@ -56,7 +57,7 @@
                             <label for="password-confirm" class="col-md-4 control-label">確認密碼:</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                                <input id="password-confirm" type="password" class="form-control"  name="password_confirmation" required>
                             </div>
                         </div>
 
@@ -64,9 +65,7 @@
                             <label for="phone" class="col-md-4 control-label">電話:</label>
 
                             <div class="col-md-6">
-
-                                <input id="phone" type="text" class="form-control" name="phone" required>
-
+                                <input id="phone" type="text" class="form-control" name="phone" value="{{ $data['user']->phone }}" required>
 
                                 @if ($errors->has('phone'))
                                     <span class="help-block">
@@ -83,12 +82,10 @@
 
                             <div class="col-md-6">
                                 <label class="radio-inline">
-
                                     <input type="radio" id="gender-m" name="gender" value="0" checked> 男
                                 </label>
                                 <label class="radio-inline">
                                     <input type="radio" id="gender-f" name="gender" value="1"> 女
-
                                 </label>
                             </div>
                         </div>
@@ -98,10 +95,12 @@
 
                             <div class="col-md-6">
                                 <select class="form-control" name="career" form="user_register_form" required>
-
-                                    @foreach ($constant_array['career']['value'] as $key => $value)
-
-                                        <option value="{{ $key }}">{{ $value }}</option>
+                                    @foreach ($career_array['value'] as $key => $value)
+                                        @if( $data['user']->career ==  $key )
+                                            <option selected value="{{ $key }}">{{ $value }}</option>
+                                        @else
+                                            <option value="{{ $key }}">{{ $value }}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                             </div>
@@ -111,67 +110,85 @@
                             <label for="available-time" class="col-md-4 control-label">比較有空的時間:</label>
 
                             <div class="col-md-6">
-
-                                @foreach($constant_array['available_time']['value'] as $key => $value)
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" name="available_time_{{ $key }}" > {{ $value }}
+                                @foreach($available_time_array['value'] as $key => $value)
+                                    <label class="checkbox">
+                                        @if( $data['user']->available_time[$key] )
+                                            <input type="checkbox" checked name="{{ $available_time_array['prefix'] }}_{{ $key }}" > {{ $value }}
+                                        @else
+                                            <input type="checkbox" name="{{ $available_time_array['prefix'] }}_{{ $key }}" > {{ $value }}
+                                        @endif
                                     </label>
                                 @endforeach
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="available-area" class="col-md-4 control-label">經常活動地區:</label>
+                            <label for="available-area" class="col-md-4 control-label">經常活動的地區:</label>
 
                             <div class="col-md-6">
-
-                                @foreach($constant_array['location']['value'] as $key => $value)
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" name="available_area_{{ $key }}" > {{ $value }}
+                                @foreach($location_array['value'] as $key => $value)
+                                    <label class="checkbox">
+                                        @if( $data['user']->location[$key] )
+                                            <input type="checkbox" checked name="{{ $location_array['prefix'] }}_{{ $key }}" > {{ $value }}
+                                        @else
+                                            <input type="checkbox" name="{{ $location_array['prefix'] }}_{{ $key }}" > {{ $value }}
+                                        @endif
                                     </label>
                                 @endforeach
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="interest_skills" class="col-md-4 control-label">個人技能和興趣:</label>
-
-                            <div class="col-md-6">
-
-                                @foreach($constant_array['interest_skills']['value'] as $key => $value)
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" name="interest_skills_{{ $key }}" > {{ $value }}
+                            <label for="allow-email" class="col-md-4 control-label">通過E-mail發送活動邀請:</label>
+                            @if( $data['user']->allow_email )
+                                <div class="col-md-6">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="allow_email" checked> 是
                                     </label>
-                                @endforeach
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="allow-email" class="col-md-4 control-label">接收系統發送的活動邀請E-mail:</label>
-
-                            <div class="col-md-6">
-                                <label class="radio-inline">
-                                    <input type="radio" name="allow_email" value="true" checked> 是
-                                </label>
-                                 <label class="radio-inline">
-                                    <input type="radio" name="allow_email" value="false"> 否
-                                </label>
-
-                            </div>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="allow_email" > 否
+                                    </label>
+                                </div>
+                            @else
+                                <div class="col-md-6">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="allow_email" > 是
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="allow_email" checked> 否
+                                    </label>
+                                </div>
+                            @endif
                         </div>
 
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    註冊
+                                <button class="user-info-edit btn btn-primary">
+                                    修改
                                 </button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
+
+
+
         </div>
     </div>
-</div>
+
+@endsection
+
+@section('script')
+    <script type="text/javascript">
+        var user_info = $('.user-info');
+
+        user_info.click(function () {
+            $('.profile-usermenu li').removeClass('active');
+            user_info.parent().addClass('active');
+        });
+    </script>
+
+
 @endsection

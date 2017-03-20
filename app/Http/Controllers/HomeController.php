@@ -12,6 +12,7 @@ class HomeController extends Controller
     {
         parent::__construct();
     }
+
     /**
      * Show the application dashboard.
      *
@@ -21,8 +22,6 @@ class HomeController extends Controller
     {
         return view('home');
     }
-<<<<<<< HEAD
+
 }
-=======
-}
->>>>>>> backend
+

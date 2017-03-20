@@ -27,11 +27,11 @@
         <!-- SIDEBAR MENU -->
         <div class="profile-usermenu">
             <ul class="nav">
-{{--                <li class="active">
-                    <a href="#" class="overview">
+                <li class="active">
+                    <a href="/user/{{ $data['user']->id }}" class="overview">
                         <i class="glyphicon glyphicon-home"></i>
                         總覽 </a>
-                </li>--}}
+                </li>
                 <li>
                     <a href="/user/{{ $data['user']->id }}/edit" class="user-info active">
                         <i class="glyphicon glyphicon-user"></i>

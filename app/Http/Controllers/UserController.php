@@ -38,7 +38,7 @@ class UserController extends Controller
                 'user' => $user,
                 'status_array' => $status_array
             ];
-            return view('auth.info', $data);
+            return view('edit.info', $data);
         }
     }
     /**
@@ -56,7 +56,7 @@ class UserController extends Controller
                 'user' => $user,
                 'status_array' => $status_array
             ];
-            return view('user.eidt', $data);
+            return view('user.edit', $data);
         }
     }
     /**

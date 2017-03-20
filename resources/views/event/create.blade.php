@@ -41,7 +41,7 @@
                                     <div class="panel-heading">選擇活動類型</div>
                                     <div class="panel-body">
                                         <select class="check-value form-control" name="type">
-                                            @foreach ($event_type_array['value'] as $key => $value)
+                                            @foreach ($constant_array['event_type']['value'] as $key => $value)
                                                 <option value="{{ $key }}">{{ $value }}</option>
                                             @endforeach
                                         </select>
@@ -128,7 +128,7 @@
                                 <div class="panel-heading">選擇活動區域</div>
                                 <div class="panel-body">
                                     <select class="check-value form-control" name="location">
-                                        @foreach ($location_array['value'] as $key => $value)
+                                        @foreach ($constant_array['location']['value'] as $key => $value)
                                             <option value="{{ $key }}">{{ $value }}</option>
                                         @endforeach
                                     </select>
@@ -180,9 +180,9 @@
                                     <div class="panel-heading">填選活動相關的技能和興趣</div>
                                     <div class="panel-body">
 
-                                        @foreach ($interest_skills_array['value'] as $key => $value)
+                                        @foreach ($constant_array['interest_skills']['value'] as $key => $value)
                                             <label class="checkbox-inline">
-                                            <input type="checkbox" name="{{ $interest_skills_array['prefix'] }}_{{ $key }}" />{{ $value }}
+                                            <input type="checkbox" name="{{ $constant_array['interest_skills']['prefix'] }}_{{ $key }}" />{{ $value }}
                                             </label>
                                         @endforeach
 
