@@ -86,7 +86,8 @@ class UserController extends Controller
                                 $this->basicValidationArray(),
                                 array(
                                     'address_location' => 'integer',
-                                    'self_introduction' => ''
+                                    'self_introduction' => '',
+                                    'icon_image' => 'image'
                                 )
                             );
 
@@ -122,5 +123,18 @@ class UserController extends Controller
         }
 
         return ['message' => 'need to be a user himself/herself or administrator.'];
+    }
+
+    public function iconTest(Request $request, $id)
+    {
+        $data = $request->all();
+        $user = User::find($id);
+
+        if ($this->isSelf($user)) {
+            $user->icon_image = $this->imageUpload('user_icon', $id, $data['icon_image']);
+            $user->save();
+        }
+
+        return redirect('/');
     }
 }

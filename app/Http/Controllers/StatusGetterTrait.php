@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use File;
+use Image;
 use Auth;
 use App\Models\User;
 use App\Models\Event;
@@ -84,5 +86,23 @@ trait StatusGetterTrait
 		} else {
 			return false;
 		}
+	}
+
+	public function imageUpload(string $foldername, $id, $image) {
+		$folder_path = storage_path('app/public/' . $foldername . '/' . $id . '/');
+		$filename = str_random(5) . '.' . $image->extension();
+		$full_path = $folder_path . $filename;
+
+		if (!file_exists($folder_path)){
+			mkdir($folder_path);
+		} else {
+			File::cleanDirectory($folder_path);
+		}
+
+		$image->move($folder_path, $filename);
+
+		Image::make($full_path)->resize(200, 200)->save($full_path);
+
+		return $id . '/' . $filename;
 	}
 }
