@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use DB;
+use Auth;
 use Illuminate\Http\Request;
 use App\Models\Group;
+use App\Models\Helper;
 use App\Http\Controllers\StatusGetterTrait;
 
 class GroupController extends Controller
@@ -37,6 +40,7 @@ class GroupController extends Controller
                 'groups' => $groups
             ];
 
+        // delete this line to pass data to view
         dd($data);
 
         return view('group.list', $data);
@@ -60,6 +64,7 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
+        // delete this line to pass data to view
         dd($request);
     }
 
@@ -81,6 +86,7 @@ class GroupController extends Controller
                 'status_array' => $status_array
             ];
 
+            // delete this line to pass data to view
             dd($data);
 
             return view('group.info', $data);
@@ -105,6 +111,7 @@ class GroupController extends Controller
                 'status_array' => $status_array
             ];
 
+            // delete this line to pass data to view
             dd($data);
 
             return view('group.edit', $data);
@@ -119,7 +126,34 @@ class GroupController extends Controller
      */
     public function mark($id)
     {
-        dd($id);
+        $user = Auth::user();
+
+        $group_mark_type = Helper::getConstantArray('users_groups_relation_type')['value']['marked'];
+
+        if ($user) {
+            $record = DB::table('users_groups_relation')
+                            ->where('user_id', $user->id)
+                            ->where('group_id', $id)
+                            ->where('type', $group_mark_type)
+                            ->first();
+
+            if ($record) {
+                DB::table('users_groups_relation')
+                        ->where('user_id', $user->id)
+                        ->where('group_id', $id)
+                        ->where('type', $group_mark_type)
+                        ->delete();
+            } else {
+                DB::table('users_groups_relation')
+                        ->insert([
+                                'user_id' => $user->id,
+                                'group_id' => $id,
+                                'type' => $group_mark_type
+                            ]);
+            }
+        }
+
+        return redirect()->route('group.info', $id);
     }
 
     /**
@@ -131,6 +165,7 @@ class GroupController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // delete this line to pass data to view
         dd([$request->all(), $id]);
     }
 
@@ -142,6 +177,7 @@ class GroupController extends Controller
      */
     public function destroy($id)
     {
+        // delete this line to pass data to view
         dd($id);
     }
 }

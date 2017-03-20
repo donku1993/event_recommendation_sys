@@ -44,19 +44,23 @@ class User extends Authenticatable
         $this->users_groups_relation_type = Helper::getConstantArray('users_groups_relation_type')['value'];
     }
 
+    public function getIconPathAttribute() {
+        return '/storage/user_icon/' . $this->icon_image;
+    }
+
     public function markedGroup() {
-        return $this->belongsToMany('App\Models\Group', 'users_groups_relation', 'user_id', 'group_id')->where('type', $this->users_groups_relation_type['marked']);
+        return $this->belongsToMany('App\Models\Group', 'users_groups_relation', 'user_id', 'group_id')->where('type', $this->users_groups_relation_type['marked'])->orderBy('created_at', 'desc');
     }
 
     public function markedEvent() {
-        return $this->belongsToMany('App\Models\Event', 'users_events_relation', 'user_id', 'event_id');
+        return $this->belongsToMany('App\Models\Event', 'users_events_relation', 'user_id', 'event_id')->orderBy('created_at', 'desc');
     }
 
     public function groups() {
-        return $this->hasMany('App\Models\Group', 'user_id');
+        return $this->hasMany('App\Models\Group', 'user_id')->orderBy('created_at', 'desc');
     }
 
     public function events() {
-        return $this->hasMany('App\Models\Event', 'participants', 'user_id', 'event_id');
+        return $this->belongsToMany('App\Models\Event', 'participants', 'user_id', 'event_id')->orderBy('created_at', 'desc');
     }
 } 

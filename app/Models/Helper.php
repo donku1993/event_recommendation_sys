@@ -10,7 +10,7 @@ class Helper extends Model
         'prefix' => 'available_time',
         'value' => [
         	0 => '早上 09:00-12:00',
-        	1 => '中午 12:00-18:00',
+        	1 => '下午 12:00-18:00',
         	2 => '晚上 18:00-22:00',
         ]
     ];
@@ -207,7 +207,7 @@ class Helper extends Model
 
         if ($array) {
             foreach ($array['value'] as $key => $value) {
-                $var_name = $array['prefix'] . '_' . $key;
+                $var_name = $column . '_' . $key;
                 $jsonData[$key] = (isset($data[$var_name])) ? true : false;
 
                 if ($jsonData[$key]) {
@@ -216,8 +216,8 @@ class Helper extends Model
             }
         }
 
-        $data[$column] = $jsonData;
+        $data[$column] = (object) $jsonData;
 
-        return (object)$data;
+        return $data;
     }
 }

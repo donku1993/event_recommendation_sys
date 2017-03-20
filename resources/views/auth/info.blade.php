@@ -8,7 +8,7 @@
                 <div class="profile-sidebar">
                     <!-- SIDEBAR USERPIC -->
                     <div class="profile-userpic">
-                        <img src="http://kathirose.com/wp-content/uploads/2016/05/Hair-Icon-180x180.jpg" class="img-responsive" alt="">
+                        <img src="{{ $user->iconPath }}" class="img-responsive" alt="">
                     </div>
                     <div class="profile-userpic-edit profile-userbuttons">
                         <button class="btn btn-warning btn-sm">更換圖片</button>
@@ -161,7 +161,7 @@
 
                         <div class="col-md-6">
                             <select class="form-control" name="career" form="user_register_form" required>
-                                @foreach ($career as $key => $value)
+                                @foreach ($constant_array['career']['value'] as $key => $value)
                                     <option value="{{ $key }}">{{ $value }}</option>
                                 @endforeach
                             </select>
@@ -172,7 +172,7 @@
                         <label for="available-time" class="col-md-4 control-label">比較有空的時間:</label>
 
                         <div class="col-md-6">
-                            @foreach($available_time_array as $key => $value)
+                            @foreach($constant_array['available_time']['value'] as $key => $value)
                                 <label class="checkbox-inline">
                                     <input type="checkbox" name="$available_time_{{ $key }}" > {{ $value }}
                                 </label>
@@ -184,7 +184,7 @@
                         <label for="allow-email" class="col-md-4 control-label">經常活動地區:</label>
 
                         <div class="col-md-6">
-                            @foreach($available_area_array as $key => $value)
+                            @foreach($constant_array['location']['value'] as $key => $value)
                                 <label class="checkbox-inline">
                                     <input type="checkbox" name="$available_area_{{ $key }}" > {{ $value }}
                                 </label>

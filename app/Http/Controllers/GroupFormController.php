@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Group;
+use App\Models\Helper;
 use App\Http\Controllers\StatusGetterTrait;
 
 class GroupFormController extends Controller
@@ -34,8 +35,6 @@ class GroupFormController extends Controller
                 'group_forms' => $group_forms
             ];
 
-        dd($data);
-
         return view('group_form.list', $data);
     }
 
@@ -57,8 +56,6 @@ class GroupFormController extends Controller
                 'status_array' => $status_array
             ];
 
-            dd($data);
-
             return view('group_form.info', $data);
         }
     }
@@ -72,7 +69,20 @@ class GroupFormController extends Controller
      */
     public function approve(Request $request, $id)
     {
-        dd([$request->all(), $id]);
+        $data = $request->all();
+
+        $group_form = Group::unprocessForm()->find($id);
+
+        if ($this->isAdmin() && $group_form) {
+            $group_form->fill([
+                    'status' => array_search('已批準', Helper::getConstantArray('group_status')['value']),
+                    'remark' => $data['remark']
+                ]);
+
+            $group->save();
+        }
+
+        return redirect()->route('group_form.info');
     }
 
     /**
@@ -84,6 +94,37 @@ class GroupFormController extends Controller
      */
     public function reject(Request $request, $id)
     {
-        dd([$request->all(), $id]);
+        $data = $request->all();
+
+        $group_form = Group::unprocessForm()->find($id);
+
+        if ($this->isAdmin() && $group_form) {
+            $group_form->fill([
+                    'status' => array_search('已拒絕', Helper::getConstantArray('group_status')['value']),
+                    'remark' => $data['remark']
+                ]);
+
+            $group->save();
+        }
+
+        return redirect()->route('group_form.info');
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function form_read($id) {
+        $group_form = Group::find($id);
+
+        if ($group_form->status == array_search('新提交', Helper::getConstantArray('group_status')['value'])) {
+            $group_form->fill([
+                    'status' => array_search('審批中', Helper::getConstantArray('group_status')['value'])
+                ]);
+
+            $group_form->save();
+        }
     }
 }

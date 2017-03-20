@@ -15,13 +15,20 @@ class Group extends Model
     	'activity_area' => 'json'
     ];
 
+    protected $dates = ['establishment_date'];
+
     protected $form_status = [0, 1, 3];
+    protected $unprocess_form_status = [0, 1];
     protected $users_groups_relation_type;
 
     function __construct($attributes = array()) {
         parent::__construct($attributes);
 
         $this->users_groups_relation_type = Helper::getConstantArray('users_groups_relation_type')['value'];
+    }
+
+    public function getIconPathAttribute() {
+        return '/storage/group_icon/' . $this->icon_image;
     }
 
     public function applicant() {
@@ -33,11 +40,11 @@ class Group extends Model
     }
 
     public function markedUsers() {
-    	return $this->belongsToMany('App\Models\User', 'users_groups_relation', 'group_id', 'user_id')->wherePivot('type', $this->users_groups_relation_type['marked']);
+    	return $this->belongsToMany('App\Models\User', 'users_groups_relation', 'group_id', 'user_id')->wherePivot('type', $this->users_groups_relation_type['marked'])->orderBy('created_at', 'desc');
     }
 
     public function events() {
-    	return $this->belongsToMany('App\Models\Event', 'groups_events_relation', 'group_id', 'event_id');
+    	return $this->belongsToMany('App\Models\Event', 'groups_events_relation', 'group_id', 'event_id')->orderBy('created_at', 'desc');
     }
 /*
     public function events_with_organizer() {
@@ -50,6 +57,10 @@ class Group extends Model
 */
     public function scopeIsGroupForm($query) {
     	return $query->whereIn('status', $this->form_status);
+    }
+
+    public function scopeUnprocessForm($query) {
+        return $query->whereIn('status', $this->unprocess_form_status);
     }
 
     public function scopeIsGroup($query) {

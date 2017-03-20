@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Models\User;
+use App\Models\Helper;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -36,6 +37,8 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
+        parent::__construct();
+
         $this->middleware('guest');
     }
 
@@ -51,6 +54,10 @@ class RegisterController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
+            'career' => 'required|integer',
+            'gender' => 'required|integer',
+            'allow_email' => 'required',
+            'phone' => 'required|min:8',
         ]);
     }
 
@@ -62,10 +69,21 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $data = Helper::JsonDataConverter($data, 'available_time', 'available_time');
+        $data = Helper::JsonDataConverter($data, 'interest_skills', 'interest_skills');
+        $data = Helper::JsonDataConverter($data, 'available_area', 'location');
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'career' => $data['career'],
+            'gender' => $data['gender'],
+            'phone' => $data['phone'],
+            'allow_email' => ($data['allow_email'] === 'true') ? 1 : 0,
+            'available_time' => $data['available_time'],
+            'available_area' => $data['available_area'],
+            'interest_skills' => $data['interest_skills']
         ]);
     }
 }
