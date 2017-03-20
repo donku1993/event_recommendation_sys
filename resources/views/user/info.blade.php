@@ -43,7 +43,7 @@
                             <label for="password" class="col-md-4 control-label">密碼:</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
+                                <input id="password" type="password" class="form-control"  name="password" value="{{ $data['user']->password }}" required>
 
                                 @if ($errors->has('password'))
                                     <span class="help-block">
@@ -57,7 +57,7 @@
                             <label for="password-confirm" class="col-md-4 control-label">確認密碼:</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                                <input id="password-confirm" type="password" class="form-control"  name="password_confirmation" required>
                             </div>
                         </div>
 
@@ -65,7 +65,7 @@
                             <label for="phone" class="col-md-4 control-label">電話:</label>
 
                             <div class="col-md-6">
-                                <input id="phone" type="text" class="form-control" name="phone" required>
+                                <input id="phone" type="text" class="form-control" name="phone" value="{{ $data['user']->phone }}" required>
 
                                 @if ($errors->has('phone'))
                                     <span class="help-block">
@@ -96,7 +96,11 @@
                             <div class="col-md-6">
                                 <select class="form-control" name="career" form="user_register_form" required>
                                     @foreach ($career_array['value'] as $key => $value)
-                                        <option value="{{ $key }}">{{ $value }}</option>
+                                        @if( $data['user']->career ==  $value )
+                                            <option selected value="{{ $key }}">{{ $value }}</option>
+                                        @else
+                                            <option value="{{ $key }}">{{ $value }}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                             </div>

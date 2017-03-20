@@ -64,7 +64,7 @@
                             <label for="phone" class="col-md-4 control-label">電話:</label>
 
                             <div class="col-md-6">
-                                <input id="phone" type="text" class="form-control" name="phone" required>
+                                <input id="phone" type="text" class="form-control" name="phone">
 
                                 @if ($errors->has('phone'))
                                     <span class="help-block">
@@ -117,9 +117,9 @@
                             <label for="available-area" class="col-md-4 control-label">經常活動地區:</label>
 
                             <div class="col-md-6">
-                                @foreach($available_area_array['value'] as $key => $value)
+                                @foreach($location_array['value'] as $key => $value)
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" name="{{ $available_area_array['prefix'] }}_{{ $key }}" > {{ $value }}
+                                        <input type="checkbox" name="{{ $location_array['prefix'] }}_{{ $key }}" > {{ $value }}
                                     </label>
                                 @endforeach
                             </div>
