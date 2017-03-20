@@ -19,7 +19,6 @@ class CreateEventsTable extends Migration
             $table->dateTime('startDate');
             $table->dateTime('endDate');
             $table->integer('numberOfPeople')->unsigned();
-            $table->string('previewImage')->default('old.jpg');
             $table->string('title');
             $table->mediumText('content');
             $table->integer('location');
@@ -28,6 +27,7 @@ class CreateEventsTable extends Migration
             $table->mediumText('requirement')->nullable();
             $table->mediumText('remark')->nullable();
             $table->tinyInteger('status')->default(0);
+            $table->string('previewImage')->default('old.jpg');
             $table->json('bonus_skills')->nullable();
             $table->timestamps();
         });

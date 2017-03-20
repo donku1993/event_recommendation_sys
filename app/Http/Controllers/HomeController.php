@@ -13,6 +13,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
+        parent::__construct();
     }
 
     /**
@@ -23,9 +24,5 @@ class HomeController extends Controller
     public function index()
     {
         return view('home');
-    }
-
-    public function eventInfo(){
-        return view('event/info');
     }
 }

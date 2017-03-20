@@ -32,7 +32,7 @@ function JsonSimilator(int $max_length) {
         $json[$i] = (in_array($i, $true_value)) ? true : false;
     }
 
-    return $json;
+    return (object)$json;
 }
 
 // User

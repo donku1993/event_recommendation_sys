@@ -10,7 +10,7 @@ class Helper extends Model
         'prefix' => 'available_time',
         'value' => [
         	0 => '早上 09:00-12:00',
-        	1 => '中午 12:00-18:00',
+        	1 => '下午 12:00-18:00',
         	2 => '晚上 18:00-22:00',
         ]
     ];
@@ -161,7 +161,7 @@ class Helper extends Model
                 return null;
         }
     }
-
+/*
     public static function UserConstantArray() {
         return [ 'user_constant_array' => [
             self::$available_time_array['prefix'] => self::$available_time_array,
@@ -187,6 +187,19 @@ class Helper extends Model
             self::$group_status_array['prefix'] => self::$group_status_array,
         ]];
     }
+*/
+    public static function AllConstantArray() {
+        return ['constant_array' => [
+            self::$available_time_array['prefix'] => self::$available_time_array,
+            self::$location_array['prefix'] => self::$location_array,
+            self::$career_array['prefix'] => self::$career_array,
+            self::$interest_skills_array['prefix'] => self::$interest_skills_array,
+            self::$user_type_array['prefix'] => self::$user_type_array,
+            self::$event_type_array['prefix'] => self::$event_type_array,
+            self::$event_status_array['prefix'] => self::$event_status_array,
+            self::$group_status_array['prefix'] => self::$group_status_array,
+        ]];
+    }
 
     public static function JsonDataConverter(array $data, string $column, string $array_name) {
         $jsonData = null;
@@ -194,7 +207,7 @@ class Helper extends Model
 
         if ($array) {
             foreach ($array['value'] as $key => $value) {
-                $var_name = $array['prefix'] . '_' . $key;
+                $var_name = $column . '_' . $key;
                 $jsonData[$key] = (isset($data[$var_name])) ? true : false;
 
                 if ($jsonData[$key]) {
@@ -203,7 +216,7 @@ class Helper extends Model
             }
         }
 
-        $data[$column] = $jsonData;
+        $data[$column] = (object) $jsonData;
 
         return $data;
     }

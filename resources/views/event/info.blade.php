@@ -34,6 +34,10 @@
                             </tr>
                             </tbody>
                         </table>
+
+                        {{--Group can edit, wait for middleware--}}
+                        <button type="button" class="btn btn-primary"><a href="/event/{{ $event->id }}/edit">修改</a></button>
+
                     </div>
                 </div>
 
