@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
+use DB;
 
 class Event extends Model
 {
@@ -14,6 +16,8 @@ class Event extends Model
     	'bonus_skills' => 'json'
     ];
 
+    protected $dates = ['signUpEndDate', 'startDate', 'endDate'];
+
     protected static function boot()
     {
         parent::boot();
@@ -22,8 +26,6 @@ class Event extends Model
             $builder->where('show', 1);
         });
     }
-
-    protected $dates = ['signUpEndDate', 'startDate', 'endDate'];
 
     public function getNumberOfMarkedAttribute()
     {
@@ -55,9 +57,17 @@ class Event extends Model
     	return $this->belongsToMany('App\Models\User', 'participants', 'event_id', 'user_id')->orderBy('created_at', 'desc');
     }
 
-    public function scopeCanJoin($query)
+    public function canJoin()
     {
-        return $query;
+        $count = DB::table('participants')->where('event_id', $this->id)->count();
+
+        if ($this->signUpEndDate > Carbon::now() && 
+            $this->numberOfPeople > $count)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     public function scopeSearch($query, Array $keywords)

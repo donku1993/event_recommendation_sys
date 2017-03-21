@@ -257,9 +257,9 @@ class EventController extends Controller
      */
     public function join($id)
     {
-        $event = Event::with(['markedUsers', 'organizer', 'co_organizer'])->canJoin()->find($id);
+        $event = Event::with(['markedUsers', 'organizer', 'co_organizer'])->find($id);
 
-        if ($this->isLogin() && $event && !$this->isEventManager($event))
+        if ($this->isLogin() && $event && !$this->isEventManager($event) && $event->canJoin())
         {
             $user = Auth::user();
 
