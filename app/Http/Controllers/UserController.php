@@ -10,7 +10,8 @@ class UserController extends Controller
 {
     use StatusGetterTrait;
 
-    public function status_array(User $user) {
+    public function status_array(User $user)
+    {
         return [
                 'is_login' => $this->isLogin(),
                 'is_admin' => $this->isAdmin(),
@@ -18,7 +19,8 @@ class UserController extends Controller
             ];
     }
 
-    protected function basicValidationArray() {
+    protected function basicValidationArray()
+    {
         return [
                 'name' => 'required|max:255',
                 'email' => 'required|email|max:255|unique:users',
@@ -39,7 +41,8 @@ class UserController extends Controller
     {
         $user = User::with(['markedGroup', 'markedEvent', 'groups', 'events'])->find($id);
 
-        if ($user) {
+        if ($user)
+        {
             $status_array = $this->status_array($user);
 
             $data = [
@@ -61,7 +64,8 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-        if ($user) {
+        if ($user)
+        {
             $status_array = $this->status_array($user);
 
             $data = [
@@ -86,8 +90,8 @@ class UserController extends Controller
                                 $this->basicValidationArray(),
                                 array(
                                     'address_location' => 'integer',
+                                    'icon_image' => 'image',
                                     'self_introduction' => '',
-                                    'icon_image' => 'image'
                                 )
                             );
 
@@ -96,7 +100,8 @@ class UserController extends Controller
         $data = $request->all();
         $user = User::find($id);
 
-        if ($user && $this->isSelf($user)) {
+        if ($user && $this->isSelf($user))
+        {
             $data = Helper::JsonDataConverter($data, 'available_time', 'available_time');
             $data = Helper::JsonDataConverter($data, 'interest_skills', 'interest_skills');
             $data = Helper::JsonDataConverter($data, 'available_area', 'location');
@@ -111,7 +116,8 @@ class UserController extends Controller
                     'allow_email' => ($data['allow_email'] === 'true') ? 1 : 0,
                     'available_time' => $data['available_time'],
                     'available_area' => $data['available_area'],
-                    'interest_skills' => $data['interest_skills']
+                    'interest_skills' => $data['interest_skills'],
+                    'icon_image' => $this->imageUpload('user_icon', $user->id, $data['icon_image'])
                 ]);
 
             $user->save();
@@ -130,7 +136,8 @@ class UserController extends Controller
         $data = $request->all();
         $user = User::find($id);
 
-        if ($this->isSelf($user)) {
+        if ($this->isSelf($user))
+        {
             $user->icon_image = $this->imageUpload('user_icon', $id, $data['icon_image']);
             $user->save();
         }

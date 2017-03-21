@@ -12,36 +12,45 @@ use App\Models\Helper;
 
 trait StatusGetterTrait
 {
-	public function isLogin() {
+	public function isLogin()
+	{
 		return (Auth::user()) ? true : false;
 	}
 
-	public function isAdmin() {
-		if ($this->isLogin()) {
+	public function isAdmin()
+	{
+		if ($this->isLogin())
+		{
 			return (Auth::user()->type === array_search('系統管理員', Helper::getConstantArray('user_type')['value']));
 		} else {
 			return false;
 		}
 	}
 
-	public function isManager() {
-		if ($this->isLogin()) {
+	public function isManager()
+	{
+		if ($this->isLogin())
+		{
 			return (Auth::user()->type === array_search('組職管理員', Helper::getConstantArray('user_type')['value']));
 		} else {
 			return false;
 		}
 	}
 
-	public function isSelf(User $user = null) {
-		if ($this->isLogin() && $user) {
+	public function isSelf(User $user = null)
+	{
+		if ($this->isLogin() && $user)
+		{
 			return (Auth::user()->id === $user->id);
 		} else {
 			return false;
 		}
 	}
 
-	public function isEventManager(Event $event = null) {
-		if ($this->isLogin() && $event) {
+	public function isEventManager(Event $event = null)
+	{
+		if ($this->isLogin() && $event)
+		{
 			return (
 					Auth::user()->type === array_search('組職管理員', Helper::getConstantArray('user_type')['value']) &&
 					Auth::user()->id === $event->organizer[0]->user_id
@@ -51,10 +60,13 @@ trait StatusGetterTrait
 		}
 	}
 
-	public function isMarkedEvent(Event $event = null) {
-		if ($this->isLogin() && $event) {
+	public function isMarkedEvent(Event $event = null)
+	{
+		if ($this->isLogin() && $event)
+		{
 			$auth_id = Auth::user()->id;
-			$filtered = $event->markedUsers->filter(function ($value) use ($auth_id) {
+			$filtered = $event->markedUsers->filter(function ($value) use ($auth_id)
+			{
 				return $value->id == $auth_id;
 			});
 
@@ -64,8 +76,10 @@ trait StatusGetterTrait
 		}
 	}
 
-	public function isGroupManager(Group $group = null) {
-		if ($this->isLogin() && $group) {
+	public function isGroupManager(Group $group = null)
+	{
+		if ($this->isLogin() && $group)
+		{
 			return (
 					Auth::user()->type === array_search('組職管理員', Helper::getConstantArray('user_type')['value']) &&
 					Auth::user()->id === $group->user_id
@@ -75,10 +89,13 @@ trait StatusGetterTrait
 		}
 	}
 
-	public function isMarkedGroup(Group $group = null) {
-		if ($this->isLogin() && $group) {
+	public function isMarkedGroup(Group $group = null)
+	{
+		if ($this->isLogin() && $group)
+		{
 			$auth_id = Auth::user()->id;
-			$filtered = $group->markedUsers->filter(function ($value) use ($auth_id) {
+			$filtered = $group->markedUsers->filter(function ($value) use ($auth_id)
+			{
 				return $value->id == $auth_id;
 			});
 
@@ -88,7 +105,8 @@ trait StatusGetterTrait
 		}
 	}
 
-	public function imageUpload(string $foldername, $id, $image) {
+	public function imageUpload(string $foldername, $id, $image)
+	{
 		$folder_path = storage_path('app/public/' . $foldername . '/' . $id . '/');
 		$filename = str_random(5) . '.' . $image->extension();
 		$full_path = $folder_path . $filename;

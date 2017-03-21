@@ -11,7 +11,8 @@ class GroupFormController extends Controller
 {    
     use StatusGetterTrait;
 
-    public function status_array(Group $group) {
+    public function status_array(Group $group)
+    {
         return [
                 'is_login' => $this->isLogin(),
                 'is_admin' => $this->isAdmin(),
@@ -48,7 +49,8 @@ class GroupFormController extends Controller
     {
         $group_form = Group::with(['markedUsers', 'applicant', 'events'])->find($id);
 
-        if ($group_form) {
+        if ($group_form)
+        {
             $status_array = $this->status_array($group_form);
 
             $data = [
@@ -73,7 +75,8 @@ class GroupFormController extends Controller
 
         $group_form = Group::unprocessForm()->find($id);
 
-        if ($this->isAdmin() && $group_form) {
+        if ($this->isAdmin() && $group_form)
+        {
             $group_form->fill([
                     'status' => array_search('已批準', Helper::getConstantArray('group_status')['value']),
                     'remark' => $data['remark']
@@ -98,7 +101,8 @@ class GroupFormController extends Controller
 
         $group_form = Group::unprocessForm()->find($id);
 
-        if ($this->isAdmin() && $group_form) {
+        if ($this->isAdmin() && $group_form)
+        {
             $group_form->fill([
                     'status' => array_search('已拒絕', Helper::getConstantArray('group_status')['value']),
                     'remark' => $data['remark']
@@ -116,10 +120,12 @@ class GroupFormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function form_read($id) {
+    public function form_read($id)
+    {
         $group_form = Group::find($id);
 
-        if ($group_form->status == array_search('新提交', Helper::getConstantArray('group_status')['value'])) {
+        if ($group_form->status == array_search('新提交', Helper::getConstantArray('group_status')['value']))
+        {
             $group_form->fill([
                     'status' => array_search('審批中', Helper::getConstantArray('group_status')['value'])
                 ]);

@@ -14,21 +14,25 @@
 use App\Models\Helper;
 use Carbon\Carbon;
 
-function JsonSimilator(int $max_length) {
+function JsonSimilator(int $max_length)
+{
     $json = [];
 
     $total = rand(1, $max_length / 2);
     $true_value = [];
-    for ($i=0; $i < $total; $i++) { 
+    for ($i=0; $i < $total; $i++)
+    { 
         $value = rand(0, $max_length - 1);
-        while (in_array($value, $true_value)) {
+        while (in_array($value, $true_value))
+        {
             $value = rand(0, $max_length - 1);
         }
 
         array_push($true_value, $value);
     }
 
-    for ($i=0; $i < $max_length; $i++) {
+    for ($i=0; $i < $max_length; $i++)
+    {
         $json[$i] = (in_array($i, $true_value)) ? true : false;
     }
 
@@ -37,7 +41,8 @@ function JsonSimilator(int $max_length) {
 
 // User
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(App\Models\User::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\User::class, function (Faker\Generator $faker)
+{
     static $password;
 
     $interest_skills = JsonSimilator(sizeof(Helper::getConstantArray('interest_skills')['value']));
@@ -60,13 +65,15 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->state(App\Models\User::class, 'group_manager', function (Faker\Generator $faker) {
+$factory->state(App\Models\User::class, 'group_manager', function (Faker\Generator $faker)
+{
     return [
         'type' => 3
     ];
 });
 
-$factory->state(App\Models\User::class, 'administrator', function (Faker\Generator $faker) {
+$factory->state(App\Models\User::class, 'administrator', function (Faker\Generator $faker)
+{
     return [
         'type' => 0
     ];
@@ -78,7 +85,8 @@ $factory->state(App\Models\User::class, 'administrator', function (Faker\Generat
     need to fill 'user_id', 'name', 'principal_name'.
     status default to 0 (new group form).
 */
-$factory->define(App\Models\Group::class, function(Faker\Generator $faker) {
+$factory->define(App\Models\Group::class, function(Faker\Generator $faker)
+{
     $activity_area = JsonSimilator(sizeof(Helper::getConstantArray('location')['value']));
 
     return [
@@ -92,19 +100,22 @@ $factory->define(App\Models\Group::class, function(Faker\Generator $faker) {
     ];
 });
 
-$factory->state(App\Models\Group::class, 'waiting_group_form', function(Faker\Generator $faker) {
+$factory->state(App\Models\Group::class, 'waiting_group_form', function(Faker\Generator $faker)
+{
     return [
         'status' => 1
     ];
 });
 
-$factory->state(App\Models\Group::class, 'group', function(Faker\Generator $faker) {
+$factory->state(App\Models\Group::class, 'group', function(Faker\Generator $faker)
+{
     return [
         'status' => 2
     ];
 });
 
-$factory->state(App\Models\Group::class, 'rejected_group_form', function(Faker\Generator $faker) {
+$factory->state(App\Models\Group::class, 'rejected_group_form', function(Faker\Generator $faker)
+{
     return [
         'status' => 3
     ];
@@ -114,7 +125,8 @@ $factory->state(App\Models\Group::class, 'rejected_group_form', function(Faker\G
 /*
     need to fill 'groups_events_relation_table'.
 */
-$factory->define(App\Models\Event::class, function(Faker\Generator $faker) {
+$factory->define(App\Models\Event::class, function(Faker\Generator $faker)
+{
     $bonus_skills = JsonSimilator(sizeof(Helper::getConstantArray('interest_skills')['value']));
 
     $now = Carbon::now();
@@ -129,9 +141,11 @@ $factory->define(App\Models\Event::class, function(Faker\Generator $faker) {
     $endDate = new Carbon($startDate->format('Y-m-d H:i:s'));
     $endDate->addDays(rand(1, 3));
 
-    if ($endDate->lt($now)) {
+    if ($endDate->lt($now))
+    {
         $status = 2;
-    } elseif ($signUpEndDate->lt($now)) {
+    } elseif ($signUpEndDate->lt($now))
+    {
         $status = 1;
     } else {
         $status = 0;
@@ -154,7 +168,8 @@ $factory->define(App\Models\Event::class, function(Faker\Generator $faker) {
     ];
 });
 
-$factory->state(App\Models\Event::class, 'one_year_ago', function(Faker\Generator $faker) {
+$factory->state(App\Models\Event::class, 'one_year_ago', function(Faker\Generator $faker)
+{
     $now = Carbon::now();
     $created_at = $faker->dateTimeBetween('-1 years', 'now');
 
@@ -167,9 +182,11 @@ $factory->state(App\Models\Event::class, 'one_year_ago', function(Faker\Generato
     $endDate = new Carbon($startDate->format('Y-m-d H:i:s'));
     $endDate->addDays(rand(1, 3));
 
-    if ($endDate->lt($now)) {
+    if ($endDate->lt($now))
+    {
         $status = 2;
-    } elseif ($signUpEndDate->lt($now)) {
+    } elseif ($signUpEndDate->lt($now))
+    {
         $status = 1;
     } else {
         $status = 0;

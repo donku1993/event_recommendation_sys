@@ -38,29 +38,35 @@ class User extends Authenticatable
 
     protected $users_groups_relation_type;
 
-    function __construct($attributes = array()) {
+    function __construct($attributes = array())
+    {
         parent::__construct($attributes);
 
         $this->users_groups_relation_type = Helper::getConstantArray('users_groups_relation_type')['value'];
     }
 
-    public function getIconPathAttribute() {
+    public function getIconPathAttribute()
+    {
         return '/storage/user_icon/' . $this->icon_image;
     }
 
-    public function markedGroup() {
+    public function markedGroup()
+    {
         return $this->belongsToMany('App\Models\Group', 'users_groups_relation', 'user_id', 'group_id')->where('type', $this->users_groups_relation_type['marked'])->orderBy('created_at', 'desc');
     }
 
-    public function markedEvent() {
+    public function markedEvent()
+    {
         return $this->belongsToMany('App\Models\Event', 'users_events_relation', 'user_id', 'event_id')->orderBy('created_at', 'desc');
     }
 
-    public function groups() {
+    public function groups()
+    {
         return $this->hasMany('App\Models\Group', 'user_id')->orderBy('created_at', 'desc');
     }
 
-    public function events() {
+    public function events()
+    {
         return $this->belongsToMany('App\Models\Event', 'participants', 'user_id', 'event_id')->orderBy('created_at', 'desc');
     }
 } 

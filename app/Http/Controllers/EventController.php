@@ -15,7 +15,8 @@ class EventController extends Controller
 {    
     use StatusGetterTrait;
 
-    protected function status_array(Event $event = null) {
+    protected function status_array(Event $event = null)
+    {
         return [
                 'is_login' => $this->isLogin(),
                 'is_admin' => $this->isAdmin(),
@@ -24,7 +25,8 @@ class EventController extends Controller
             ];
     }
 
-    protected function basicValidationArray() {
+    protected function basicValidationArray()
+    {
         return [
                 'signUpEndDate' => 'required|date|after:tomorrow',
                 'startDate' => 'required|date|after:tomorrow',
@@ -34,13 +36,15 @@ class EventController extends Controller
                 'content' => 'required|integer',
                 'location' => 'required|integer',
                 'type' => 'required',
+                'previewImage' => 'image',
                 'scheldule' => '',
                 'requirement' => '',
                 'remark' => '',
             ];
     }
 
-    protected function searchValidationArray() {
+    protected function searchValidationArray()
+    {
         return [
                 'time_from' => 'date|nullable',
                 'time_to' => 'date|nullable',
@@ -78,7 +82,8 @@ class EventController extends Controller
      */
     public function create()
     {
-        if ($this->isManager()) {
+        if ($this->isManager())
+        {
             $user = Auth::user();
             return view('event.create', ['groups' => $user->groups]);
         }
@@ -104,7 +109,8 @@ class EventController extends Controller
         $data = $request->all();
         $group = Group::isGroup()->with(['markedUsers', 'manager', 'events'])->find($data['group_id']);
 
-        if ($this->isGroupManager($group)) {
+        if ($this->isGroupManager($group))
+        {
             $data = Helper::JsonDataConverter($data, 'bonus_skills', 'interest_skills');
             $event = Event::create([
                     'signUpEndDate' => $data['signUpEndDate'],
@@ -121,7 +127,11 @@ class EventController extends Controller
                     'bonus_skills' => $data['bonus_skills']
                 ]);
 
-            if ($event) {
+            $event->previewImage = $this->imageUpload('event_preview_image', $event->id, $data['previewImage']);
+            $event->save();
+
+            if ($event)
+            {
                 DB::table('groups_events_relation')->insert([
                         'group_id' => $group->id,
                         'event_id' => $event->id,
@@ -150,7 +160,8 @@ class EventController extends Controller
     {
         $event = Event::with(['markedUsers', 'organizer', 'co_organizer', 'participants'])->find($id);
 
-        if ($event) {
+        if ($event)
+        {
             $status_array = $this->status_array($event);
 
             $data = [
@@ -173,7 +184,8 @@ class EventController extends Controller
     {
         $event = Event::with(['markedUsers', 'organizer', 'co_organizer'])->find($id);
         
-        if ($event) {
+        if ($event)
+        {
             $status_array = $this->status_array($event);
 
             $data = [
@@ -195,7 +207,8 @@ class EventController extends Controller
     {
         $event = Event::with(['markedUsers', 'organizer', 'co_organizer'])->find($id);
 
-        if ($event) {
+        if ($event)
+        {
             $status_array = $this->status_array($event);
 
             $data = [
@@ -217,13 +230,15 @@ class EventController extends Controller
     {
         $user = Auth::user();
 
-        if ($user) {
+        if ($user)
+        {
             $record = DB::table('users_events_relation')
                             ->where('user_id', $user->id)
                             ->where('event_id', $id)
                             ->first();
 
-            if ($record) {
+            if ($record)
+            {
                 DB::table('users_events_relation')
                         ->where('user_id', $user->id)
                         ->where('event_id', $id)
@@ -250,7 +265,8 @@ class EventController extends Controller
     {
         $event = Event::with(['markedUsers', 'organizer', 'co_organizer'])->canJoin()->find($id);
 
-        if ($this->isLogin() && $event && !$this->isEventManager($event)) {
+        if ($this->isLogin() && $event && !$this->isEventManager($event))
+        {
             $user = Auth::user();
 
             DB::table('participants')->insert([
@@ -280,7 +296,8 @@ class EventController extends Controller
 
         $event = Event::with(['markedUsers', 'organizer', 'co_organizer'])->find($id);
 
-        if ($this->isEventManager($event)) {
+        if ($this->isEventManager($event))
+        {
             $data = Helper::JsonDataConverter($data, 'bonus_skills', 'interest_skills');
             $event->fill([
                     'signUpEndDate' => $data['signUpEndDate'],
@@ -294,7 +311,8 @@ class EventController extends Controller
                     'schedule' => $data['schedule'],
                     'requirement' => $data['requirement'],
                     'remark' => $data['remark'],
-                    'bonus_skills' => $data['bonus_skills']
+                    'bonus_skills' => $data['bonus_skills'],
+                    'previewImage' => $this->imageUpload('event_preview_image', $event->id, $data['previewImage'])
                 ]);
 
             $result = $event->save();

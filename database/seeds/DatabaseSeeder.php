@@ -39,7 +39,8 @@ class DatabaseSeeder extends Seeder
         factory(App\Models\User::class, 50)->create();
 
         // group with true data (is group)
-        foreach ($this->real_group_data as $key => $value) {
+        foreach ($this->real_group_data as $key => $value)
+        {
             $group_manager = factory(App\Models\User::class)->states('group_manager')->create();
             $group = factory(App\Models\Group::class)->states('group')->create([
                 'user_id' => $group_manager->id,
@@ -52,7 +53,8 @@ class DatabaseSeeder extends Seeder
             ]);
 
             factory(App\Models\Event::class, rand(1, 3))->create()
-                ->each(function($e) use ($group) {
+                ->each(function($e) use ($group)
+                {
                     DB::table('groups_events_relation')->insert([
                             'group_id' => $group->id,
                             'event_id' => $e->id,
@@ -62,7 +64,8 @@ class DatabaseSeeder extends Seeder
                 });
 
             factory(App\Models\Event::class, rand(2, 4))->states('one_year_ago')->create()
-                ->each(function($e) use ($group) {
+                ->each(function($e) use ($group)
+                {
                     DB::table('groups_events_relation')->insert([
                             'group_id' => $group->id,
                             'event_id' => $e->id,
@@ -74,9 +77,12 @@ class DatabaseSeeder extends Seeder
 
         // add co_organizer relation
         $events = DB::table('events')->get();
-        foreach ($events as $event) {
-            if (rand(0, 1)) {
-                for ($i=0; $i < rand(0, 3); $i++) { 
+        foreach ($events as $event)
+        {
+            if (rand(0, 1))
+            {
+                for ($i=0; $i < rand(0, 3); $i++)
+                { 
                     $group = DB::table('groups')->inRandomOrder()->first();
                     try {
                         DB::table('groups_events_relation')->insert([
@@ -85,7 +91,8 @@ class DatabaseSeeder extends Seeder
                                 'main' => 0,
                                 'created_at' => $event->created_at
                             ]);
-                    } catch (Exception $e) {
+                    } catch (Exception $e)
+                    {
                         continue;
                     }
                 }
@@ -94,10 +101,12 @@ class DatabaseSeeder extends Seeder
 
         // add participant to ended events
         $events = DB::table('events')->where('status', 2)->get();
-        foreach ($events as $event) {
+        foreach ($events as $event)
+        {
             $finalNumOfParticipant = rand(intval($event->numberOfPeople / 3), $event->numberOfPeople);
 
-            for ($i=0; $i < $finalNumOfParticipant; $i++) { 
+            for ($i=0; $i < $finalNumOfParticipant; $i++)
+            { 
                 $user = DB::table('users')->where('type', 1)->inRandomOrder()->first();
 
                 try {
@@ -105,7 +114,8 @@ class DatabaseSeeder extends Seeder
                             'user_id' => $user->id,
                             'event_id' => $event->id,
                         ]);
-                } catch (Exception $e) {
+                } catch (Exception $e)
+                {
                     continue;
                 }
             }
@@ -113,7 +123,8 @@ class DatabaseSeeder extends Seeder
 
         // group with fake data (new group form)
         factory(App\Models\User::class, 5)->states('group_manager')->create()
-            ->each(function($u) {
+            ->each(function($u)
+            {
                 factory(App\Models\Group::class)->create([
                     'user_id' => $u->id,
                     'name' => $u->name . '\'s Group',
@@ -123,7 +134,8 @@ class DatabaseSeeder extends Seeder
 
         // group with fake data (waiting group form)
         factory(App\Models\User::class, 5)->states('group_manager')->create()
-            ->each(function($u) {
+            ->each(function($u)
+            {
                 factory(App\Models\Group::class)->states('waiting_group_form')->create([
                     'user_id' => $u->id,
                     'name' => $u->name . '\'s Group',
@@ -133,7 +145,8 @@ class DatabaseSeeder extends Seeder
 
         // group with fake data (rejected group form)
         factory(App\Models\User::class, 5)->states('group_manager')->create()
-            ->each(function($u) {
+            ->each(function($u)
+            {
                 factory(App\Models\Group::class)->states('rejected_group_form')->create([
                     'user_id' => $u->id,
                     'name' => $u->name . '\'s Group',

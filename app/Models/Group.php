@@ -21,70 +21,87 @@ class Group extends Model
     protected $unprocess_form_status = [0, 1];
     protected $users_groups_relation_type;
 
-    function __construct($attributes = array()) {
+    function __construct($attributes = array())
+    {
         parent::__construct($attributes);
 
         $this->users_groups_relation_type = Helper::getConstantArray('users_groups_relation_type')['value'];
     }
 
-    public function getIconPathAttribute() {
+    public function getIconPathAttribute()
+    {
         return '/storage/group_icon/' . $this->icon_image;
     }
 
-    public function applicant() {
+    public function applicant()
+    {
         return $this->belongsTo('App\Models\User', 'user_id');
     }
 
-    public function manager() {
+    public function manager()
+    {
         return $this->belongsTo('App\Models\User', 'user_id');
     }
 
-    public function markedUsers() {
+    public function markedUsers()
+    {
     	return $this->belongsToMany('App\Models\User', 'users_groups_relation', 'group_id', 'user_id')->wherePivot('type', $this->users_groups_relation_type['marked'])->orderBy('created_at', 'desc');
     }
 
-    public function events() {
+    public function events()
+    {
     	return $this->belongsToMany('App\Models\Event', 'groups_events_relation', 'group_id', 'event_id')->orderBy('created_at', 'desc');
     }
 /*
-    public function events_with_organizer() {
+    public function events_with_organizer()
+    {
     	return $this->belongsToMany('App\Models\Event', 'groups_events_relation', 'group_id', 'event_id')->wherePivot('main', 1);
     }
 
-    public function events_with_co_organizer() {
+    public function events_with_co_organizer()
+    {
     	return $this->belongsToMany('App\Models\Event', 'groups_events_relation', 'group_id', 'event_id')->wherePivot('main', 0);
     }
 */
-    public function scopeIsGroupForm($query) {
+    public function scopeIsGroupForm($query)
+    {
     	return $query->whereIn('status', $this->form_status);
     }
 
-    public function scopeUnprocessForm($query) {
+    public function scopeUnprocessForm($query)
+    {
         return $query->whereIn('status', $this->unprocess_form_status);
     }
 
-    public function scopeIsGroup($query) {
+    public function scopeIsGroup($query)
+    {
     	return $query->whereNotIn('status', $this->form_status);
     }
 
-    public function scopeSearch($query, Array $keywords) {
-        if (isset($keywords['group_name'])) {
+    public function scopeSearch($query, Array $keywords)
+    {
+        if (isset($keywords['group_name']))
+        {
             $query->where('name', 'like', '%'.$keywords['group_name'].'%');
         }
 
-        if (isset($keywords['activity_area'])) {
+        if (isset($keywords['activity_area']))
+        {
             $query->where('activity_area->'.$keywords['activity_area'], true);
         }
 
         return $query;
     }
 
-    public function scopeSearchForm($query, Array $keywords) {
-        if (isset($keywords['group_name'])) {
+    public function scopeSearchForm($query, Array $keywords)
+    {
+        if (isset($keywords['group_name']))
+        {
             $query->where('name', 'like', '%'.$keywords['group_name'].'%');
         }
 
-        if (isset($keywords['status'])) {
+        if (isset($keywords['status']))
+        {
             $query->where('status', $keywords['status']);
         }
 

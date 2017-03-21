@@ -13,7 +13,8 @@ class GroupController extends Controller
 {    
     use StatusGetterTrait;
 
-    public function status_array(Group $group) {
+    public function status_array(Group $group)
+    {
         return [
                 'is_login' => $this->isLogin(),
                 'is_admin' => $this->isAdmin(),
@@ -78,7 +79,8 @@ class GroupController extends Controller
     {
         $group = Group::isGroup()->with(['markedUsers', 'manager', 'events'])->find($id);
 
-        if ($group) {
+        if ($group)
+        {
             $status_array = $this->status_array($group);
 
             $data = [
@@ -103,7 +105,8 @@ class GroupController extends Controller
     {
         $group = Group::isGroup()->with(['markedUsers', 'manager'])->find($id);
 
-        if ($group) {
+        if ($group)
+        {
             $status_array = $this->status_array($group);
 
             $data = [
@@ -130,14 +133,16 @@ class GroupController extends Controller
 
         $group_mark_type = Helper::getConstantArray('users_groups_relation_type')['value']['marked'];
 
-        if ($user) {
+        if ($user)
+        {
             $record = DB::table('users_groups_relation')
                             ->where('user_id', $user->id)
                             ->where('group_id', $id)
                             ->where('type', $group_mark_type)
                             ->first();
 
-            if ($record) {
+            if ($record)
+            {
                 DB::table('users_groups_relation')
                         ->where('user_id', $user->id)
                         ->where('group_id', $id)
