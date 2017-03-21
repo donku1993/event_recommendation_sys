@@ -207,6 +207,11 @@ class Helper extends Model
         ]];
     }
 
+    public static function getKeyByArrayNameAndValue(String $arrayName, String $value)
+    {
+        return array_search($value, self::getConstantArray($arrayName)['value']);
+    }
+
     public static function JsonDataConverter(array $data, string $column, string $array_name)
     {
         $jsonData = null;

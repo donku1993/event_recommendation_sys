@@ -9,10 +9,11 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use View;
 
 use App\Models\Helper;
+use App\Http\Controllers\ControllerHelperTrait;
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, ControllerHelperTrait;
 
     /**
      * Create a new controller instance.

@@ -7,12 +7,9 @@ use Auth;
 use Illuminate\Http\Request;
 use App\Models\Group;
 use App\Models\Helper;
-use App\Http\Controllers\StatusGetterTrait;
 
 class GroupController extends Controller
-{    
-    use StatusGetterTrait;
-
+{
     public function status_array(Group $group)
     {
         return [
@@ -20,6 +17,20 @@ class GroupController extends Controller
                 'is_admin' => $this->isAdmin(),
                 'is_marked_group' => $this->isMarkedGroup($group),
                 'is_group_manager' => $this->isGroupManager($group),
+            ];
+    }
+
+    protected function basicValidationArray()
+    {
+        return [
+                'name' => 'required',
+                'registered_id' => 'required',
+                'registered_file' => 'required|file|mimetypes:application/pdf',
+                'establishment_date' => 'required|date|before:now',
+                'principal_name' => 'required',
+                'email' => 'required|email',
+                'phone' => 'required|min:8',
+                'address' => 'required',
             ];
     }
 
@@ -40,9 +51,6 @@ class GroupController extends Controller
         $data = [
                 'groups' => $groups
             ];
-
-        // delete this line to pass data to view
-        dd($data);
 
         return view('group.list', $data);
     }
@@ -65,8 +73,43 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        // delete this line to pass data to view
-        dd($request);
+        $validate_array = array_merge(
+                            $this->basicValidationArray(),
+                            [
+                                'icon_image' => 'image'
+                            ]
+                        );
+
+        $this->validate($request, $validate_array);
+
+        $data = $request->all();
+
+        if ($this->isLogin()) {
+            $data = Helper::JsonDataConverter($data, 'activity_area', 'location');
+            $group = Group::create([
+                    'name' => $data['name'],
+                    'registered_id' => $data['registered_id'],
+                    'registered_file' => $this->fileUpload('group_application_form_file', $data['registered_file']),
+                    'establishment_date' => $data['establishment_date'],
+                    'principal_name' => $data['principal_name'],
+                    'email' => $data['email'],
+                    'phone' => $data['phone'],
+                    'address' => $data['address']
+                ]);
+
+            if ($group)
+            {
+                $group->icon_image = $this->imageUpload('group_icon', $group->id, $request->input('icon_image', null));
+                $group->save();
+
+                return [
+                    'message' => 'success',
+                    'group_id' => $group->id
+                ];
+            }
+        }
+
+        return ['message' => 'need to log in'];
     }
 
     /**
@@ -87,9 +130,6 @@ class GroupController extends Controller
                 'group' => $group,
                 'status_array' => $status_array
             ];
-
-            // delete this line to pass data to view
-            dd($data);
 
             return view('group.info', $data);
         }
@@ -113,9 +153,6 @@ class GroupController extends Controller
                 'group' => $group,
                 'status_array' => $status_array
             ];
-
-            // delete this line to pass data to view
-            dd($data);
 
             return view('group.edit', $data);
         }
@@ -170,8 +207,37 @@ class GroupController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // delete this line to pass data to view
-        dd([$request->all(), $id]);
+        $validate_array = array_merge(
+                            $this->basicValidationArray(),
+                            [
+                                'icon_image' => 'image'
+                            ]
+                        );
+
+        $this->validate($request, $validate_array);
+
+        $data = $request->all();
+        $group = Group::isGroup()->with(['markedUsers', 'manager', 'events'])->find($id);
+
+        if ($this->isGroupManager($group)) {
+            $data = Helper::JsonDataConverter($data, 'activity_area', 'location');
+            $group->fill([
+                    'principal_name' => $data['principal_name'],
+                    'email' => $data['email'],
+                    'phone' => $data['phone'],
+                    'address' => $data['address'],
+                    'icon_image' => $this->imageUpload('group_icon', $request->input('icon_image', null))
+                ]);
+
+            $group->save();
+
+            return [
+                'message' => 'success',
+                'group_id' => $group->id
+            ];
+        }
+
+        return ['message' => 'need to be the manager of the group'];
     }
 
     /**
@@ -182,7 +248,15 @@ class GroupController extends Controller
      */
     public function destroy($id)
     {
-        // delete this line to pass data to view
-        dd($id);
+        $group = Group::find($id);
+
+        if ($group) {
+            $group->show = 0;
+            $group->save();
+        
+            return ['message' => 'success'];
+        }
+
+        return ['message' => 'there is no group with id = ' . $id];
     }
 }

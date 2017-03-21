@@ -14,6 +14,15 @@ class Event extends Model
     	'bonus_skills' => 'json'
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('show', function (Builder $builder) {
+            $builder->where('show', 1);
+        });
+    }
+
     protected $dates = ['signUpEndDate', 'startDate', 'endDate'];
 
     public function getNumberOfMarkedAttribute()

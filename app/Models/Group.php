@@ -28,6 +28,15 @@ class Group extends Model
         $this->users_groups_relation_type = Helper::getConstantArray('users_groups_relation_type')['value'];
     }
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('show', function (Builder $builder) {
+            $builder->where('show', 1);
+        });
+    }
+
     public function getIconPathAttribute()
     {
         return '/storage/group_icon/' . $this->icon_image;

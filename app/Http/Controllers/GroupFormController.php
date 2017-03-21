@@ -5,12 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Group;
 use App\Models\Helper;
-use App\Http\Controllers\StatusGetterTrait;
 
 class GroupFormController extends Controller
-{    
-    use StatusGetterTrait;
-
+{
     public function status_array(Group $group)
     {
         return [
@@ -78,8 +75,8 @@ class GroupFormController extends Controller
         if ($this->isAdmin() && $group_form)
         {
             $group_form->fill([
-                    'status' => array_search('已批準', Helper::getConstantArray('group_status')['value']),
-                    'remark' => $data['remark']
+                    'status' => Helper::getKeyByArrayNameAndValue('group_status', '已批準'),
+                    'remark' => $request->input('remark', '')
                 ]);
 
             $group->save();
@@ -104,8 +101,8 @@ class GroupFormController extends Controller
         if ($this->isAdmin() && $group_form)
         {
             $group_form->fill([
-                    'status' => array_search('已拒絕', Helper::getConstantArray('group_status')['value']),
-                    'remark' => $data['remark']
+                    'status' => Helper::getKeyByArrayNameAndValue('group_status', '已拒絕'),
+                    'remark' => $request->input('remark', '')
                 ]);
 
             $group->save();
@@ -124,10 +121,10 @@ class GroupFormController extends Controller
     {
         $group_form = Group::find($id);
 
-        if ($group_form->status == array_search('新提交', Helper::getConstantArray('group_status')['value']))
+        if ($group_form->status == Helper::getKeyByArrayNameAndValue('group_status', '新提交'))
         {
             $group_form->fill([
-                    'status' => array_search('審批中', Helper::getConstantArray('group_status')['value'])
+                    'status' => Helper::getKeyByArrayNameAndValue('group_status', '審批中')
                 ]);
 
             $group_form->save();

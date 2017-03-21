@@ -10,7 +10,7 @@ use App\Models\Event;
 use App\Models\Group;
 use App\Models\Helper;
 
-trait StatusGetterTrait
+trait ControllerHelperTrait
 {
 	public function isLogin()
 	{
@@ -21,7 +21,7 @@ trait StatusGetterTrait
 	{
 		if ($this->isLogin())
 		{
-			return (Auth::user()->type === array_search('系統管理員', Helper::getConstantArray('user_type')['value']));
+			return (Auth::user()->type === Helper::getKeyByArrayNameAndValue('user_type', '系統管理員'));
 		} else {
 			return false;
 		}
@@ -31,7 +31,7 @@ trait StatusGetterTrait
 	{
 		if ($this->isLogin())
 		{
-			return (Auth::user()->type === array_search('組職管理員', Helper::getConstantArray('user_type')['value']));
+			return (Auth::user()->type === Helper::getKeyByArrayNameAndValue('user_type', '組職管理員'));
 		} else {
 			return false;
 		}
@@ -52,7 +52,7 @@ trait StatusGetterTrait
 		if ($this->isLogin() && $event)
 		{
 			return (
-					Auth::user()->type === array_search('組職管理員', Helper::getConstantArray('user_type')['value']) &&
+					Auth::user()->type === Helper::getKeyByArrayNameAndValue('user_type', '組職管理員') &&
 					Auth::user()->id === $event->organizer[0]->user_id
 				);
 		} else {
@@ -81,7 +81,7 @@ trait StatusGetterTrait
 		if ($this->isLogin() && $group)
 		{
 			return (
-					Auth::user()->type === array_search('組職管理員', Helper::getConstantArray('user_type')['value']) &&
+					Auth::user()->type === Helper::getKeyByArrayNameAndValue('user_type', '組職管理員') &&
 					Auth::user()->id === $group->user_id
 				);
 		} else {
@@ -107,19 +107,44 @@ trait StatusGetterTrait
 
 	public function imageUpload(string $foldername, $id, $image)
 	{
+		if (is_null($image))
+		{
+			return 'default.png';
+		}
+
 		$folder_path = storage_path('app/public/' . $foldername . '/' . $id . '/');
 		$filename = str_random(5) . '.' . $image->extension();
 		$full_path = $folder_path . $filename;
 
-		if (!file_exists($folder_path)){
+		if (!file_exists($folder_path))
+		{
 			mkdir($folder_path, 0777, true);
-		} else {
-			File::cleanDirectory($folder_path);
 		}
 
 		$image->move($folder_path, $filename);
 
 		Image::make($full_path)->resize(200, 200)->save($full_path);
+
+		return $id . '/' . $filename;
+	}
+
+	public function fileUpload(string $foldername, $id, $file)
+	{
+		if (is_null($image))
+		{
+			return '';
+		}
+
+		$folder_path = storage_path('app/public/' . $foldername . '/' . $id . '/');
+		$filename = str_random(5) . '.' . $file->extension();
+		$full_path = $folder_path . $filename;
+
+		if (!file_exists($folder_path))
+		{
+			mkdir($folder_path, 0777, true);
+		}
+
+		$file->move($folder_path, $filename);
 
 		return $id . '/' . $filename;
 	}

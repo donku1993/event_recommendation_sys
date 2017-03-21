@@ -4,12 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Http\Controllers\StatusGetterTrait;
 
 class UserController extends Controller
 {
-    use StatusGetterTrait;
-
     public function status_array(User $user)
     {
         return [
@@ -111,13 +108,13 @@ class UserController extends Controller
                     'career' => $data['career'],
                     'gender' => $data['gender'],
                     'phone' => $data['phone'],
-                    'address_location' => $data['address_location'],
-                    'self_introduction' => $data['self_introduction'],
+                    'address_location' => $request->input('address_location', ''),
+                    'self_introduction' => $request->input('self_introduction', ''),
                     'allow_email' => ($data['allow_email'] === 'true') ? 1 : 0,
                     'available_time' => $data['available_time'],
                     'available_area' => $data['available_area'],
                     'interest_skills' => $data['interest_skills'],
-                    'icon_image' => $this->imageUpload('user_icon', $user->id, $data['icon_image'])
+                    'icon_image' => $this->imageUpload('user_icon', $user->id, $request->input('icon_image', null)),
                 ]);
 
             $user->save();
@@ -129,19 +126,5 @@ class UserController extends Controller
         }
 
         return ['message' => 'need to be a user himself/herself or administrator.'];
-    }
-
-    public function iconTest(Request $request, $id)
-    {
-        $data = $request->all();
-        $user = User::find($id);
-
-        if ($this->isSelf($user))
-        {
-            $user->icon_image = $this->imageUpload('user_icon', $id, $data['icon_image']);
-            $user->save();
-        }
-
-        return redirect('/');
     }
 }

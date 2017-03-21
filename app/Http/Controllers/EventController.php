@@ -9,12 +9,9 @@ use Illuminate\Pagination\Paginator;
 use App\Models\Event;
 use App\Models\Group;
 use App\Models\Helper;
-use App\Http\Controllers\StatusGetterTrait;
 
 class EventController extends Controller
-{    
-    use StatusGetterTrait;
-
+{
     protected function status_array(Event $event = null)
     {
         return [
@@ -35,11 +32,7 @@ class EventController extends Controller
                 'title' => 'required|max:255',
                 'content' => 'required|integer',
                 'location' => 'required|integer',
-                'type' => 'required',
-                'previewImage' => 'image',
-                'scheldule' => '',
-                'requirement' => '',
-                'remark' => '',
+                'type' => 'required'
             ];
     }
 
@@ -69,9 +62,6 @@ class EventController extends Controller
                 'events' => $events
             ];
 
-        // delete this line to pass data to view
-        dd($data);
-
         return view('event.list', $data);
     }
 
@@ -100,7 +90,11 @@ class EventController extends Controller
         $validate_array = array_merge(
                             $this->basicValidationArray(),
                             array(
-                                'group_id' => 'required'
+                                'group_id' => 'required',
+                                'previewImage' => 'image',
+                                'schedule' => '',
+                                'requirement' => '',
+                                'remark' => '',
                             )
                         );
 
@@ -121,17 +115,17 @@ class EventController extends Controller
                     'content' => $data['content'],
                     'location' => $data['location'],
                     'type' => $data['type'],
-                    'schedule' => $data['schedule'],
-                    'requirement' => $data['requirement'],
-                    'remark' => $data['remark'],
+                    'schedule' => $request->input('schedule', ''),
+                    'requirement' => $request->input('requirement', ''),
+                    'remark' => $request->input('remark', ''),
                     'bonus_skills' => $data['bonus_skills']
                 ]);
 
-            $event->previewImage = $this->imageUpload('event_preview_image', $event->id, $data['previewImage']);
-            $event->save();
-
             if ($event)
             {
+                $event->previewImage = $this->imageUpload('event_cover', $event->id, $request->input('previewImage', null));
+                $event->save();
+
                 DB::table('groups_events_relation')->insert([
                         'group_id' => $group->id,
                         'event_id' => $event->id,
@@ -287,7 +281,15 @@ class EventController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validate_array = $this->basicValidationArray();
+        $validate_array = array_merge(
+                            $this->basicValidationArray(),
+                            [
+                                'previewImage' => 'image',
+                                'schedule' => '',
+                                'requirement' => '',
+                                'remark' => '',
+                            ]
+                        );
 
         $this->validate($request, $validate_array);
 
@@ -308,14 +310,14 @@ class EventController extends Controller
                     'content' => $data['content'],
                     'location' => $data['location'],
                     'type' => $data['type'],
-                    'schedule' => $data['schedule'],
-                    'requirement' => $data['requirement'],
-                    'remark' => $data['remark'],
+                    'schedule' => $request->input('schedule', ''),
+                    'requirement' => $request->input('requirement', ''),
+                    'remark' => $request->input('remark', ''),
                     'bonus_skills' => $data['bonus_skills'],
-                    'previewImage' => $this->imageUpload('event_preview_image', $event->id, $data['previewImage'])
+                    'previewImage' => $this->imageUpload('event_cover', $event->id, $request->input('previewImage', null)),
                 ]);
 
-            $result = $event->save();
+            $event->save();
 
             return [
                 'message' => 'success',
@@ -334,7 +336,15 @@ class EventController extends Controller
      */
     public function destroy($id)
     {
-        // delete this line to pass data to view
-        dd($id);
+        $event = Event::find($id);
+
+        if ($event) {
+            $event->show = 0;
+            $event->save();
+        
+            return ['message' => 'success'];
+        }
+
+        return ['message' => 'there is no event with id = ' . $id];
     }
 }
