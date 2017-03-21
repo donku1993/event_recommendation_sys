@@ -112,7 +112,7 @@ trait StatusGetterTrait
 		$full_path = $folder_path . $filename;
 
 		if (!file_exists($folder_path)){
-			mkdir($folder_path);
+			mkdir($folder_path, 0777, true);
 		} else {
 			File::cleanDirectory($folder_path);
 		}
