@@ -45,7 +45,7 @@
                 <li>
                     <a href="#">
                         <i class="user-groups glyphicon glyphicon-tower"></i>
-                        團體</a>
+                        組織</a>
                 </li>
                 <li>
                     <a href="#">
