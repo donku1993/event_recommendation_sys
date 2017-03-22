@@ -182,7 +182,7 @@
 
                                         @foreach ($constant_array['interest_skills']['value'] as $key => $value)
                                             <label class="checkbox-inline">
-                                            <input type="checkbox" name="{{ $constant_array['interest_skills']['prefix'] }}_{{ $key }}" />{{ $value }}
+                                            <input type="checkbox" name="bonus_skills_{{ $key }}" value="true"/>{{ $value }}
                                             </label>
                                         @endforeach
 
@@ -266,6 +266,7 @@
                 },
 
                 error:function(data){
+                    console.log(data['responseText']);
                     $(".modal-title").text("建立失敗");
                     $(".modal-body").text(data['message']);
                     $('#myModal').modal('show');

@@ -1,2 +1,7 @@
 *
 !.gitignore
+!event_cover/default.png
+!user_icon/default.png
+!group_con/default.png
+!group_application_form_file/
+group_application_form_file/*

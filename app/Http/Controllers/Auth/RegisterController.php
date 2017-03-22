@@ -69,7 +69,6 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        var_dump($data);
         $data = Helper::JsonDataConverter($data, 'available_time', 'available_time');
         $data = Helper::JsonDataConverter($data, 'interest_skills', 'interest_skills');
         $data = Helper::JsonDataConverter($data, 'available_area', 'location');

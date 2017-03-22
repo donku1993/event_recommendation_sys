@@ -29,6 +29,7 @@ class CreateGroupsTable extends Migration
             $table->json('activity_area');
             $table->tinyInteger('status')->default(0);
             $table->string('remark')->nullable();
+            $table->boolean('show')->default(1);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

@@ -125,8 +125,10 @@ class Helper extends Model
         ]
     ];
 
-    public static function getConstantArray(string $array_name) {
-        switch ($array_name) {
+    public static function getConstantArray(string $array_name)
+    {
+        switch ($array_name)
+        {
             case 'available_time':
                 return self::$available_time_array;
                 break;
@@ -162,7 +164,8 @@ class Helper extends Model
         }
     }
 /*
-    public static function UserConstantArray() {
+    public static function UserConstantArray()
+    {
         return [ 'user_constant_array' => [
             self::$available_time_array['prefix'] => self::$available_time_array,
             self::$location_array['prefix'] => self::$location_array,
@@ -172,7 +175,8 @@ class Helper extends Model
         ]];
     }
 
-    public static function EventConstantArray() {
+    public static function EventConstantArray()
+    {
         return [ 'event_constant_array' => [
             self::$location_array['prefix'] => self::$location_array,
             self::$interest_skills_array['prefix'] => self::$interest_skills_array,
@@ -181,14 +185,16 @@ class Helper extends Model
         ]];
     }
 
-    public static function GroupConstantArray() {
+    public static function GroupConstantArray()
+    {
         return [ 'group_constant_array' => [
             self::$location_array['prefix'] => self::$location_array,
             self::$group_status_array['prefix'] => self::$group_status_array,
         ]];
     }
 */
-    public static function AllConstantArray() {
+    public static function AllConstantArray()
+    {
         return ['constant_array' => [
             self::$available_time_array['prefix'] => self::$available_time_array,
             self::$location_array['prefix'] => self::$location_array,
@@ -201,16 +207,25 @@ class Helper extends Model
         ]];
     }
 
-    public static function JsonDataConverter(array $data, string $column, string $array_name) {
+    public static function getKeyByArrayNameAndValue(String $arrayName, String $value)
+    {
+        return array_search($value, self::getConstantArray($arrayName)['value']);
+    }
+
+    public static function JsonDataConverter(array $data, string $column, string $array_name)
+    {
         $jsonData = null;
         $array = self::getConstantArray($array_name);
 
-        if ($array) {
-            foreach ($array['value'] as $key => $value) {
+        if ($array)
+        {
+            foreach ($array['value'] as $key => $value)
+            {
                 $var_name = $column . '_' . $key;
                 $jsonData[$key] = (isset($data[$var_name])) ? true : false;
 
-                if ($jsonData[$key]) {
+                if ($jsonData[$key])
+                {
                     unset($data[$var_name]);
                 }
             }
@@ -218,6 +233,6 @@ class Helper extends Model
 
         $data[$column] = (object) $jsonData;
 
-        return (object)$data;
+        return $data;
     }
 }

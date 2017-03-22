@@ -21,6 +21,7 @@ Route::get('/user/{id}', 'UserController@show')->name('user.info');
 Route::get('/user/{id}/edit', 'UserController@edit')->name('user.edit');
 
 Route::put('/user/{id}', 'UserController@update')->name('user.update');
+Route::put('/user/{id}/icon', 'UserController@icon_update')->name('user.icon_update');
 
 
 
@@ -61,4 +62,3 @@ Route::get('/group_form/{id}', 'GroupFormController@show')->name('group_form.inf
 Route::put('/group_form/{id}/approve', 'GroupFormController@approve')->name('group_form.approve');
 Route::put('/group_form/{id}/reject', 'GroupFormController@reject')->name('group_form.reject');
 Route::put('/group_form/{id}/read', 'GroupFormController@form_read')->name('group_form.read');
-

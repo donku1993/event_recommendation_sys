@@ -98,9 +98,7 @@
 
                             <div class="col-md-6">
                                 <select class="form-control" name="career" form="user_register_form" required>
-
                                     @foreach ($constant_array['career']['value'] as $key => $value)
-
                                         <option value="{{ $key }}">{{ $value }}</option>
                                     @endforeach
                                 </select>
@@ -111,10 +109,9 @@
                             <label for="available-time" class="col-md-4 control-label">比較有空的時間:</label>
 
                             <div class="col-md-6">
-
                                 @foreach($constant_array['available_time']['value'] as $key => $value)
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" name="available_time_{{ $key }}" > {{ $value }}
+                                        <input type="checkbox" name="available_time_{{ $key }}" value="true"> {{ $value }}
                                     </label>
                                 @endforeach
                             </div>
@@ -124,10 +121,9 @@
                             <label for="available-area" class="col-md-4 control-label">經常活動地區:</label>
 
                             <div class="col-md-6">
-
                                 @foreach($constant_array['location']['value'] as $key => $value)
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" name="available_area_{{ $key }}" > {{ $value }}
+                                        <input type="checkbox" name="available_area_{{ $key }}" value="true"> {{ $value }}
                                     </label>
                                 @endforeach
                             </div>
@@ -156,7 +152,6 @@
                                  <label class="radio-inline">
                                     <input type="radio" name="allow_email" value="false"> 否
                                 </label>
-
                             </div>
                         </div>
 
