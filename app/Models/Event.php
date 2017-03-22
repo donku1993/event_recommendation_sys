@@ -14,16 +14,6 @@ class Event extends Model
 
     protected $dates = ['signUpEndDate', 'startDate', 'endDate'];
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope('show', function (Builder $builder)
-        {
-            $builder->where('show', 1);
-        });
-    }
-
     public function getNumberOfMarkedAttribute()
     {
         return $this->markedUsers->count();

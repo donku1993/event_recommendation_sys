@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -44,7 +45,7 @@ class UserController extends Controller
                     'status_array' => $status_array
                 ];
 
-            return view('auth.info', $data);
+            return view('user.info', $data);
         }
     }
 
@@ -66,7 +67,7 @@ class UserController extends Controller
                     'status_array' => $status_array
                 ];
 
-            return view('user.eidt', $data);
+            return view('user.edit', $data);
         }
     }
 
@@ -110,7 +111,6 @@ class UserController extends Controller
                     'available_time' => $data['available_time'],
                     'available_area' => $data['available_area'],
                     'interest_skills' => $data['interest_skills'],
-                    'icon_image' => $this->imageUpload('user_icon', $user->id, $request->input('icon_image', null)),
                 ]);
 
             $user->save();
@@ -122,5 +122,25 @@ class UserController extends Controller
         }
 
         return ['message' => 'need to be a user himself/herself or administrator.'];
+    }
+
+    public function icon_update(Request $request, $id)
+    {
+        $validate_array = ['icon_image' => 'image'];
+
+        $this->validate($request, $validate_array);
+
+        $user = User::find($id);
+
+        if ($user && $this->isSelf($user))
+        {
+            $user->fill([
+                    'icon_image' => $this->imageUpload('user_icon', $user->id, $request->input('icon_image', null)),
+                ]);
+
+            $user->save();
+        }
+
+        return redirect()->route('user.info');
     }
 }

@@ -8,14 +8,14 @@
 
             <div class="col-md-9">
                 <div class="profile-content">
-                    <form id="user-info-form" class="form-horizontal" role="form" >
+                    <form id="user-info-form" class="form-horizontal" role="form">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                             <label for="name" class="col-md-4 control-label">姓名:</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name" value="{{ $data['user']->name }}" required autofocus>
+                                <input id="name" type="text" class="form-control" name="name" value="{{ $user->name }}" required autofocus>
 
                                 @if ($errors->has('name'))
                                     <span class="help-block">
@@ -29,7 +29,7 @@
                             <label for="email" class="col-md-4 control-label">E-Mail:</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ $data['user']->email }}" required>
+                                <input id="email" type="email" class="form-control" name="email" value="{{ $user->email }}" required>
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
@@ -39,33 +39,12 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">密碼:</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control"  name="password" value="{{ $data['user']->password }}" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password-confirm" class="col-md-4 control-label">確認密碼:</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control"  name="password_confirmation" required>
-                            </div>
-                        </div>
 
                         <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
                             <label for="phone" class="col-md-4 control-label">電話:</label>
 
                             <div class="col-md-6">
-                                <input id="phone" type="text" class="form-control" name="phone" value="{{ $data['user']->phone }}" required>
+                                <input id="phone" type="text" class="form-control" name="phone" value="{{ $user->phone }}" required>
 
                                 @if ($errors->has('phone'))
                                     <span class="help-block">
@@ -95,8 +74,8 @@
 
                             <div class="col-md-6">
                                 <select class="form-control" name="career" form="user_register_form" required>
-                                    @foreach ($career_array['value'] as $key => $value)
-                                        @if( $data['user']->career ==  $key )
+                                    @foreach ($constant_array['career']['value'] as $key => $value)
+                                        @if( $user->career ==  $key )
                                             <option selected value="{{ $key }}">{{ $value }}</option>
                                         @else
                                             <option value="{{ $key }}">{{ $value }}</option>
@@ -110,12 +89,12 @@
                             <label for="available-time" class="col-md-4 control-label">比較有空的時間:</label>
 
                             <div class="col-md-6">
-                                @foreach($available_time_array['value'] as $key => $value)
+                                @foreach($constant_array['available_time']['value'] as $key => $value)
                                     <label class="checkbox">
-                                        @if( $data['user']->available_time[$key] )
-                                            <input type="checkbox" checked name="{{ $available_time_array['prefix'] }}_{{ $key }}" > {{ $value }}
+                                        @if( $user->available_time[$key] )
+                                            <input type="checkbox" checked name="{{ $constant_array['available_time']['prefix'] }}_{{ $key }}" > {{ $value }}
                                         @else
-                                            <input type="checkbox" name="{{ $available_time_array['prefix'] }}_{{ $key }}" > {{ $value }}
+                                            <input type="checkbox" name="{{ $constant_array['available_time']['prefix'] }}_{{ $key }}" > {{ $value }}
                                         @endif
                                     </label>
                                 @endforeach
@@ -126,12 +105,12 @@
                             <label for="available-area" class="col-md-4 control-label">經常活動的地區:</label>
 
                             <div class="col-md-6">
-                                @foreach($location_array['value'] as $key => $value)
+                                @foreach($constant_array['location']['value'] as $key => $value)
                                     <label class="checkbox">
-                                        @if( $data['user']->location[$key] )
-                                            <input type="checkbox" checked name="{{ $location_array['prefix'] }}_{{ $key }}" > {{ $value }}
+                                        @if( $user->location[$key] )
+                                            <input type="checkbox" checked name="{{ $constant_array['location']['prefix'] }}_{{ $key }}" > {{ $value }}
                                         @else
-                                            <input type="checkbox" name="{{ $location_array['prefix'] }}_{{ $key }}" > {{ $value }}
+                                            <input type="checkbox" name="{{ $constant_array['location']['prefix'] }}_{{ $key }}" > {{ $value }}
                                         @endif
                                     </label>
                                 @endforeach
@@ -140,7 +119,7 @@
 
                         <div class="form-group">
                             <label for="allow-email" class="col-md-4 control-label">通過E-mail發送活動邀請:</label>
-                            @if( $data['user']->allow_email )
+                            @if( $user->allow_email )
                                 <div class="col-md-6">
                                     <label class="radio-inline">
                                         <input type="radio" name="allow_email" checked> 是

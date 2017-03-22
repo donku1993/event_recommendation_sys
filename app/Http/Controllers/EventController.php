@@ -1,7 +1,9 @@
 <?php
 namespace App\Http\Controllers;
+
 use DB;
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use App\Models\Event;
@@ -28,7 +30,7 @@ class EventController extends Controller
                 'endDate' => 'required|date|after:startDate',
                 'numberOfPeople' => 'required|integer|min:1',
                 'title' => 'required|max:255',
-                'content' => 'required|integer',
+                'content' => 'required',
                 'location' => 'required|integer',
                 'type' => 'required'
             ];
@@ -105,9 +107,9 @@ class EventController extends Controller
         {
             $data = Helper::JsonDataConverter($data, 'bonus_skills', 'interest_skills');
             $event = Event::create([
-                    'signUpEndDate' => $data['signUpEndDate'],
-                    'startDate' => $data['startDate'],
-                    'endDate' => $data['endDate'],
+                    'signUpEndDate' => new Carbon($data['signUpEndDate']),
+                    'startDate' => new Carbon($data['startDate']),
+                    'endDate' => new Carbon($data['endDate']),
                     'numberOfPeople' => $data['numberOfPeople'],
                     'title' => $data['title'],
                     'content' => $data['content'],
@@ -297,9 +299,9 @@ class EventController extends Controller
         {
             $data = Helper::JsonDataConverter($data, 'bonus_skills', 'interest_skills');
             $event->fill([
-                    'signUpEndDate' => $data['signUpEndDate'],
-                    'startDate' => $data['startDate'],
-                    'endDate' => $data['endDate'],
+                    'signUpEndDate' => new Carbon($data['signUpEndDate']),
+                    'startDate' => new Carbon($data['startDate']),
+                    'endDate' => new Carbon($data['endDate']),
                     'numberOfPeople' => $data['numberOfPeople'],
                     'title' => $data['title'],
                     'content' => $data['content'],

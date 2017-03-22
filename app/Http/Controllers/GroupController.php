@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use DB;
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Group;
 use App\Models\Helper;
@@ -89,7 +90,7 @@ class GroupController extends Controller
                     'name' => $data['name'],
                     'registered_id' => $data['registered_id'],
                     'registered_file' => $this->fileUpload('group_application_form_file', $data['registered_file']),
-                    'establishment_date' => $data['establishment_date'],
+                    'establishment_date' => new Carbon($data['establishment_date']),
                     'principal_name' => $data['principal_name'],
                     'email' => $data['email'],
                     'phone' => $data['phone'],
