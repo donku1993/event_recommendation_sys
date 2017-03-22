@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -41,7 +39,6 @@ class UserController extends Controller
         if ($user)
         {
             $status_array = $this->status_array($user);
-
             $data = [
                     'user' => $user,
                     'status_array' => $status_array
@@ -64,7 +61,6 @@ class UserController extends Controller
         if ($user)
         {
             $status_array = $this->status_array($user);
-
             $data = [
                     'user' => $user,
                     'status_array' => $status_array

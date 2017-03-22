@@ -3,7 +3,7 @@
 @section('content')
 
     <style type="text/css">
-        #regiration_form fieldset:not(:first-of-type) {
+        #registration-form-event fieldset:not(:first-of-type) {
             display: none;
         }
     </style>
@@ -22,7 +22,7 @@
                             </div>
                         @endif
 
-                        <form id="regiration_form" enctype="multipart/form-data">
+                        <form id="registration-form-event" enctype="multipart/form-data">
                             {!! csrf_field() !!}
                             <div class="progress">
                                 <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
@@ -41,7 +41,7 @@
                                     <div class="panel-heading">選擇活動類型</div>
                                     <div class="panel-body">
                                         <select class="check-value form-control" name="type">
-                                            @foreach ($type_array as $key => $value)
+                                            @foreach ($constant_array['event_type']['value'] as $key => $value)
                                                 <option value="{{ $key }}">{{ $value }}</option>
                                             @endforeach
                                         </select>
@@ -128,14 +128,14 @@
                                 <div class="panel-heading">選擇活動區域</div>
                                 <div class="panel-body">
                                     <select class="check-value form-control" name="location">
-                                        @foreach ($location_array as $key => $value)
+                                        @foreach ($constant_array['location']['value'] as $key => $value)
                                             <option value="{{ $key }}">{{ $value }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
 
-                                <input type="button"  class="next btn btn-lg btn-info" value="下一步" />
+                                <input type="button"  class="next btn btn-lg btn-primary" value="下一步" />
 
                             </fieldset>
 
@@ -170,7 +170,7 @@
                                 </div>
 
                                 <input type="button"  class="previous btn btn-lg btn-danger" value="上一步" />
-                                <input type="button"  class="next btn btn-lg btn-info" value="下一步" />
+                                <input type="button"  class="next btn btn-lg btn-primary" value="下一步" />
 
                             </fieldset>
 
@@ -180,9 +180,10 @@
                                     <div class="panel-heading">填選活動相關的技能和興趣</div>
                                     <div class="panel-body">
 
-                                        @foreach ($interest_skills_array as $key => $value)
-                                            <label>{{ $value }}</label>
-                                            <input type="checkbox" name="{{ $key }}" />
+                                        @foreach ($constant_array['interest_skills']['value'] as $key => $value)
+                                            <label class="checkbox-inline">
+                                            <input type="checkbox" name="{{ $constant_array['interest_skills']['prefix'] }}_{{ $key }}" />{{ $value }}
+                                            </label>
                                         @endforeach
 
                                     </div>
@@ -236,12 +237,12 @@
 
             $.ajax({
                 url: "/event",
-                data: $('#regiration_form').serialize(),
+                data: $('#registration-form-event').serialize(),
                 type:"POST",
                 dataType:'text',
 
                 success: function(data){
-                    if (data == "success"){
+                    if (data['message'] == "success"){
                         var InterValObj;
                         var count = 3;
                         var curCount;
@@ -252,7 +253,7 @@
                         InterValObj = window.setInterval(function () {
                             if (curCount == 0) {
                                 window.clearInterval(InterValObj);
-                                window.location = "/home";
+                                window.location = "/";
                             }
                             else {
                                 curCount--;
@@ -266,7 +267,7 @@
 
                 error:function(data){
                     $(".modal-title").text("建立失敗");
-                    $(".modal-body").text(data);
+                    $(".modal-body").text(data['message']);
                     $('#myModal').modal('show');
                 }
             });

@@ -58,3 +58,50 @@ function uploadImage() {
         });
     });
 }
+
+
+
+function uploadFile() {
+
+    $(function() {
+        // Create the close button
+        var closebtn = $('<button/>', {
+            type:"button",
+            text: 'x',
+            id: 'close-preview',
+            style: 'font-size: initial;',
+        });
+        closebtn.attr("class","close pull-right");
+        // Set the popover default content
+        $('.file').popover({
+            trigger:'manual',
+            html:true,
+            title: "<strong>Preview</strong>"+$(closebtn)[0].outerHTML,
+            content: "There's no image",
+            placement:'bottom'
+        });
+        // Clear event
+        $('.file-clear').click(function(){
+            $('.file').attr("data-content","").popover('hide');
+            $('.file-filename').val("");
+            $('.file-clear').hide();
+            $('.file-input input:file').val("");
+            $(".file-input-title").text("Browse");
+        });
+
+
+        $(".file-input input:file").change(function (){
+
+            var file = this.files[0];
+            var reader = new FileReader();
+            // Set preview image into the popover data-content
+            reader.onload = function (e) {
+                $(".file-input-title").text("Change");
+                $(".file-clear").show();
+                $(".file-filename").val(file.name);
+            }
+            reader.readAsDataURL(file);
+        });
+
+    });
+}

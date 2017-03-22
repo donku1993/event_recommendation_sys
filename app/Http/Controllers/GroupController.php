@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use DB;
@@ -40,12 +39,11 @@ class GroupController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {        
+    {
         $this->validate($request, [
-                'group_name' => 'string|nullable',
-                'activity_area' => 'integer|nullable'
-            ]);
-
+            'group_name' => 'string|nullable',
+            'activity_area' => 'integer|nullable'
+        ]);
         $keywords = $request->all();
         $groups = Group::isGroup()->search($keywords)->paginate(8);
         $data = [
@@ -84,7 +82,8 @@ class GroupController extends Controller
 
         $data = $request->all();
 
-        if ($this->isLogin()) {
+        if ($this->isLogin())
+        {
             $data = Helper::JsonDataConverter($data, 'activity_area', 'location');
             $group = Group::create([
                     'name' => $data['name'],
@@ -125,7 +124,6 @@ class GroupController extends Controller
         if ($group)
         {
             $status_array = $this->status_array($group);
-
             $data = [
                 'group' => $group,
                 'status_array' => $status_array
@@ -148,7 +146,6 @@ class GroupController extends Controller
         if ($group)
         {
             $status_array = $this->status_array($group);
-
             $data = [
                 'group' => $group,
                 'status_array' => $status_array
@@ -219,7 +216,8 @@ class GroupController extends Controller
         $data = $request->all();
         $group = Group::isGroup()->with(['markedUsers', 'manager', 'events'])->find($id);
 
-        if ($this->isGroupManager($group)) {
+        if ($this->isGroupManager($group))
+        {
             $data = Helper::JsonDataConverter($data, 'activity_area', 'location');
             $group->fill([
                     'principal_name' => $data['principal_name'],
@@ -250,7 +248,8 @@ class GroupController extends Controller
     {
         $group = Group::find($id);
 
-        if ($group) {
+        if ($group)
+        {
             $group->show = 0;
             $group->save();
         

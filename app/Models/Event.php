@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use DB;
@@ -9,11 +7,9 @@ use DB;
 class Event extends Model
 {
     protected $table = 'events';
-
     protected $fillable = ['signUpEndDate', 'startDate', 'endDate', 'numberOfPeople', 'previewImage', 'title', 'content', 'location', 'type', 'schedule', 'requirement', 'remark', 'status', 'bonus_skills'];
-
     protected $casts = [
-    	'bonus_skills' => 'json'
+        'bonus_skills' => 'json'
     ];
 
     protected $dates = ['signUpEndDate', 'startDate', 'endDate'];
@@ -22,7 +18,8 @@ class Event extends Model
     {
         parent::boot();
 
-        static::addGlobalScope('show', function (Builder $builder) {
+        static::addGlobalScope('show', function (Builder $builder)
+        {
             $builder->where('show', 1);
         });
     }
@@ -96,7 +93,6 @@ class Event extends Model
         {
             $query->where('location', $keywords['location']);
         }
-
         return $query;
     }
 }

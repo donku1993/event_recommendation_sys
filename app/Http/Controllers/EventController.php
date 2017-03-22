@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use DB;
 use Auth;
 use Illuminate\Http\Request;
@@ -157,7 +155,6 @@ class EventController extends Controller
         if ($event)
         {
             $status_array = $this->status_array($event);
-
             $data = [
                     'event' => $event,
                     'participants' => new Paginator($event->participants, 10),
@@ -181,7 +178,6 @@ class EventController extends Controller
         if ($event)
         {
             $status_array = $this->status_array($event);
-
             $data = [
                     'event' => $event,
                     'status_array' => $status_array
@@ -204,7 +200,6 @@ class EventController extends Controller
         if ($event)
         {
             $status_array = $this->status_array($event);
-
             $data = [
                     'event' => $event,
                     'status_array' => $status_array
@@ -338,7 +333,8 @@ class EventController extends Controller
     {
         $event = Event::find($id);
 
-        if ($event) {
+        if ($event)
+        {
             $event->show = 0;
             $event->save();
         

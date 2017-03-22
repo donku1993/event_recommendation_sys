@@ -1,18 +1,13 @@
 <?php
-
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Helper;
-
 class Group extends Model
 {
     protected $table = 'groups';
-
     protected $fillable = ['user_id', 'name', 'registered_id', 'registered_file', 'icon_image', 'establishment_date', 'principal_name', 'email', 'phone', 'address', 'introduction', 'activity_area', 'status', 'remark'];
-
     protected $casts = [
-    	'activity_area' => 'json'
+        'activity_area' => 'json'
     ];
 
     protected $dates = ['establishment_date'];
@@ -24,7 +19,6 @@ class Group extends Model
     function __construct($attributes = array())
     {
         parent::__construct($attributes);
-
         $this->users_groups_relation_type = Helper::getConstantArray('users_groups_relation_type')['value'];
     }
 
@@ -98,7 +92,6 @@ class Group extends Model
         {
             $query->where('activity_area->'.$keywords['activity_area'], true);
         }
-
         return $query;
     }
 
@@ -113,7 +106,6 @@ class Group extends Model
         {
             $query->where('status', $keywords['status']);
         }
-
-        return $query;     
+        return $query;
     }
 }
