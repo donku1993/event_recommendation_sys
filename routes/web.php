@@ -21,7 +21,7 @@ Route::get('/user/{id}', 'UserController@show')->name('user.info');
 Route::get('/user/{id}/edit', 'UserController@edit')->name('user.edit');
 
 Route::put('/user/{id}', 'UserController@update')->name('user.update');
-Route::put('/user/{id}/icon', 'UserController@icon_update')->name('user.icon_update');
+Route::put('/user/{id}/icon_update', 'UserController@icon_update')->name('user.icon_update');
 
 
 
@@ -36,6 +36,7 @@ Route::post('/event', 'EventController@store')->name('event.store');
 Route::put('/event/{id}', 'EventController@update')->name('event.update');
 Route::put('/event/{id}/mark', 'EventController@mark')->name('event.mark');
 Route::put('/event/{id}/join', 'EventController@join')->name('event.join');
+Route::put('/event/{id}/cover_update', 'EventController@cover_update')->name('event.cover_update');
 
 Route::delete('/event/{id}', 'EventController@destroy')->name('event.delete');
 
@@ -50,6 +51,7 @@ Route::get('/group/{id}/edit', 'GroupController@edit')->name('group.edit');
 Route::post('/group', 'GroupController@store')->name('group.store');
 Route::put('/group/{id}', 'GroupController@update')->name('group.update');
 Route::put('/group/{id}/mark', 'GroupController@mark')->name('group.mark');
+Route::put('/group/{id}/icon_update', 'GroupController@icon_update')->name('group.icon_update');
 
 Route::delete('/group/{id}', 'GroupController@destroy')->name('group.delete');
 
