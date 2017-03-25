@@ -16,14 +16,11 @@
 @endsection
 
 @section('script')
-{{--    <script type="text/javascript">
-        var user_info = $('.user-info');
+    <script type="text/javascript">
 
-        user_info.click(function () {
-            $('.profile-usermenu li').removeClass('active');
-            user_info.parent().addClass('active');
-        });
-    </script>--}}
+    </script>
+
+
 
 
 @endsection

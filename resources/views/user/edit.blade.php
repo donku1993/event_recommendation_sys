@@ -92,9 +92,9 @@
                                 @foreach($constant_array['available_time']['value'] as $key => $value)
                                     <label class="checkbox">
                                         @if( $user->available_time[$key] )
-                                            <input type="checkbox" checked name="{{ $constant_array['available_time']['prefix'] }}_{{ $key }}" > {{ $value }}
+                                            <input value="true" type="checkbox" checked name="{{ $constant_array['available_time']['prefix'] }}_{{ $key }}" > {{ $value }}
                                         @else
-                                            <input type="checkbox" name="{{ $constant_array['available_time']['prefix'] }}_{{ $key }}" > {{ $value }}
+                                            <input value="true" type="checkbox" name="{{ $constant_array['available_time']['prefix'] }}_{{ $key }}" > {{ $value }}
                                         @endif
                                     </label>
                                 @endforeach
@@ -108,9 +108,9 @@
                                 @foreach($constant_array['location']['value'] as $key => $value)
                                     <label class="checkbox">
                                         @if( $user->location[$key] )
-                                            <input type="checkbox" checked name="{{ $constant_array['location']['prefix'] }}_{{ $key }}" > {{ $value }}
+                                            <input value="true" type="checkbox" checked name="{{ $constant_array['location']['prefix'] }}_{{ $key }}" > {{ $value }}
                                         @else
-                                            <input type="checkbox" name="{{ $constant_array['location']['prefix'] }}_{{ $key }}" > {{ $value }}
+                                            <input value="true" type="checkbox" name="{{ $constant_array['location']['prefix'] }}_{{ $key }}" > {{ $value }}
                                         @endif
                                     </label>
                                 @endforeach
@@ -161,12 +161,8 @@
 
 @section('script')
     <script type="text/javascript">
-        var user_info = $('.user-info');
+        activeClass();
 
-        user_info.click(function () {
-            $('.profile-usermenu li').removeClass('active');
-            user_info.parent().addClass('active');
-        });
     </script>
 
 

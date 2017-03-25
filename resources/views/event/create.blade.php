@@ -37,6 +37,19 @@
                             </div>
                             <br>
 
+                                <div class="panel panel-danger">
+                                    <div class="panel-heading">選擇舉辦活動的組織</div>
+                                    <div class="panel-body">
+                                        <select class="check-value form-control" name="group_id">
+                                            @foreach ($groups as $group)
+                                                <option value="{{ $group->id }}">{{ $group->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <br>
+
                                 <div class="panel panel-warning">
                                     <div class="panel-heading">選擇活動類型</div>
                                     <div class="panel-body">

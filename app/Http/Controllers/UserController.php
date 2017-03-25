@@ -137,12 +137,12 @@ class UserController extends Controller
         if ($user && $this->isSelf($user))
         {
             $user->fill([
-                    'icon_image' => $this->imageUpload('user_icon', $user->id, $request->input('icon_image', null)),
-                ]);
+                    'icon_image' => $this->imageUpload('user_icon', $user->id, $request->file('icon_image', null)),
+            ]);
 
             $user->save();
         }
 
-        return redirect()->route('user.info');
+        return redirect()->route('user.info',$user->id);
     }
 }

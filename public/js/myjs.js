@@ -58,9 +58,6 @@ function uploadImage() {
         });
     });
 }
-
-
-
 function uploadFile() {
 
     $(function() {
@@ -103,5 +100,26 @@ function uploadFile() {
             reader.readAsDataURL(file);
         });
 
+    });
+}
+function activeClass() {
+    $(document).ready(function() {
+        var last_str = window.location.pathname;
+        var segment_array = last_str.split( '/' );
+        var last_segment = segment_array[segment_array.length - 1];
+
+        switch ( last_segment ){
+            case 'edit':
+                var user_info = $('.user-info');
+                user_info.parent().addClass('active');
+                break;
+            default:
+                break;
+        }
+    });
+}
+function openUploadIcon() {
+    $(document).ready(function() {
+        $('#icon-modal').modal('show');
     });
 }

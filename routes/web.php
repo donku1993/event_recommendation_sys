@@ -21,7 +21,7 @@ Route::get('/user/{id}', 'UserController@show')->name('user.info');
 Route::get('/user/{id}/edit', 'UserController@edit')->name('user.edit');
 
 Route::put('/user/{id}', 'UserController@update')->name('user.update');
-Route::put('/user/{id}/icon_update', 'UserController@icon_update')->name('user.icon_update');
+Route::post('/user/{id}/icon_update', 'UserController@icon_update')->name('user.icon_update');
 
 
 
