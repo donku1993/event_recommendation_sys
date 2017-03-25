@@ -281,7 +281,6 @@ class EventController extends Controller
         $validate_array = array_merge(
                             $this->basicValidationArray(),
                             [
-                                'previewImage' => 'image',
                                 'schedule' => '',
                                 'requirement' => '',
                                 'remark' => '',
@@ -291,7 +290,6 @@ class EventController extends Controller
         $this->validate($request, $validate_array);
 
         $data = $request->all();
-        $user = Auth::uesr();
 
         $event = Event::with(['markedUsers', 'organizer', 'co_organizer'])->find($id);
 
@@ -311,7 +309,6 @@ class EventController extends Controller
                     'requirement' => $request->input('requirement', ''),
                     'remark' => $request->input('remark', ''),
                     'bonus_skills' => $data['bonus_skills'],
-                    'previewImage' => $this->imageUpload('event_cover', $event->id, $request->input('previewImage', null)),
                 ]);
 
             $event->save();
@@ -323,6 +320,26 @@ class EventController extends Controller
         }
 
         return ['message' => 'need to be a manager of this event'];
+    }
+
+    public function cover_update(Request $request, $id)
+    {
+        $validate_array = ['previewImage' => 'image'];
+
+        $this->validate($request, $validate_array);
+
+        $event = Event::with(['markedUsers', 'organizer', 'co_organizer'])->find($id);
+
+        if ($this->isEventManager($event))
+        {
+            $event->fill([
+                    'previewImage' => $this->imageUpload('event_cover', $event->id, $request->input('previewImage', null)),
+                ]);
+
+            $event->save();
+        }
+
+        return redirect()->route('event.info');
     }
 
     /**

@@ -205,12 +205,7 @@ class GroupController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validate_array = array_merge(
-                            $this->basicValidationArray(),
-                            [
-                                'icon_image' => 'image'
-                            ]
-                        );
+        $validate_array = $this->basicValidationArray();
 
         $this->validate($request, $validate_array);
 
@@ -224,8 +219,7 @@ class GroupController extends Controller
                     'principal_name' => $data['principal_name'],
                     'email' => $data['email'],
                     'phone' => $data['phone'],
-                    'address' => $data['address'],
-                    'icon_image' => $this->imageUpload('group_icon', $request->input('icon_image', null))
+                    'address' => $data['address']
                 ]);
 
             $group->save();
@@ -237,6 +231,26 @@ class GroupController extends Controller
         }
 
         return ['message' => 'need to be the manager of the group'];
+    }
+
+    public function icon_update(Request $request, $id)
+    {
+        $validate_array = ['icon_image' => 'image'];
+
+        $this->validate($request, $validate_array);
+
+        $group = Group::isGroup()->with(['markedUsers', 'manager', 'events'])->find($id);
+
+        if ($this->isGroupManager($group))
+        {
+            $group->fill([
+                    'icon_image' => $this->imageUpload('group_icon', $group->id, $request->input('icon_image', null)),
+                ]);
+
+            $group->save();
+        }
+
+        return redirect()->route('group.info');
     }
 
     /**
