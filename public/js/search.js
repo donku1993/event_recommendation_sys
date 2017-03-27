@@ -40,6 +40,46 @@ $(document).ready(function()
         $('#search_form_1').show();
     });
 
+    if ($("input[name='location']").val())
+    {
+        var m2 = $('#menu2');
+        var location_value = $("input[name='location']").val();
+
+        $('#location-select li').each(function () {
+            if ( location_value == $(this).val() )
+            {
+                m2.text($(this).text());
+                m2.append("<span class=\"caret\"></span>")
+            }
+        });
+    }
+    if ($("input[name='type']").val())
+    {
+        var m5 = $('#menu5');
+        var type_value = $("input[name='type']").val();
+
+        $('#type-select li').each(function () {
+            if ( type_value == $(this).val() )
+            {
+                m5.text($(this).text());
+                m5.append("<span class=\"caret\"></span>")
+            }
+        });
+    }
+    if ($("input[name='activity_area']").val())
+    {
+        var m4 = $('#menu4');
+        var group_value = $("input[name='activity_area']").val();
+
+        $('#group-location-select li').each(function () {
+            if ( group_value == $(this).val() )
+            {
+                m4.text($(this).text());
+                m4.append("<span class=\"caret\"></span>")
+            }
+        });
+    }
+
     $('#location-select li').click(function(e)
     {
         var m2 = $('#menu2');
@@ -59,7 +99,7 @@ $(document).ready(function()
     $('#group-location-select li').click(function(e)
     {
         var m4 = $('#menu4');
-        $( "input[name='group-location']").val($(this).val());
+        $( "input[name='activity_area']").val($(this).val());
         m4.text($(this).text());
         m4.append("<span class=\"caret\"></span>")
     });
@@ -76,7 +116,7 @@ $(document).ready(function()
         });
 
         if (isFormValid == false){
-            alert('至少選擇一項');
+            alert('至少選擇一項!');
             return isFormValid;
         }
     });
