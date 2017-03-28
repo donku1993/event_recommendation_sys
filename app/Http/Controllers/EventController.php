@@ -207,7 +207,7 @@ class EventController extends Controller
                     'status_array' => $status_array
                 ];
 
-            return view('event.info', $data);
+            return view('event.edit', $data);
         }
     }
 

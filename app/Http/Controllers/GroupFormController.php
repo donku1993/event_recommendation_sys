@@ -76,7 +76,7 @@ class GroupFormController extends Controller
                     'remark' => $request->input('remark', '')
                 ]);
 
-            $group->save();
+            $group_form->save();
         }
 
         return redirect()->route('group_form.info');
@@ -102,7 +102,7 @@ class GroupFormController extends Controller
                     'remark' => $request->input('remark', '')
                 ]);
 
-            $group->save();
+            $group_form->save();
         }
 
         return redirect()->route('group_form.info');

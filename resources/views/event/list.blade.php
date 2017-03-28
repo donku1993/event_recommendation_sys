@@ -5,18 +5,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-18">
-                <div class="form-group">
-                    <div class="row">
-                        <div class="panel-body">
-                            <a data-remote="true" href="javascript:void(0)" id="latest">
-                                <h4 style=""><i class="glyphicon glyphicon-fire"></i> 最新活動</h4>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
         @foreach($events as $event)
             <div class="event-item col-md-5">
                 <div class="col-md-6">
@@ -31,20 +20,20 @@
                     <table>
                         <tbody>
                         <tr>
-                            <td><i class="glyphicon glyphicon-calendar"></i></td>
+                            <td><i class="glyphicon glyphicon-calendar">{{ $event->startDate }}</i></td>
                             <td><i class="glyphicon glyphicon-time"></i>
                                 hrs
                             </td>
                         </tr>
 
                         <tr>
-                            <td><i class="glyphicon glyphicon-map-marker"></i>{{ $constant_array['location'][$event->location] }}</td>
+                            <td><i class="glyphicon glyphicon-map-marker"></i>{{ $constant_array['location']['value'][$event->location] }}</td>
 
                             <td><i class="glyphicon glyphicon-user" aria-hidden="true"></i> 需求{{ $event->numberOfPeople }}人</td>
                         </tr>
 
                         <tr>
-                            <td><i class="glyphicon glyphicon-tags"></i>{{ $constant_array['event_type'][$event->type] }}</td>
+                            <td><i class="glyphicon glyphicon-tags"></i>{{ $constant_array['event_type']['value'][$event->type] }}</td>
                         </tr>
 
                         </tbody>
@@ -56,8 +45,9 @@
             </div>
             <div class="col-md-1"></div>
         @endforeach
+        </div>
 
-    </div>
+
     </div>
 
 @endsection

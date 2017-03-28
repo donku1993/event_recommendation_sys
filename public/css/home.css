@@ -4,6 +4,16 @@
     text-align: center;
 }
 
+.group-name-list {
+    text-align: center;
+    width: 210px;
+    color: #368976;
+}
+
+.event-info-title{
+    color:#FF6F6F ;
+}
+
 .event-item{
     margin-bottom: 42px;
 }
@@ -40,7 +50,7 @@
 }
 
 .event-item table tr td {
-    padding-bottom: 20px;
+    padding-bottom: 5px;
     color: #7188c7;
     font-size: 14px;
     text-align: left;

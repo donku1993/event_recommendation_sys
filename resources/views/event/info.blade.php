@@ -16,7 +16,7 @@
                             <span><i class="glyphicon glyphicon-heart"></i>組織評價: </span>
                         </div>
 
-                        <h1>{{ $event->title }}</h1>
+                        <h1 class="event-info-title">{{ $event->title }}</h1>
                         <br>
                         <table style="width: inherit">
                             <tbody>
@@ -25,7 +25,7 @@
                                 <td><i class="glyphicon glyphicon-calendar"></i>活動結束: {{ $event->endDate }} {{ $event->endTime }} </td>
                             </tr>
                             <tr>
-                                <td><i class="glyphicon glyphicon-time"></i>活動時數: {{ $event->getHours() }} hrs</td>
+                                <td><i class="glyphicon glyphicon-time"></i>活動時數: hrs</td>
                                 <td><i class="glyphicon glyphicon-exclamation-sign"></i>報名截止: {{ $event->signUpEndDate }} {{ $event->signUpEndTime }}</td>
                             </tr>
                             <tr>
@@ -36,8 +36,12 @@
                         </table>
 
                         {{--Group can edit, wait for middleware--}}
-                        <button type="button" class="btn btn-primary"><a href="/event/{{ $event->id }}/edit">修改</a></button>
-
+                        @if( $status_array['is_event_manager'] )
+                            <a class="btn btn-primary" href="/event/{{ $event->id }}/edit">修改</a>
+                        @endif
+                        @if( $status_array['is_login'] )
+                            <a class="btn btn-success" href="/event/{{ $event->id }}/join">報名</a>
+                        @endif
                     </div>
                 </div>
 

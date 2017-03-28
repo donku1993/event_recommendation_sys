@@ -142,8 +142,8 @@
 
 
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button class="user-info-edit btn btn-primary">
+                            <div class="col-md-6 col-md-offset-3">
+                                <button class="user-info-edit btn btn-primary btn-block">
                                     修改
                                 </button>
                             </div>

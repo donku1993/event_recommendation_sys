@@ -1,10 +1,5 @@
 $(document).ready(function()
 {
-    /*            $('.datepicker').datetimepicker({
-     timepicker: false,
-     format: 'Y/m/d',
-     });*/
-
     $(function(){
         $('#startDateBox').datetimepicker({
             format:'Y/m/d',
@@ -25,6 +20,18 @@ $(document).ready(function()
             },
             timepicker:false
         });
+
+        if (window.location.pathname == ('/group'))
+        {
+            $('#search_form_2').show();
+            $('#search_form_1').hide();
+        }
+        else
+        {
+            $('#search_form_2').hide();
+            $('#search_form_1').show();
+        }
+
     });
 
 
@@ -39,6 +46,9 @@ $(document).ready(function()
         $('#search_form_2').hide();
         $('#search_form_1').show();
     });
+
+
+
 
     if ($("input[name='location']").val())
     {
