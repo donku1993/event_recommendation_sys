@@ -11,7 +11,7 @@
             <div class="event-item col-md-2">
                 <div class="col-md-6">
                     <a href="/group/{{ $group->id }}">
-                        <img src="/img/{{ $group->icon_image }}" alt="" style="width: 210px; height: 210px">
+                        <img src="{{ $group->iconPath }}" alt="" style="width: 210px; height: 210px">
                     </a>
                     <h4 class="group-name-list" style="text-align: center; width: 210px; color: #368976;"><i class="user-groups glyphicon glyphicon-tower"></i></i> {{ $group->name }}</h4>
 

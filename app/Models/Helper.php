@@ -109,6 +109,17 @@ class Helper extends Model
         ]
     ];
 
+    protected static $event_evaluation_array = [
+        'prefix' => 'event_evaulation',
+        'value' => [
+            1 => '不好',
+            2 => '一般',
+            3 => '好',
+            4 => '很好',
+            5 => '非常好'
+        ]
+    ];
+
     protected static $users_groups_relation_type_array = [
         'prefix' => 'users_groups_relation_type',
         'value' => [
@@ -159,6 +170,9 @@ class Helper extends Model
             case 'user_gender':
                 return self::$user_gender_array;
                 break;
+            case 'event_evaulation':
+                return self::$event_evaluation_array;
+                break;
             default:
                 return null;
         }
@@ -204,6 +218,7 @@ class Helper extends Model
             self::$event_type_array['prefix'] => self::$event_type_array,
             self::$event_status_array['prefix'] => self::$event_status_array,
             self::$group_status_array['prefix'] => self::$group_status_array,
+            self::$event_evaluation_array['prefix'] => self::$event_evaluation_array,
         ]];
     }
 

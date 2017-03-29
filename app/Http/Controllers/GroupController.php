@@ -48,7 +48,8 @@ class GroupController extends Controller
         $keywords = $request->all();
         $groups = Group::isGroup()->search($keywords)->paginate(8);
         $data = [
-                'groups' => $groups
+                'groups' => $groups,
+                'keywords' => (object)$keywords
             ];
 
         return view('group.list', $data);

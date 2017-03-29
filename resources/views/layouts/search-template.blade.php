@@ -38,16 +38,16 @@
                             </div>
 
                             <div class="startTimeBox" style="margin-left: 15px; display: inline-block; ">
-                                <input  type="text" name="time_from" class="datepicker form-control check-value" id="startDateBox" placeholder="開始日期" >
+                                <input  type="text" name="time_from" style="display: inline-block;" class="datepicker form-control check-value" id="startDateBox" placeholder="開始日期" >
                             </div>
                             <span>&nbsp;到&nbsp;</span>
                             <div class="endTimeBox" style="display: inline-block; border: none; border-radius: 6px; ">
-                                <input  type="text" name="time_to" class="datepicker form-control check-value" id="endDateBox" placeholder="結束日期" >
+                                <input  type="text" name="time_to" style="display: inline-block;" class="datepicker form-control check-value" id="endDateBox" placeholder="結束日期" >
                             </div>
 
-                            <i class="glyphicon glyphicon-search" aria-hidden="true" style="left:25px;"></i>
                             <div class="searchBox" style="margin:0; display: inline-block; ">
-                                <input type="text" name="event_name" class="searchName form-control check-value" placeholder="活動名稱"  style="padding-left: 25px">
+                                <i class="glyphicon glyphicon-search" aria-hidden="true" style="left:5px; top:30px;"></i>
+                                <input type="text" name="event_name" style="display: inline-block;" class="searchName form-control check-value" placeholder="  活動名稱"  style="padding-left: 25px">
                             </div>
 
                             <input type="submit"  id="searchBtn" class="btn btn-primary" value="搜索" />

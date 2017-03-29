@@ -24,6 +24,11 @@ class Event extends Model
         return '/storage/event_cover/' . $this->previewImage;
     }
 
+    public function getHoursAttribute()
+    {
+        return $this->startDate->diffInHours($this->endDate, false);
+    }
+
     public function markedUsers()
     {
     	return $this->belongsToMany('App\Models\User', 'users_events_relation', 'event_id', 'user_id')->orderBy('created_at', 'desc');

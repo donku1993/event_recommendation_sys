@@ -27,7 +27,7 @@ class CreateEventsTable extends Migration
             $table->mediumText('requirement')->nullable();
             $table->mediumText('remark')->nullable();
             $table->tinyInteger('status')->default(0);
-            $table->string('previewImage')->default('old.jpg');
+            $table->string('previewImage')->default('default.png');
             $table->json('bonus_skills')->nullable();
             $table->boolean('show')->default(1);
             $table->timestamps();

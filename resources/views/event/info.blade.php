@@ -7,7 +7,7 @@
             <div class="col-md-10 col-md-offset-2">
                 <div class="row">
                     <div class="col-md-3 event-preview">
-                        <img src="/img/{{ $event->previewImage }}" alt="" style="width: 210px; height: 210px">
+                        <img src="{{ $event->iconPath }}" alt="" style="width: 210px; height: 210px">
                     </div>
                     <div class="col-md-9 event-information">
                         <div class="eventIdrow">

@@ -58,8 +58,14 @@ class EventController extends Controller
 
         $keywords = $request->all();
         $events = Event::search($keywords)->paginate(8);
+        
+        foreach ($keywords as $key => $value) {
+            $keywords[$key] = (is_null($value)) ? "" : $value;
+        }
+
         $data = [
-                'events' => $events
+                'events' => $events,
+                'keywords' => (object)$keywords
             ];
 
         return view('event.list', $data);

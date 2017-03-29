@@ -10,7 +10,7 @@
             <div class="event-item col-md-5">
                 <div class="col-md-6">
                     <a href="/event/{{ $event->id }}">
-                        <img src="/img/{{ $event->previewImage }}" alt="" style="width: 210px; height: 210px">
+                        <img src="{{ $event->iconPath }}" alt="" style="width: 210px; height: 210px">
                     </a>
                 </div>
 
@@ -20,8 +20,8 @@
                     <table>
                         <tbody>
                         <tr>
-                            <td><i class="glyphicon glyphicon-calendar">{{ $event->startDate }}</i></td>
-                            <td><i class="glyphicon glyphicon-time"></i>
+                            <td><i class="glyphicon glyphicon-calendar">{{ $event->startDate->toDateString() }}</i></td>
+                            <td><i class="glyphicon glyphicon-time">{{ $event->hours }}</i>
                                 hrs
                             </td>
                         </tr>
@@ -47,6 +47,7 @@
         @endforeach
         </div>
 
+        {{ $events->appends(["location" => $keywords->location, "type" => $keywords->type, "time_from" => $keywords->time_from, "time_to" => $keywords->time_to, "event_name" => $keywords->event_name])->links() }}
 
     </div>
 
