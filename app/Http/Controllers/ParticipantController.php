@@ -31,8 +31,7 @@ class ParticipantController extends Controller
 
         $event = Event::with(['markedUsers', 'organizer', 'co_organizer'])->find($event_id);
 
-        if ($this->isEventManager($event) &&
-            $this->isFinishedEvent($event))
+        if ($this->isManagerCanEvaluate($event))
         {
             $participant = Participant::where('event_id', $event->id)->where('user_id', $data['member_id'])->first();
 

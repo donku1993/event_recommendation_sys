@@ -77,7 +77,7 @@ trait ControllerHelperTrait
 		}
 	}
 
-	public function isJoinEvent(Event $event = null)
+	public function isParticipant(Event $event = null)
 	{
 		if ($this->isLogin() && $event)
 		{
@@ -98,6 +98,16 @@ trait ControllerHelperTrait
 		} else {
 			return false;
 		}
+	}
+
+	public function isParticipantCanEvaluate(Event $event = null)
+	{
+		return ($this->isParticipant($event) && $this->isFinishedEvent($event));
+	}
+
+	public function isManagerCanEvaluate(Event $event = null)
+	{
+		return ($this->isEventManager($event) && $this->isFinishedEvent($event));
 	}
 
 	public function isGroupManager(Group $group = null)

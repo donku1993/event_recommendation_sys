@@ -18,9 +18,11 @@ class EventController extends Controller
         return [
                 'is_login' => $this->isLogin(),
                 'is_admin' => $this->isAdmin(),
-                'is_join_event' => $this->isJoinEvent($event),
+                'is_participant' => $this->isParticipant($event),
                 'is_marked_event' => $this->isMarkedEvent($event),
                 'is_event_manager' => $this->isEventManager($event),
+                'is_participant_can_evaluate' => $this->isParticipantCanEvaluate($event),
+                'is_manager_can_evaluate' => $this->isManagerCanEvaluate($event),
             ];
     }
 
@@ -278,7 +280,7 @@ class EventController extends Controller
     }
 
     /**
-     * Give a grade to event by member
+     * Give a grade to event by participant
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -297,8 +299,7 @@ class EventController extends Controller
 
         $event = Event::with(['markedUsers', 'organizer', 'co_organizer'])->find($id);
 
-        if ($this->isJoinEvent($event) &&
-            $this->isFinishedEvent($event))
+        if ($this->isParticipantCanEvaluate($event))
         {
             $participant = Participant::where('event_id', $event->id)->where('user_id', Auth::user()->id)->first();
 
