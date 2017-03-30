@@ -234,6 +234,13 @@ class GroupController extends Controller
         return ['message' => 'need to be the manager of the group'];
     }
 
+    /**
+     * Save the uploaded image and update the column resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function icon_update(Request $request, $id)
     {
         $validate_array = ['icon_image' => 'image'];

@@ -1,6 +1,9 @@
 <?php
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
+use App\Models\Event;
+
 class HomeController extends Controller
 {
     /**
@@ -20,7 +23,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $newest_event = Event::orderBy('created_at', 'desc')->take(4)->get();
+
+        $data = [
+                    'newest_event' => $newest_event,
+                ];
+
+        return view('home', $data);
         //return view('group_form.info');
     }
 }

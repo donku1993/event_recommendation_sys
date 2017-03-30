@@ -9,6 +9,7 @@ use Illuminate\Pagination\Paginator;
 use App\Models\Event;
 use App\Models\Group;
 use App\Models\Helper;
+use App\Models\Participant;
 
 class EventController extends Controller
 {
@@ -17,6 +18,7 @@ class EventController extends Controller
         return [
                 'is_login' => $this->isLogin(),
                 'is_admin' => $this->isAdmin(),
+                'is_join_event' => $this->isJoinEvent($event),
                 'is_marked_event' => $this->isMarkedEvent($event),
                 'is_event_manager' => $this->isEventManager($event),
             ];
@@ -266,10 +268,46 @@ class EventController extends Controller
         {
             $user = Auth::user();
 
-            DB::table('participants')->insert([
+            $participant = Participant::create([
                     'user_id' => $user->id,
                     'event_id' => $event->id
                 ]);
+        }
+
+        return redirect()->route('event.info', $id);
+    }
+
+    /**
+     * Give a grade to event by member
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function evaluation(Request $request, $id)
+    {
+        $validate_array = [
+                            'grade' => 'integer|min:1|max:5',
+                            'remark' => '',
+                        ];
+
+        $this->validate($request, $validate_array);
+
+        $data = $request->all();
+
+        $event = Event::with(['markedUsers', 'organizer', 'co_organizer'])->find($id);
+
+        if ($this->isJoinEvent($event) &&
+            $this->isFinishedEvent($event))
+        {
+            $participant = Participant::where('event_id', $event->id)->where('user_id', Auth::user()->id)->first();
+
+            $participant->fill([
+                    'grade_to_event' => $data['grade'],
+                    'remark_to_event' => $data['remark'],
+                ]);
+
+            $participant->save();
         }
 
         return redirect()->route('event.info', $id);
@@ -328,6 +366,13 @@ class EventController extends Controller
         return ['message' => 'need to be a manager of this event'];
     }
 
+    /**
+     * Save the uploaded image and update the column resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function cover_update(Request $request, $id)
     {
         $validate_array = ['previewImage' => 'image'];

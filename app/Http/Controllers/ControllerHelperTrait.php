@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Event;
 use App\Models\Group;
 use App\Models\Helper;
+use App\Models\Participant;
 
 trait ControllerHelperTrait
 {
@@ -71,6 +72,29 @@ trait ControllerHelperTrait
 			});
 
 			return ($filtered->count() > 0) ? true : false;
+		} else {
+			return false;
+		}
+	}
+
+	public function isJoinEvent(Event $event = null)
+	{
+		if ($this->isLogin() && $event)
+		{
+			$auth_id = Auth::user()->id;
+			$participant_count = Participant::where('event_id', $event->id)->where('user_id', $auth_id)->count();
+
+			return ($participant_count == 1) ? true : false;
+		} else {
+			return false;
+		}
+	}
+
+	public function isFinishedEvent(Event $event = null)
+	{
+		if ($event)
+		{
+			return $event->status == Helper::getKeyByArrayNameAndValue('event_status', '活動已完結');
 		} else {
 			return false;
 		}

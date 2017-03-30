@@ -36,6 +36,7 @@ Route::post('/event', 'EventController@store')->name('event.store');
 Route::put('/event/{id}', 'EventController@update')->name('event.update');
 Route::put('/event/{id}/mark', 'EventController@mark')->name('event.mark');
 Route::put('/event/{id}/join', 'EventController@join')->name('event.join');
+Route::put('/event/{id}/evaluation', 'EventController@evaluation')->name('event.evaluation');
 Route::put('/event/{id}/cover_update', 'EventController@cover_update')->name('event.cover_update');
 
 Route::delete('/event/{id}', 'EventController@destroy')->name('event.delete');
@@ -64,6 +65,11 @@ Route::get('/group_form/{id}', 'GroupFormController@show')->name('group_form.inf
 Route::put('/group_form/{id}/approve', 'GroupFormController@approve')->name('group_form.approve');
 Route::put('/group_form/{id}/reject', 'GroupFormController@reject')->name('group_form.reject');
 Route::put('/group_form/{id}/read', 'GroupFormController@form_read')->name('group_form.read');
+
+
+
+// Participant
+Route::put('/participant/{event_id}/evaluation', 'ParticipantController@evaluation')->name('participant.evaluation');
 
 
 
