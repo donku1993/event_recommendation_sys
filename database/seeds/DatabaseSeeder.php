@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
+use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder
 {
@@ -34,9 +36,6 @@ class DatabaseSeeder extends Seeder
                 'name' => 'admin',
                 'email' => 'admin@admin.com',
             ]);
-
-        // normal user
-        factory(App\Models\User::class, 50)->create();
 
         // group with true data (is group)
         foreach ($this->real_group_data as $key => $value)
@@ -120,6 +119,25 @@ class DatabaseSeeder extends Seeder
                 }
             }
         }
+
+        // normal user with random records
+        factory(App\Models\User::class, 50)->create()
+            ->each(function ($u) {
+                $max = rand(20, 50);
+                $faker = Faker::create();
+
+                for ($i=0; $i < $max; $i++) { 
+                    $date = Carbon::now()->subDays(rand(1, 100));
+                    $event = DB::table('events')->inRandomOrder()->first();
+
+                    DB::table('records')->insert([
+                            'ip' => $faker->ipv4,
+                            'user_id' => $u->id,
+                            'event_id' => $event->id,
+                            'created_at' => $date,
+                        ]);
+                }
+            });
 
         // group with fake data (new group form)
         factory(App\Models\User::class, 5)->states('group_manager')->create()

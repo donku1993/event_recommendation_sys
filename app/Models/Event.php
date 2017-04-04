@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Carbon\Carbon;
 use DB;
 
@@ -27,6 +28,11 @@ class Event extends Model
     public function getHoursAttribute()
     {
         return $this->startDate->diffInHours($this->endDate, false);
+    }
+
+    public function getNumberOfJoinAttribute()
+    {
+        return DB::table('participants')->where('event_id', $this->id)->count();
     }
 
     public function markedUsers()
@@ -89,5 +95,12 @@ class Event extends Model
             $query->where('location', $keywords['location']);
         }
         return $query;
+    }
+
+    public static function getJoinable(Collection $events)
+    {
+        return $events->filter(function ($event) {
+            return $event->canJoin();
+        });
     }
 }

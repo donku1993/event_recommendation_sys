@@ -10,9 +10,12 @@ use App\Models\Event;
 use App\Models\Group;
 use App\Models\Helper;
 use App\Models\Participant;
+use App\Http\Controllers\RecommendationTrait;
 
 class EventController extends Controller
 {
+    use RecommendationTrait;
+
     protected function status_array(Event $event = null)
     {
         return [
@@ -186,12 +189,13 @@ class EventController extends Controller
     public function show($id)
     {
         $event = Event::with(['markedUsers', 'organizer', 'co_organizer'])->find($id);
-        
+
         if ($event)
         {
             $status_array = $this->status_array($event);
             $data = [
                     'event' => $event,
+                    'also_view_events' => $this->alsoViewEvent($id),
                     'status_array' => $status_array
                 ];
 
