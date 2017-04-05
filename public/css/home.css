@@ -10,7 +10,11 @@
     color: #368976;
 }
 
-.event-info-title{
+.group-info-row span{
+    margin-bottom: 15px;
+}
+
+.info-title{
     color:#FF6F6F ;
 }
 

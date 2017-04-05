@@ -6,7 +6,6 @@
     <div class="container">
         <div class="row">
 
-        </div>
         @foreach($groups as $group)
             <div class="event-item col-md-2">
                 <div class="col-md-6">
@@ -17,11 +16,12 @@
 
                 </div>
 
-
             </div>
             <div class="col-md-1"></div>
         @endforeach
+        </div>
 
+        {{ $groups->appends(["activity_area" => $keywords->activity_area, "group_name" => $keywords->group_name ])->links() }}
     </div>
 
 @endsection

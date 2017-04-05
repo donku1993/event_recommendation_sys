@@ -14,7 +14,7 @@
                 {{ $user->name }}
             </div>
             <div class="profile-usertitle-job">
-                {{ $user->career }}
+                {{ $constant_array['career']['value'][$user->career]}}
             </div>
         </div>
         <!-- END SIDEBAR USER TITLE -->
@@ -32,31 +32,33 @@
                         <i class="glyphicon glyphicon-home"></i>
                         總覽 </a>
                 </li>
-                <li>
-                    <a href="/user/{{ $user->id }}/edit" class="user-info">
-                        <i class="glyphicon glyphicon-user"></i>
-                        個人資料與設定 </a>
-                </li>
-                <li>
-                    <a href="#" class="user-events">
-                        <i class="glyphicon glyphicon-flag"></i>
-                        活動 </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="user-groups glyphicon glyphicon-tower"></i>
-                        組織</a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="user-timetable glyphicon glyphicon-time"></i>
-                        時間表</a>
-                </li>
-                <li>
-                    <a href="/password/reset" class="user-password-reset">
-                        <i class="glyphicon glyphicon-alert"></i>
-                        重設密碼 </a>
-                </li>
+                @if( $status_array['is_self'] )
+                    <li>
+                        <a href="/user/{{ $user->id }}/edit" class="user-info">
+                            <i class="glyphicon glyphicon-user"></i>
+                            個人資料與設定 </a>
+                    </li>
+                    <li>
+                        <a href="#" class="user-events">
+                            <i class="glyphicon glyphicon-flag"></i>
+                            活動 </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="user-groups glyphicon glyphicon-tower"></i>
+                            組織</a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="user-timetable glyphicon glyphicon-time"></i>
+                            時間表</a>
+                    </li>
+                    <li>
+                        <a href="/password/reset" class="user-password-reset">
+                            <i class="glyphicon glyphicon-alert"></i>
+                            重設密碼 </a>
+                    </li>
+                @endif
             </ul>
         </div>
         <!-- END MENU -->

@@ -108,9 +108,9 @@
                                 <br>
 
                                 <div class="panel panel-warning">
-                                    <div class="panel-heading">輸入組織鑑別名稱</div>
+                                    <div class="panel-heading">輸入組織創辦人名字</div>
                                     <div class="panel-body">
-                                        <input type="text" name="principal_name" class="form-control"  id="content-principal_name" placeholder="請輸入組織鑑別名稱">
+                                        <input type="text" name="principal_name" class="form-control"  id="content-principal_name" placeholder="輸入組織創辦人名字">
                                     </div>
                                 </div>
                                 <br>
