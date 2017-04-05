@@ -201,7 +201,7 @@
                                     </div>
                                 </div>
                                 <input type="button"  class="previous btn btn-lg btn-danger" value="上一步" />
-                                <input type="button"  class="submit btn btn-lg btn-success" value="建立活動" />
+                                <input type="button"  class="submit btn btn-lg btn-success" value="確認修改" />
 
                             </fieldset>
 

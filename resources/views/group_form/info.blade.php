@@ -20,25 +20,32 @@
 
                         </div>
                     </div>
-
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3>Approve Information</h3>
-                        </div>
-
-                        <div class="panel-body">
-                            <div class="approve-info">
-
-                            </div>
-
-
-                        </div>
-                    </div>
-
                 </div>
 
-                <a class="btn btn-success" href="/group_form/$group_form->id /approve">Approve</a>
-                <a class="btn btn-danger" style="right: 13px;position: absolute" href="/group_form/$group_form->id/reject">Reject</a>
+                <div class="group-form-approve-content">
+                    <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3>Approve Information</h3>
+                            </div>
+
+                            <div class="panel-body">
+                                <div class="approve-info">
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                </div>
+
+                <div class="group-form-remark">
+                    <label for="remark">Remark:</label>
+                    <input type="text" name="remark" />
+                </div>
+
+
+                <a class="btn btn-success" href="/group_form/{{ $group_form->id  }}/approve">Approve</a>
+                <a class="btn btn-danger" style="right: 13px;position: absolute" href="/group_form/{{ $group_form->id }}/reject">Reject</a>
             </div>
         </div>
     </div>

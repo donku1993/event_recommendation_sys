@@ -16,7 +16,7 @@
                             <span><i class="glyphicon glyphicon-heart"></i>組織評價: </span>
                         </div>
 
-                        <h1 class="event-info-title">{{ $event->title }}</h1>
+                        <h1 class="info-title">{{ $event->title }}</h1>
                         <br>
                         <table style="width: inherit">
                             <tbody>
@@ -81,6 +81,26 @@
                         </div>
                     </div>
                 </div>
+
+                @if( $status_array['is_event_manager'] )
+                    <div class="right-nav" >
+                        <div class="col-md-2 pull-right">
+                            <div class="panel panel-default">
+                                <div class="panel panel-heading">
+                                    已參加的成員
+                                </div>
+                                <div class="panel panel-body">
+                                    <a class="check-all" href="/event/{{ $event->id }}/member">
+                                        <i>查看全部</i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+
+
             </div>
         </div>
     </div>
