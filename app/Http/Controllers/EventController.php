@@ -85,7 +85,8 @@ class EventController extends Controller
      */
     public function create()
     {
-        if ($this->isManager())
+        if ($this->isManager()
+            || $this->isAdmin())
         {
             $user = Auth::user();
 
@@ -117,7 +118,8 @@ class EventController extends Controller
         $data = $request->all();
         $group = Group::isGroup()->with(['markedUsers', 'manager', 'events'])->find($data['group_id']);
 
-        if ($this->isGroupManager($group))
+        if ($this->isGroupManager($group)
+            || $this->isAdmin())
         {
             $data = Helper::JsonDataConverter($data, 'bonus_skills', 'interest_skills');
             $event = Event::create([
@@ -304,7 +306,8 @@ class EventController extends Controller
 
         $event = Event::with(['markedUsers', 'organizer', 'co_organizer'])->find($id);
 
-        if ($this->isParticipantCanEvaluate($event))
+        if ($this->isParticipantCanEvaluate($event)
+            || $this->isAdmin())
         {
             $participant = Participant::where('event_id', $event->id)->where('user_id', Auth::user()->id)->first();
 
@@ -343,7 +346,8 @@ class EventController extends Controller
 
         $event = Event::with(['markedUsers', 'organizer', 'co_organizer'])->find($id);
 
-        if ($this->isEventManager($event))
+        if ($this->isEventManager($event)
+            || $this->isAdmin())
         {
             $data = Helper::JsonDataConverter($data, 'bonus_skills', 'interest_skills');
             $event->fill([
@@ -387,7 +391,8 @@ class EventController extends Controller
 
         $event = Event::with(['markedUsers', 'organizer', 'co_organizer'])->find($id);
 
-        if ($this->isEventManager($event))
+        if ($this->isEventManager($event)
+            || $this->isAdmin())
         {
             $event->fill([
                     'previewImage' => $this->imageUpload('event_cover', $event->id, $request->input('previewImage', null)),
@@ -409,7 +414,8 @@ class EventController extends Controller
     {
         $event = Event::find($id);
 
-        if ($event)
+        if ($this->isEventManager($event)
+            || $this->isAdmin())
         {
             $event->show = 0;
             $event->save();

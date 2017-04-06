@@ -96,7 +96,8 @@ class UserController extends Controller
         $data = $request->all();
         $user = User::find($id);
 
-        if ($user && $this->isSelf($user))
+        if ($user && $this->isSelf($user)
+            || $this->isAdmin())
         {
             $data = Helper::JsonDataConverter($data, 'available_time', 'available_time');
             $data = Helper::JsonDataConverter($data, 'interest_skills', 'interest_skills');
@@ -141,7 +142,8 @@ class UserController extends Controller
 
         $user = User::find($id);
 
-        if ($user && $this->isSelf($user))
+        if ($user && $this->isSelf($user)
+            || $this->isAdmin())
         {
             $user->fill([
                     'icon_image' => $this->imageUpload('user_icon', $user->id, $request->file('icon_image', null)),

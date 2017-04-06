@@ -23,18 +23,63 @@ class ParticipantController extends Controller
 
         $event = Event::with(['markedUsers', 'organizer', 'co_organizer'])->find($event_id);
 
-        if ($this->isManagerCanEvaluate($event))
+        if ($this->isManagerCanEvaluate($event)
+            || $this->isAdmin())
         {
-            $participant = Participant::where('event_id', $event->id)->where('user_id', $data['member_id'])->first();
+            $data = $this->evaluation_data_pre_processing($data);
 
-            $participant->fill([
-                    'grade_to_user' => $data['grade'],
-                    'remark_to_user' => $data['remark'],
-                ]);
+            foreach ($data as $key => $value)
+            {
+                $participant = Participant::where('event_id', $event->id)->where('id', $key)->first();
 
-            $participant->save();
+                if ($participant)
+                {
+                    $participant->fill([
+                            'grade_to_user' => $value['grade'],
+                            'remark_to_user' => $value['remark'],
+                        ]);
+
+                    $participant->save();
+                }
+            }
         }
 
         return redirect()->route('event.member', $event_id);
+    }
+
+    public function evaluation_data_pre_processing($data)
+    {
+        $result = [];
+
+        foreach ($data as $key => $value) {
+            $pos = strpos($key, 'grade_');
+
+            if ($pos !== false)
+            {
+                $id = (int)substr($key, 6);
+
+                $result[$id]['grade'] = $value;
+
+                continue;
+            }
+
+            $pos = strpos($key, 'remark_');
+
+            if ($pos !== false)
+            {
+                $id = (int)substr($key, 7);
+
+                $result[$id]['remark'] = $value;
+
+                continue;
+            }
+        }
+
+        foreach ($result as $key => $value) {
+            $result[$key]['grade'] = (!isset($value['grade'])) ? null : $value['grade'];
+            $result[$key]['remark'] = (!isset($value['remark'])) ? null : $value['remark'];
+        }
+
+        return $result;
     }
 }
