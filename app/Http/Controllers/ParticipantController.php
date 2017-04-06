@@ -19,14 +19,6 @@ class ParticipantController extends Controller
      */
     public function evaluation(Request $request, $event_id)
     {
-        $validate_array = [
-                            'grade' => 'required|integer|min:1|max:5',
-                            'member_id' => 'required',
-                            'remark' => '',
-                        ];
-
-        $this->validate($request, $validate_array);
-
         $data = $request->all();
 
         $event = Event::with(['markedUsers', 'organizer', 'co_organizer'])->find($event_id);

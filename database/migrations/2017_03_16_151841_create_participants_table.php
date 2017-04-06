@@ -20,8 +20,8 @@ class CreateParticipantsTable extends Migration
             $table->integer('status')->unsigned()->default(0);
             $table->integer('grade_to_user')->nullable()->default(null);
             $table->integer('grade_to_event')->nullable()->default(null);
-            $table->string('remark_to_user')->nullable();
-            $table->string('remark_to_event')->nullable();
+            $table->string('remark_to_user')->nullable()->default(null);
+            $table->string('remark_to_event')->nullable()->default(null);
             
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('event_id')->references('id')->on('events');

@@ -34,6 +34,14 @@ class GroupController extends Controller
             ];
     }
 
+    protected function searchValidationArray()
+    {
+        return [
+                'group_name' => 'string|nullable',
+                'activity_area' => 'integer|nullable'
+            ];
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -41,12 +49,15 @@ class GroupController extends Controller
      */
     public function index(Request $request)
     {
-        $this->validate($request, [
-            'group_name' => 'string|nullable',
-            'activity_area' => 'integer|nullable'
-        ]);
+        $this->validate($request, $this->searchValidationArray());
         $keywords = $request->all();
+
         $groups = Group::isGroup()->search($keywords)->paginate(8);
+
+        foreach ($this->searchValidationArray() as $key => $value) {
+            $keywords[$key] = (!isset($keywords[$key]) || is_null($keywords[$key])) ? "" : $keywords[$key];
+        }
+
         $data = [
                 'groups' => $groups,
                 'keywords' => (object)$keywords

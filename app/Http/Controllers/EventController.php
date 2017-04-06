@@ -66,8 +66,8 @@ class EventController extends Controller
         $keywords = $request->all();
         $events = Event::search($keywords)->paginate(8);
         
-        foreach ($keywords as $key => $value) {
-            $keywords[$key] = (is_null($value)) ? "" : $value;
+        foreach ($this->searchValidationArray() as $key => $value) {
+            $keywords[$key] = (!isset($keywords[$key]) || is_null($keywords[$key])) ? "" : $keywords[$key];
         }
 
         $data = [
@@ -88,6 +88,7 @@ class EventController extends Controller
         if ($this->isManager())
         {
             $user = Auth::user();
+
             return view('event.create', ['groups' => $user->groups]);
         }
     }
@@ -233,10 +234,10 @@ class EventController extends Controller
      */
     public function mark($id)
     {
-        $user = Auth::user();
-
-        if ($user)
+        if ($this->isLogin())
         {
+            $user = Auth::user();
+
             $record = DB::table('users_events_relation')
                             ->where('user_id', $user->id)
                             ->where('event_id', $id)
