@@ -74,12 +74,12 @@ class Group extends Model
 
     public function scopeSearch($query, Array $keywords)
     {
-        if (isset($keywords['group_name']))
+        if (isset($keywords['group_name']) && $keywords['group_name'] !== "")
         {
             $query->where('name', 'like', '%'.$keywords['group_name'].'%');
         }
 
-        if (isset($keywords['activity_area']))
+        if (isset($keywords['activity_area']) && $keywords['activity_area'] !== "")
         {
             $query->where('activity_area->'.$keywords['activity_area'], true);
         }
@@ -88,12 +88,12 @@ class Group extends Model
 
     public function scopeSearchForm($query, Array $keywords)
     {
-        if (isset($keywords['group_name']))
+        if (isset($keywords['group_name']) && $keywords['group_name'] !== "")
         {
             $query->where('name', 'like', '%'.$keywords['group_name'].'%');
         }
 
-        if (isset($keywords['status']))
+        if (isset($keywords['status']) && $keywords['status'] !== "")
         {
             $query->where('status', $keywords['status']);
         }

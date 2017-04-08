@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMarkUsersEventsTable extends Migration
+class CreateSimilarityTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateMarkUsersEventsTable extends Migration
      */
     public function up()
     {
-        Schema::create('mark_users_events', function (Blueprint $table) {
+        Schema::create('similarity', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('event_id')->unsigned();
-            $table->double('mark', 10, 5);
+            $table->double('value', 10, 5);
             $table->timestamps();
 
+            $table->unique(['user_id', 'event_id']);
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('event_id')->references('id')->on('events');
         });
@@ -32,6 +33,6 @@ class CreateMarkUsersEventsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mark_users_events');
+        Schema::dropIfExists('similarity');
     }
 }

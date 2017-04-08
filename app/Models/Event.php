@@ -70,27 +70,27 @@ class Event extends Model
 
     public function scopeSearch($query, Array $keywords)
     {
-        if (isset($keywords['time_from']))
+        if (isset($keywords['time_from']) && $keywords['time_from'] !== "")
         {
             $query->where('startDate', '>', $keywords['time_from']);
         }
 
-        if (isset($keywords['time_to']))
+        if (isset($keywords['time_to']) && $keywords['time_to'] !== "")
         {
             $query->where('endDate', '<', $keywords['time_to']);
         }
 
-        if (isset($keywords['event_name']))
+        if (isset($keywords['event_name']) && $keywords['event_name'] !== "")
         {
             $query->where('title', 'like', '%'.$keywords['event_name'].'%');
         }
 
-        if (isset($keywords['type']))
+        if (isset($keywords['type']) && $keywords['type'] !== "")
         {
             $query->where('type', $keywords['type']);
         }
 
-        if (isset($keywords['location']))
+        if (isset($keywords['location']) && $keywords['location'] !== "")
         {
             $query->where('location', $keywords['location']);
         }
