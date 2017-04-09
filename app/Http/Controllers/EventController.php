@@ -6,6 +6,7 @@ use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
+use App\Models\User;
 use App\Models\Event;
 use App\Models\Group;
 use App\Models\Helper;
@@ -273,7 +274,7 @@ class EventController extends Controller
     {
         $event = Event::with(['markedUsers', 'organizer', 'co_organizer'])->find($id);
 
-        if ($this->isLogin() && $event && !$this->isEventManager($event) && $event->canJoin())
+        if ($this->isLogin() && $event && !$this->isEventManager($event) && $event->isJoinableEvent)
         {
             $user = Auth::user();
 

@@ -11,6 +11,11 @@ class Record extends Model
 
     protected $fillable = ['ip', 'user_id', 'group_id', 'event_id'];
 
+    public function getIsForJoinableEventAttribute()
+    {
+        return $this->event->isJoinableEvent;
+    }
+
     public function user()
     {
     	return $this->belongsTo('App\Models\User', 'user_id');

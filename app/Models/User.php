@@ -50,6 +50,11 @@ class User extends Authenticatable
         return '/storage/user_icon/' . $this->icon_image;
     }
 
+    public function getIsNormalUserAttribute()
+    {
+        return in_array($this->type, [Helper::getKeyByArrayNameAndValue('user_type', '普通會員'), Helper::getKeyByArrayNameAndValue('user_type', '活躍會員')]);
+    }
+
     public function markedGroup()
     {
         return $this->belongsToMany('App\Models\Group', 'users_groups_relation', 'user_id', 'group_id')->where('type', $this->users_groups_relation_type['marked'])->orderBy('created_at', 'desc');
