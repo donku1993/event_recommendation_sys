@@ -46,47 +46,49 @@
             </div>
 
             <div class="relate-event" >
-                <div class="col-md-8 col-md-offset-2">
+                <div class="col-md-8 col-md-offset-2" >
                     <div class="panel panel-primary">
                         <div class="panel panel-heading"><i class="glyphicon glyphicon-star-empty"></i>組織的活動</div>
                         <div class="panel panel-body">
-                            <div class="event-item col-md-5">
-                                <div class="col-md-6">
-                                    <a href="/event/{{ $group->id }}">
-                                        <img src="{{ $group->iconPath }}" alt="" style="width: 210px; height: 210px">
-                                    </a>
-                                </div>
 
-                                <div class="col-md-5">
-                                    <h4 class="lf_title_h4"><i class="glyphicon glyphicon-hand-right" aria-hidden="true"></i> {{ $group->title }}</h4>
+                                @foreach($group->events as $event)
+                                        <div class="group-event-item col-md-12">
+                                            <div class="col-md-5">
+                                                <a href="/event/{{ $event->id }}">
+                                                    <img src="{{ $event->iconPath }}" alt="" style="width: 210px; height: 210px">
+                                                </a>
+                                            </div>
 
-                                    <table>
-                                        <tbody>
-                                        <tr>
-                                            <td><i class="glyphicon glyphicon-calendar"></i></td>
-                                            <td><i class="glyphicon glyphicon-time">{{ $group->hours }}</i>
-                                                hrs
-                                            </td>
-                                        </tr>
+                                            <div class="col-md-7">
+                                                <h4 class="lf_title_h4"><i class="glyphicon glyphicon-hand-right" aria-hidden="true"></i> {{ $event->title }}</h4>
+                                                <table>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <i class="glyphicon glyphicon-calendar"></i>{{ $event->startDate }} 到 {{ $event->endDate }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <i class="glyphicon glyphicon-time">{{ $event->hours }}</i>hrs
+                                                            <i class="glyphicon glyphicon-map-marker"></i>{{  $constant_array['location']['value'][$event->location] }}
+                                                            <i class="glyphicon glyphicon-user" aria-hidden="true"></i> 需求{{ $event->numberOfPeople }}人
+                                                            <i class="glyphicon glyphicon-tags">{{ $constant_array['event_type']['value'][$event->type] }}</i>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
 
-                                        <tr>
-                                            <td><i class="glyphicon glyphicon-map-marker"></i></td>
+                                                <label for="content">活動內容:</label><br>
+                                                <div class="group-info-event">
+                                                    {{ $event->content }}
+                                                </div>
 
-                                            <td><i class="glyphicon glyphicon-user" aria-hidden="true"></i> 需求{{ $group->numberOfPeople }}人</td>
-                                        </tr>
+                                            </div>
 
-                                        <tr>
-                                            <td><i class="glyphicon glyphicon-tags"></i></td>
-                                        </tr>
+                                        </div>
 
-                                        </tbody>
-                                    </table>
-                                    <button type="button" class="btn btn-danger btn-lg btn-block"><a href="" style="color: #f5f8fa"><i class="fa fa-pencil-square" aria-hidden="true"></i>查看更多</a></button>
-                                </div>
-
-
-                            </div>
-                            <div class="col-md-1"></div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -101,7 +103,17 @@
 
 @section('script')
 
-
+<script>
+    $(function(){
+        var len = 250;
+        $(".group-info-event").each(function(i){
+            if($(this).text().length>len){
+                var text=$(this).text().substring(0,len-1)+"...";
+                $(this).text(text);
+            }
+        });
+    });
+</script>
 
 
 @endsection

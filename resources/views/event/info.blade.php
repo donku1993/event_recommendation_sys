@@ -80,6 +80,20 @@
                             {!! $event->remark !!}
                         </div>
                     </div>
+
+                    @if( $status_array['is_participant_can_evaluate'] )
+                        <div class="panel panel-success">
+                        <div class="panel-heading">評分</div>
+                        <div class="panel-body">
+                            <select class="check-value form-control" name="grade">
+                                @foreach ($constant_array['event_evaulation']['value'] as $key => $value)
+                                    <option value="{{ $key }}">{{ $value }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    @endif
+
                 </div>
 
                 @if( $status_array['is_event_manager'] )
@@ -98,6 +112,7 @@
                         </div>
                     </div>
                 @endif
+
 
 
 

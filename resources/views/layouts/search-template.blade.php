@@ -76,8 +76,8 @@
                                 <input type="hidden" name="activity_area" >
                             </div>
 
-                            <i class="glyphicon glyphicon-search" aria-hidden="true" style="left:40px;"></i>
-                            <div class="searchBox" style="margin-left: 15px; display: inline-block; border: none; border-radius: 6px; ">
+                            <div class="searchBox" style="margin-left: 15px; display: inline-block; ">
+                                <i class="glyphicon glyphicon-search" aria-hidden="true" style="left:5px; top:30px;"></i>
                                 <input type="text" name="group_name" class="searchName form-control" placeholder="組織名稱"  style="padding-left: 25px">
                             </div>
 
