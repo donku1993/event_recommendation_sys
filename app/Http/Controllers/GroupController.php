@@ -176,12 +176,12 @@ class GroupController extends Controller
      */
     public function mark($id)
     {
-        $user = Auth::user();
-
         $group_mark_type = Helper::getConstantArray('users_groups_relation_type')['value']['marked'];
 
-        if ($user)
+        if ($this->isLogin())
         {
+            $user = Auth::user();
+
             $record = DB::table('users_groups_relation')
                             ->where('user_id', $user->id)
                             ->where('group_id', $id)
@@ -224,7 +224,8 @@ class GroupController extends Controller
         $data = $request->all();
         $group = Group::isGroup()->with(['markedUsers', 'manager', 'events'])->find($id);
 
-        if ($this->isGroupManager($group))
+        if ($this->isGroupManager($group)
+            || $this->isAdmin())
         {
             $data = Helper::JsonDataConverter($data, 'activity_area', 'location');
             $group->fill([
@@ -260,7 +261,8 @@ class GroupController extends Controller
 
         $group = Group::isGroup()->with(['markedUsers', 'manager', 'events'])->find($id);
 
-        if ($this->isGroupManager($group))
+        if ($this->isGroupManager($group)
+            || $this->isAdmin())
         {
             $group->fill([
                     'icon_image' => $this->imageUpload('group_icon', $group->id, $request->input('icon_image', null)),
@@ -282,7 +284,8 @@ class GroupController extends Controller
     {
         $group = Group::find($id);
 
-        if ($group)
+        if ($this->isGroupManager($group)
+            || $this->isAdmin())
         {
             $group->show = 0;
             $group->save();

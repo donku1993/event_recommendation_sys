@@ -35,6 +35,19 @@ class Event extends Model
         return DB::table('participants')->where('event_id', $this->id)->count();
     }
 
+    public function getIsJoinableEventAttribute()
+    {
+        $count = DB::table('participants')->where('event_id', $this->id)->count();
+
+        if ($this->signUpEndDate > Carbon::now() &&
+            $this->numberOfPeople > $count)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     public function markedUsers()
     {
     	return $this->belongsToMany('App\Models\User', 'users_events_relation', 'event_id', 'user_id')->orderBy('created_at', 'desc');
@@ -55,42 +68,29 @@ class Event extends Model
     	return $this->belongsToMany('App\Models\User', 'participants', 'event_id', 'user_id')->orderBy('created_at', 'desc');
     }
 
-    public function canJoin()
-    {
-        $count = DB::table('participants')->where('event_id', $this->id)->count();
-
-        if ($this->signUpEndDate > Carbon::now() && 
-            $this->numberOfPeople > $count)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
     public function scopeSearch($query, Array $keywords)
     {
-        if (isset($keywords['time_from']))
+        if (isset($keywords['time_from']) && $keywords['time_from'] !== "")
         {
             $query->where('startDate', '>', $keywords['time_from']);
         }
 
-        if (isset($keywords['time_to']))
+        if (isset($keywords['time_to']) && $keywords['time_to'] !== "")
         {
             $query->where('endDate', '<', $keywords['time_to']);
         }
 
-        if (isset($keywords['event_name']))
+        if (isset($keywords['event_name']) && $keywords['event_name'] !== "")
         {
             $query->where('title', 'like', '%'.$keywords['event_name'].'%');
         }
 
-        if (isset($keywords['type']))
+        if (isset($keywords['type']) && $keywords['type'] !== "")
         {
             $query->where('type', $keywords['type']);
         }
 
-        if (isset($keywords['location']))
+        if (isset($keywords['location']) && $keywords['location'] !== "")
         {
             $query->where('location', $keywords['location']);
         }
@@ -100,7 +100,7 @@ class Event extends Model
     public static function getJoinable(Collection $events)
     {
         return $events->filter(function ($event) {
-            return $event->canJoin();
+            return $event->isJoinableEvent;
         });
     }
 }

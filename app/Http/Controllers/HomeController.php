@@ -2,10 +2,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Event;
+use App\Http\Controllers\RecommendationTrait;
 
 class HomeController extends Controller
 {
+    use RecommendationTrait;
+
     /**
      * Create a new controller instance.
      *
@@ -23,13 +25,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $newest_event = Event::orderBy('created_at', 'desc')->take(4)->get();
-
         $data = [
-                    'newest_event' => $newest_event,
+                    'newest_events' => $this->newestEvents(),
+                    'most_popular_events' => $this->mostPopularEvents()
                 ];
 
         return view('home', $data);
-        //return view('group_form.info');
     }
 }
