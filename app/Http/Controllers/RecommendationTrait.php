@@ -10,6 +10,7 @@ use App\Models\Similarity;
 use App\Models\SimilarityCalculationJobRecord;
 use App\Jobs\similarityCalculationForUserGivenJob;
 use App\Jobs\similarityCalculationForEventGivenJob;
+use App\Jobs\recommendationMailSendingJob;
 
 trait RecommendationTrait
 {
@@ -26,6 +27,17 @@ trait RecommendationTrait
 		if (SimilarityCalculationJobRecord::countWaitingOrRunningJobWithSameEventID($event_id) == 0)
 		{
 			dispatch(new similarityCalculationForEventGivenJob($event_id));
+		}
+	}
+
+	public function fireRecommendationMailSendingJob(int $user_id, int $event_id)
+	{
+		$user = User::find($user_id);
+		$event = Event::find($event_id);
+
+		if ($user && $user->allow_email === 1 && $event)
+		{
+			dispatch(new recommendationMailSendingJob($user, $event));
 		}
 	}
 

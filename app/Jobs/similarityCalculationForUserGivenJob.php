@@ -9,13 +9,14 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
 use App\Http\Controllers\RecommendationTrait;
-use App\Http\Controllers\RecommendationTrait;
+use App\Models\SimilarityCalculationJobRecord;
 
 class similarityCalculationForUserGivenJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, RecommendationTrait;
 
     protected $user_id
+    protected $similarity_calculation_job_record;
 
     /**
      * Create a new job instance.
@@ -26,7 +27,7 @@ class similarityCalculationForUserGivenJob implements ShouldQueue
     {
         $this->user_id = $user_id;        
 
-        SimilarityCalculationJobRecord::create([
+        $this->similarity_calculation_job_record = SimilarityCalculationJobRecord::create([
                 'pass_id' => $event_id,
                 'type' => SimilarityCalculationJobRecord::USER_GIVEN_TYPE,
                 'status' => SimilarityCalculationJobRecord::WAITING
