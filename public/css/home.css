@@ -60,6 +60,10 @@
     text-align: left;
 }
 
+.recommend-events table tr td{
+    padding-bottom: 5px;
+}
+
 .image-preview-input {
     position: relative;
     overflow: hidden;
@@ -211,6 +215,16 @@
     background: #fff;
     min-height: 460px;
 }
+
+.img-holder:hover{
+    display: inline-block;
+}
+
+.check-more{
+    transition-timing-function: cubic-bezier(0,0,1,1);
+}
+
+
 
 
 

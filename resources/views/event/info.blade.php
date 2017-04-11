@@ -92,12 +92,60 @@
                             </select>
                         </div>
                     </div>
+
                     @endif
+
 
                 </div>
 
+                <div class="col-md-12 ">
+                    <hr style="width: 100%; color: black; height: 1px; background-color:gray;" >
+                    <a data-remote="true" href="javascript:void(0)" id="latest">
+                        <h4 style=""><i class="glyphicon glyphicon-fire"></i> 推薦活動</h4>
+                    </a>
+                    <hr>
+
+                    @foreach ($also_view_events as $also_view_event)
+                        <div class="col-md-3 recommend-events-holder">
+                            <a href="javascript:viod(0)" id="check-more" class="btn btn-block btn-warning" style="opacity: 0;width: 180px;margin-left: 15px;margin-right: 15px;position: absolute; "><i class="glyphicon glyphicon-exclamation-sign"></i>查看詳情</a>
+
+                            <a class="img-holder" href="/event/{{ $also_view_event->id }}">
+                                <img src="{{ $also_view_event->icon_image }}" alt="" style="width: 210px; height: 210px;">
+                            </a>
+
+
+                            <div class="col-md-10" style="padding-left: 0px;">
+                                <h4 class="lf_title_h4"><i class="glyphicon glyphicon-hand-right" aria-hidden="true"></i> {{ $event->title }}</h4>
+
+                                <table class="recommend-events">
+                                    <tbody>
+                                    <tr>
+                                        <td style="padding-right: 40px"><i class="glyphicon glyphicon-calendar">{{ $event->startDate->toDateString() }}</i></td>
+                                        <td><i class="glyphicon glyphicon-time">{{ $event->hours }}</i>
+                                            hrs
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td><i class="glyphicon glyphicon-map-marker"></i>{{ $constant_array['location']['value'][$event->location] }}</td>
+
+                                        <td><i class="glyphicon glyphicon-user" aria-hidden="true"></i> 需求{{ $event->numberOfPeople }}人</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td><i class="glyphicon glyphicon-tags"></i>{{ $constant_array['event_type']['value'][$event->type] }}</td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    @endforeach
+                </div>
+
                 @if( $status_array['is_event_manager'] )
-                    <div class="right-nav" >
+                    <div class="right-nav" style="text-align: center">
                         <div class="col-md-2 pull-right">
                             <div class="panel panel-default">
                                 <div class="panel panel-heading">
@@ -115,7 +163,6 @@
 
 
 
-
             </div>
         </div>
     </div>
@@ -124,9 +171,25 @@
 
 @section('script')
 
+    <script>
+        $('.img-holder').hover(function () {
+            $(this).css("opacity","0.2");
+            $(this).prev('a').css({
+                "opacity":"1"
+            });
+        });
+        $('.img-holder').mouseleave(function () {
+            $(this).css("opacity","1");
+            $(this).prev('a').css({
+                "opacity":"0"
+            });
+        });
+    </script>
 
+@endsection
 
-
+@section('footer')
+    @include('layouts.footer')
 @endsection
 
 
