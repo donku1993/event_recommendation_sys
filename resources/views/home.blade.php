@@ -25,3 +25,7 @@
 @section('script')
     <script type="text/javascript" src="/js/search.js"></script>
 @endsection
+
+@section('footer')
+    @include('layouts.footer')
+@endsection
