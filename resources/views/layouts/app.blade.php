@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/css/home.css">
     <link rel="stylesheet" href="/css/summernote.css">
     <link rel="stylesheet" href="/css/jquery.datetimepicker.css">
+    <link href="css/bootstrap.icon-large.min.css" rel="stylesheet">
 
     <!-- Scripts -->
     <script>
@@ -99,4 +100,6 @@
 @yield('script')
 
 </body>
+
+@yield('footer')
 </html>

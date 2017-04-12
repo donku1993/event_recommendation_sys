@@ -38,7 +38,7 @@
 
                         </tbody>
                     </table>
-                    <button type="button" class="btn btn-success btn-lg btn-block"><a href="" style="color: #f5f8fa"><i class="fa fa-pencil-square" aria-hidden="true"></i>我要報名</a></button>
+                    <button type="button" class="btn btn-success btn-lg btn-block"><a href="/event/{{ $event->id }}" style="color: #f5f8fa"><i class="fa fa-pencil-square" aria-hidden="true"></i>查看詳情</a></button>
                 </div>
 
 
@@ -55,4 +55,8 @@
 
 @section('script')
     <script type="text/javascript" src="/js/search.js"></script>
+@endsection
+
+@section('footer')
+    @include('layouts.footer')
 @endsection
