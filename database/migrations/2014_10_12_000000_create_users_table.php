@@ -26,7 +26,7 @@ class CreateUsersTable extends Migration
             $table->boolean('gender');
             $table->mediumText('self_introduction')->nullable();
             $table->integer('career');
-            $table->integer('yearOfVolunteer')->default(0);
+            $table->integer('year_of_volunteer')->default(0);
             $table->string('icon_image')->default('default.png');
             $table->boolean('allow_email')->default(0);
 

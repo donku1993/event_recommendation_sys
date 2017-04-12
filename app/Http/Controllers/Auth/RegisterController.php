@@ -83,7 +83,8 @@ class RegisterController extends Controller
             'allow_email' => ($data['allow_email'] === 'true') ? 1 : 0,
             'available_time' => $data['available_time'],
             'available_area' => $data['available_area'],
-            'interest_skills' => $data['interest_skills']
+            'interest_skills' => $data['interest_skills'],
+            'year_of_volunteer' => $data['year_of_volunteer']
         ]);
     }
 }

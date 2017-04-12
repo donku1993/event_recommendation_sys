@@ -23,7 +23,7 @@ class UserController extends Controller
                 'career' => 'required|integer',
                 'gender' => 'required|integer',
                 'allow_email' => 'required',
-                'phone' => 'required|min:8',
+                'phone' => 'required|min:8'
             ];
     }
 
@@ -87,6 +87,7 @@ class UserController extends Controller
                                 array(
                                     'address_location' => 'integer',
                                     'icon_image' => 'image',
+                                    'year_of_volunteer' => 'integer',
                                     'self_introduction' => '',
                                 )
                             );
@@ -108,6 +109,7 @@ class UserController extends Controller
                     'career' => $data['career'],
                     'gender' => $data['gender'],
                     'phone' => $data['phone'],
+                    'year_of_volunteer' => $data['year_of_volunteer'],
                     'address_location' => $request->input('address_location', ''),
                     'self_introduction' => $request->input('self_introduction', ''),
                     'allow_email' => ($data['allow_email'] === 'true') ? 1 : 0,
@@ -147,7 +149,7 @@ class UserController extends Controller
         {
             $user->fill([
                     'icon_image' => $this->imageUpload('user_icon', $user->id, $request->file('icon_image', null)),
-            ]);
+                ]);
 
             $user->save();
         }
