@@ -106,6 +106,16 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="career" class="col-md-4 control-label">志願者年資</label>
+
+                            <div class="col-md-6">
+                                <input type="number" min="0" name="year_of_volunteer" class="check-value form-control" placeholder="請輸入年資" >
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
                             <label for="available-time" class="col-md-4 control-label">比較有空的時間:</label>
 
                             <div class="col-md-6">
