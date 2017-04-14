@@ -19,7 +19,9 @@ class ParticipantController extends Controller
      */
     public function evaluation(Request $request, $event_id)
     {
-        $data = $request->all();
+        $data = $request->except(['page']);
+
+        $page = $request->input('page', 1);
 
         $event = Event::with(['markedUsers', 'organizer', 'co_organizer'])->find($event_id);
 
@@ -44,7 +46,7 @@ class ParticipantController extends Controller
             }
         }
 
-        return redirect()->route('event.member', $event_id);
+        return redirect()->route('event.member', $event_id, ['page' => $page]);
     }
 
     public function evaluation_data_pre_processing($data)

@@ -60,6 +60,8 @@ class DatabaseSeeder extends Seeder
                             'main' => 1,
                             'created_at' => $e->created_at
                         ]);
+
+
                 });
 
             factory(App\Models\Event::class, rand(2, 4))->states('one_year_ago')->create()
@@ -94,28 +96,6 @@ class DatabaseSeeder extends Seeder
                     {
                         continue;
                     }
-                }
-            }
-        }
-
-        // add participant to ended events
-        $events = DB::table('events')->where('status', 2)->get();
-        foreach ($events as $event)
-        {
-            $finalNumOfParticipant = rand(intval($event->numberOfPeople / 3), $event->numberOfPeople);
-
-            for ($i=0; $i < $finalNumOfParticipant; $i++)
-            { 
-                $user = DB::table('users')->where('type', 1)->inRandomOrder()->first();
-
-                try {
-                    $result = DB::table('participants')->insert([
-                            'user_id' => $user->id,
-                            'event_id' => $event->id,
-                        ]);
-                } catch (Exception $e)
-                {
-                    continue;
                 }
             }
         }
@@ -171,5 +151,59 @@ class DatabaseSeeder extends Seeder
                     'principal_name' => $u->name,
                 ]);
             });
+
+        // randomly add participant to events
+        $events = DB::table('events')->get();
+
+        foreach ($events as $event)
+        {
+            $grade_to_event = null;
+            $grade_to_user = null;
+
+            if ($event->status == 0)
+            {
+                $rand_from = (int) $event->numberOfPeople * 0.2;
+                $rand_to = (int) $event->numberOfPeople * 0.6;
+            }
+            else
+            {
+                $rand_from = (int) $event->numberOfPeople * 0.5;
+                $rand_to = (int) $event->numberOfPeople * 1;
+
+                if ($event->status == 2)
+                {
+                    $grade_to_user = (rand(0, 4) > 0) ? 1 : null;
+                }
+            }
+
+            $numberOfParticipant = rand($rand_from, $rand_to);
+
+            for ($i = 0; $i < $numberOfParticipant; $i++)
+            { 
+                $user = DB::table('users')->whereIn('type', [1, 2])->inRandomOrder()->first();
+                
+                if ($event->status == 2)
+                {
+                    if (!is_null($grade_to_user))
+                    {
+                        $grade_to_user = rand(1, 5);
+                    }
+
+                    $grade_to_event = (rand(0, 4) > 1) ? rand(1, 5) : null;
+                }
+
+                try {
+                    $result = DB::table('participants')->insert([
+                            'user_id' => $user->id,
+                            'event_id' => $event->id,
+                            'grade_to_event' => $grade_to_event,
+                            'grade_to_user' => $grade_to_user,
+                        ]);
+                } catch (Exception $e)
+                {
+                    continue;
+                }
+            }
+        }
     }
 }

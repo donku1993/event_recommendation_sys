@@ -75,6 +75,11 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\Event', 'participants', 'user_id', 'event_id')->orderBy('created_at', 'desc');
     }
 
+    public function events_history()
+    {
+        return $this->belongsToMany('App\Models\Event', 'participants', 'user_id', 'event_id')->where('status', 2)->orderBy('created_at', 'desc');
+    }
+
     public function scopeNormalUser($query)
     {
         return $query->whereIn('type', [1, 2]);

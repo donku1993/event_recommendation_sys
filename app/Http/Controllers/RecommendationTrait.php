@@ -14,6 +14,30 @@ use App\Jobs\recommendationMailSendingJob;
 
 trait RecommendationTrait
 {
+	public function calculate_similarity(int $user_id, int $event_id)
+	{
+		$mark = 0;
+
+		$user = User::with(['markedGroup', 'markedEvent', 'events_history'])->find($user_id);
+		$event = Event::with(['organizer', 'co_organizer'])->find($event_id);
+
+		// interests and skills compare
+
+		// time compare
+
+		// address compare
+
+		// user's marked groups are organizer or co_organizer?
+
+		// user's marked events are create by the same organizer or co_organizer?
+
+		// user's marked events: compare the similarity of the events (cosine similarity)
+
+		// user's event_history which has evaluation mark 4, 5: compare the similarity of the events (cosine similarity)
+
+		return $mark;
+	}
+
 	public function fireSimilarityCalculateUserGivenJob(int $user_id)
 	{
 		if (SimilarityCalculationJobRecord::countWaitingOrRunningJobWithSameUserID($user_id) == 0)
@@ -39,11 +63,6 @@ trait RecommendationTrait
 		{
 			dispatch(new recommendationMailSendingJob($user, $event));
 		}
-	}
-
-	public function calculate_similarity(int $user_id, int $event_id)
-	{
-		return 50.0;
 	}
 
 	public function update_similarity(int $user_id, int $event_id, double $value)
