@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-20">
                 <div class="panel panel-default">
-                    <div class="panel-heading">
+                    <div class="panel-heading" style="padding-top: 0px">
 
                         <form id="search_form_1" action="/event" method="GET" enctype="multipart/form-data">
 

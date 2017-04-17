@@ -2,7 +2,7 @@
     <div class="profile-sidebar">
         <!-- SIDEBAR USERPIC -->
         <div class="profile-userpic">
-            <img src="{{ $user->icon_image }}" style="width: 180px;height: 180px;" class="img-responsive" alt="Icon">
+            <img src="{{ $user->iconPath }}" style="width: 180px;height: 180px;" class="img-responsive" alt="Icon">
         </div>
         <div class="profile-userpic-edit profile-userbuttons">
             <button onclick="uploadImage();openUploadIcon();" class="btn btn-warning btn-sm">更換圖片</button>

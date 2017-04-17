@@ -62,7 +62,7 @@ Route::delete('/group/{id}', 'GroupController@destroy')->name('group.delete');
 Route::get('/group_form', 'GroupFormController@index')->name('group_form.list');
 Route::get('/group_form/{id}', 'GroupFormController@show')->name('group_form.info');
 
-Route::put('/group_form/{id}/approve', 'GroupFormController@approve')->name('group_form.approve');
+Route::put('    /group_form/{id}/approve', 'GroupFormController@approve')->name('group_form.approve');
 Route::put('/group_form/{id}/reject', 'GroupFormController@reject')->name('group_form.reject');
 Route::put('/group_form/{id}/read', 'GroupFormController@form_read')->name('group_form.read');
 

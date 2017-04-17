@@ -76,38 +76,41 @@
 
     <hr style="width: 100%; color: black; height: 1px; background-color:gray;" >
     <hr>
-    <div class="row">
-        <div class="col-lg-12">
-            <ul class="mendi-social-networks">
-                <li class="facebook">
-                    <a href="" title="">
-                        <i class="fa fa-facebook"> </i>
-                        <p>JOIN US ON FACEBOOK</p>
-                        <span class="followers">Facebook</span>
-                    </a>
-                </li>
-                <li class="twitter">
-                    <a href="" title="">
-                        <i class="fa fa-twitter"> </i>
-                        <p>FOLLOW US ON TWITTER</p>
-                        <span class="followers">Twitter</span>
-                    </a>
-                </li>
-                <li class="googleplus">
-                    <a href="" title="">
-                        <i class="icon-youtube"> </i>
-                        <p>SEE THE VIDEO ON YOUTUBE</p>
-                        <span class="followers">Youtube</span>
-                    </a>
-                </li>
-                <li class="linkedin">
-                    <a href="" title="">
-                        <i class="fa fa-linkedin"> </i>
-                        <p>CONTACT US</p>
-                        <span class="contact">umac.mo</span>
-                    </a>
-                </li>
-            </ul>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="mendi-social-networks">
+                    <li class="facebook">
+                        <a href="" title="">
+                            <i class="fa fa-facebook"> </i>
+                            <p>JOIN US ON FACEBOOK</p>
+                            <span class="followers">Facebook</span>
+                        </a>
+                    </li>
+                    <li class="twitter">
+                        <a href="" title="">
+                            <i class="fa fa-twitter"> </i>
+                            <p>FOLLOW US ON TWITTER</p>
+                            <span class="followers">Twitter</span>
+                        </a>
+                    </li>
+                    <li class="googleplus">
+                        <a href="" title="">
+                            <i class="icon-youtube"> </i>
+                            <p>SEE US ON YOUTUBE</p>
+                            <span class="followers">Youtube</span>
+                        </a>
+                    </li>
+                    <li class="linkedin">
+                        <a href="" title="">
+                            <i class="fa fa-linkedin"> </i>
+                            <p>CONTACT US</p>
+                            <span class="contact">umac.mo</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
+
     </div>
 </footer>
