@@ -53,6 +53,11 @@ class Event extends Model
     	return $this->belongsToMany('App\Models\User', 'users_events_relation', 'event_id', 'user_id')->orderBy('created_at', 'desc');
     }
 
+    public function all_organizer()
+    {
+        return $this->belongsToMany('App\Models\Group', 'groups_events_relation', 'event_id', 'group_id')->orderBy('created_at', 'desc');
+    }
+
     public function organizer()
     {
     	return $this->belongsToMany('App\Models\Group', 'groups_events_relation', 'event_id', 'group_id')->where('main', 1)->orderBy('created_at', 'desc');
@@ -66,6 +71,16 @@ class Event extends Model
     public function participants()
     {
     	return $this->belongsToMany('App\Models\User', 'participants', 'event_id', 'user_id')->orderBy('created_at', 'desc');
+    }
+
+    public function toFeatures()
+    {
+        $features = $this->bonus_skills;
+        array_push($features, $this->location);
+        array_push($features, $this->type);
+        array_push($features, $this->organizer[0]->id);
+
+        return $features;
     }
 
     public function scopeSearch($query, Array $keywords)

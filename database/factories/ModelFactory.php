@@ -137,9 +137,26 @@ $factory->define(App\Models\Event::class, function(Faker\Generator $faker)
 
     $startDate = new Carbon($signUpEndDate->format('Y-m-d H:i:s'));
     $startDate->addDays(rand(5, 10));
+    $startDate->hour = rand(8, 18);
+    $startDate->minute = rand(0, 1) * 30;
+    $startDate->second = 0;
 
     $endDate = new Carbon($startDate->format('Y-m-d H:i:s'));
-    $endDate->addDays(rand(1, 3));
+    if (rand(0, 2) > 0)
+    {
+        $endDate->addHours(rand(3, 12));
+
+        if ($endDate->day > $startDate->day)
+        {
+            $endDate->day = $startDate->day;
+            $endDate->hour = 23;
+            $endDate->minute = 0;
+        }
+    }
+    else
+    {
+        $endDate->addDays(rand(2, 3));
+    }
 
     if ($endDate->lt($now))
     {
@@ -178,9 +195,26 @@ $factory->state(App\Models\Event::class, 'one_year_ago', function(Faker\Generato
 
     $startDate = new Carbon($signUpEndDate->format('Y-m-d H:i:s'));
     $startDate->addDays(rand(5, 10));
+    $startDate->hour = rand(8, 18);
+    $startDate->minute = rand(0, 1) * 30;
+    $startDate->second = 0;
 
     $endDate = new Carbon($startDate->format('Y-m-d H:i:s'));
-    $endDate->addDays(rand(1, 3));
+    if (rand(0, 2) > 0)
+    {
+        $endDate->addHours(rand(3, 12));
+
+        if ($endDate->day > $startDate->day)
+        {
+            $endDate->day = $startDate->day;
+            $endDate->hour = 23;
+            $endDate->minute = 0;
+        }
+    }
+    else
+    {
+        $endDate->addDays(rand(2, 3));
+    }
 
     if ($endDate->lt($now))
     {
