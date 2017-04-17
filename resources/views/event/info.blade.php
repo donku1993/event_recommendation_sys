@@ -98,6 +98,23 @@
 
                 </div>
 
+                @if( $status_array['is_event_manager'] )
+                    <div class="right-nav" style="text-align: center">
+                        <div class="col-md-2 pull-right">
+                            <div class="panel panel-default">
+                                <div class="panel panel-heading">
+                                    已參加的成員
+                                </div>
+                                <div class="panel panel-body">
+                                    <a class="check-all" href="/event/{{ $event->id }}/member">
+                                        <i>查看全部</i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
                 <div class="col-md-12 ">
                     <hr style="width: 100%; color: black; height: 1px; background-color:gray;" >
                     <a data-remote="true" href="javascript:void(0)" id="latest">
@@ -143,25 +160,6 @@
                         </div>
                     @endforeach
                 </div>
-
-                @if( $status_array['is_event_manager'] )
-                    <div class="right-nav" style="text-align: center">
-                        <div class="col-md-2 pull-right">
-                            <div class="panel panel-default">
-                                <div class="panel panel-heading">
-                                    已參加的成員
-                                </div>
-                                <div class="panel panel-body">
-                                    <a class="check-all" href="/event/{{ $event->id }}/member">
-                                        <i>查看全部</i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-
-
 
             </div>
         </div>

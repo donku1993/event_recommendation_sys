@@ -248,17 +248,19 @@
         $(".submit").click(function () {
 
             $.ajax({
-                url: "/event/{{ $event->id }}",
+                url: "/event",
                 data: $('#registration-form-event').serialize(),
                 type:"POST",
-                dataType:'text',
+                dataType:'json',
 
                 success: function(data){
                     if (data['message'] == "success"){
+
                         var InterValObj;
                         var count = 3;
                         var curCount;
 
+                        $(".modal-title").text("修改成功");
                         $(".modal-body").html("<strong>活動修改成功!</strong>");
 
                         curCount = count;
@@ -269,18 +271,21 @@
                             }
                             else {
                                 curCount--;
+                                $(".modal-title").text("活動修改成功");
                                 $(".modal-body").html("<strong>活動修改成功!</strong><br>"+"系統會在" + curCount +"秒後跳到首頁！");
                             }
                         }, 1000);
 
                         $('#myModal').modal('show');
                     }
+
+
                 },
 
                 error:function(data){
                     console.log(data['responseText']);
                     $(".modal-title").text("修改失敗");
-                    $(".modal-body").text(data['message']);
+                    $(".modal-body").text(data['responseText']);
                     $('#myModal').modal('show');
                 }
             });
@@ -323,11 +328,12 @@
         //date picker
 
         $(function(){
-            var today = new Date().toLocaleDateString();
+            var tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
 
             $('#startDateBox').datetimepicker({
                 format:'Y/m/d H:i',
-                minDate: today,
+                minDate: tomorrow,
                 onShow:function( ct ){
                     this.setOptions({
                         maxDate:$('#endDateBox').val()?$('#endDateBox').val():false
@@ -346,7 +352,7 @@
 
             $('#signUpEndDateBox').datetimepicker({
                 format:'Y/m/d H:i',
-                minDate: today,
+                minDate: tomorrow,
                 onShow:function( ct ){
                     this.setOptions({
                         maxDate:$('#startDateBox').val()?$('#startDateBox').val():false

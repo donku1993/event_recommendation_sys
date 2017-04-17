@@ -226,7 +226,7 @@
                 url: "/group",
                 data: $('#registration-form-group').serialize(),
                 type:"POST",
-                dataType:'text',
+                dataType:'json',
 
                 success: function(data){
                     if (data['message'] == "success"){
@@ -234,6 +234,7 @@
                         var count = 3;
                         var curCount;
 
+                        $(".modal-title").text("递交成功");
                         $(".modal-body").html("<strong>递交申請成功!</strong>");
 
                         curCount = count;
@@ -244,6 +245,7 @@
                             }
                             else {
                                 curCount--;
+                                $(".modal-title").text("递交成功");
                                 $(".modal-body").html("<strong>递交申請成功!</strong><br>"+"系統會在" + curCount +"秒後轉到待批頁！");
                             }
                         }, 1000);
@@ -254,7 +256,7 @@
 
                 error:function(data){
                     $(".modal-title").text("申請失敗");
-                    $(".modal-body").text(data['message']);
+                    $(".modal-body").text(data['responseText']);
                     $('#myModal').modal('show');
                 }
             });

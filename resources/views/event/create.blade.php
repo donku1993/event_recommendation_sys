@@ -106,7 +106,6 @@
                                 </div>
                             </div>
 
-
                             <br><br>
 
                             <div class="panel panel-info">
@@ -252,36 +251,41 @@
                 url: "/event",
                 data: $('#registration-form-event').serialize(),
                 type:"POST",
-                dataType:'text',
+                dataType:'json',
 
                 success: function(data){
-                    if (data['message'] == "success"){
-                        var InterValObj;
-                        var count = 3;
-                        var curCount;
+                        if (data['message'] == "success"){
 
-                        $(".modal-body").html("<strong>活動建立成功!</strong>");
+                            var InterValObj;
+                            var count = 3;
+                            var curCount;
 
-                        curCount = count;
-                        InterValObj = window.setInterval(function () {
-                            if (curCount == 0) {
-                                window.clearInterval(InterValObj);
-                                window.location = "/";
-                            }
-                            else {
-                                curCount--;
-                                $(".modal-body").html("<strong>活動建立成功!</strong><br>"+"系統會在" + curCount +"秒後跳到首頁！");
-                            }
-                        }, 1000);
+                            $(".modal-title").text("建立成功");
+                            $(".modal-body").html("<strong>活動建立成功!</strong>");
 
-                        $('#myModal').modal('show');
-                    }
+                            curCount = count;
+                            InterValObj = window.setInterval(function () {
+                                if (curCount == 0) {
+                                    window.clearInterval(InterValObj);
+                                    window.location = "/";
+                                }
+                                else {
+                                    curCount--;
+                                    $(".modal-title").text("建立成功");
+                                    $(".modal-body").html("<strong>活動建立成功!</strong><br>"+"系統會在" + curCount +"秒後跳到首頁！");
+                                }
+                            }, 1000);
+
+                            $('#myModal').modal('show');
+                        }
+
+
                 },
 
                 error:function(data){
                     console.log(data['responseText']);
                     $(".modal-title").text("建立失敗");
-                    $(".modal-body").text(data['message']);
+                    $(".modal-body").text(data['responseText']);
                     $('#myModal').modal('show');
                 }
             });
@@ -324,11 +328,12 @@
         //date picker
 
         $(function(){
-            var today = new Date().toLocaleDateString();
+            var tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
 
             $('#startDateBox').datetimepicker({
                 format:'Y/m/d H:i',
-                minDate: today,
+                minDate: tomorrow,
                 onShow:function( ct ){
                     this.setOptions({
                         maxDate:$('#endDateBox').val()?$('#endDateBox').val():false
@@ -347,7 +352,7 @@
 
             $('#signUpEndDateBox').datetimepicker({
                 format:'Y/m/d H:i',
-                minDate: today,
+                minDate: tomorrow,
                 onShow:function( ct ){
                     this.setOptions({
                         maxDate:$('#startDateBox').val()?$('#startDateBox').val():false

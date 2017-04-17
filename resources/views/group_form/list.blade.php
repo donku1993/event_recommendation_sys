@@ -5,23 +5,19 @@
 
     <div class="container">
         <div class="row">
+            <div class="event-item col-md-12" style="margin-bottom: 10px">
+                @foreach($group_forms as $group_form)
+                        <div class="col-md-3">
+                            <a href="/group_form/{{ $group_form->id }}">
+                                <img src="{{ $group_form->iconPath }}" alt="" style="width: 210px; height: 210px">
+                            </a>
+                            <h4 class="group-name-list" style="text-align: center; width: 210px; color: #368976;"><i class="user-groups glyphicon glyphicon-tower"></i></i> {{ $group_form->name }}</h4>
+
+                        </div>
+                @endforeach
+            </div>
 
         </div>
-        @foreach($group_forms as $group_form)
-            <div class="event-item col-md-2">
-                <div class="col-md-6">
-                    <a href="/group_form/{{ $group_form->id }}">
-                        <img src="{{ $group_form->iconPath }}" alt="" style="width: 210px; height: 210px">
-                    </a>
-                    <h4 class="group-name-list" style="text-align: center; width: 210px; color: #368976;"><i class="user-groups glyphicon glyphicon-tower"></i></i> {{ $group_form->name }}</h4>
-
-                </div>
-
-
-            </div>
-            <div class="col-md-1"></div>
-        @endforeach
-
     </div>
 
 @endsection

@@ -81,7 +81,7 @@
 
                     <div class="group-form-remark " style="margin-bottom: 30px">
                         <label for="remark">Remark:</label>
-                        <textarea name="remark" class="form-control" rows="4"></textarea>
+                        <textarea name="remark" class="form-control" rows="4" placeholder="Enter the remark for the group as suggestion."></textarea>
                     </div>
 
 
