@@ -75,9 +75,30 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\Event', 'participants', 'user_id', 'event_id')->orderBy('created_at', 'desc');
     }
 
-    public function events_history()
+    public function history_events()
     {
-        return $this->belongsToMany('App\Models\Event', 'participants', 'user_id', 'event_id')->where('status', 2)->orderBy('created_at', 'desc');
+        return $this->belongsToMany('App\Models\Event', 'participants', 'user_id', 'event_id')->where('events.status', 2)->orderBy('created_at', 'desc');
+    }
+
+    public function history_events_with_good_grade()
+    {
+        return $this->belongsToMany('App\Models\Event', 'participants', 'user_id', 'event_id')
+            ->where(function ($query) {
+                return $query
+                    ->where(function ($query) {
+                        return $query->whereIn('participants.grade_to_user', [4, 5])
+                                    ->whereNull('participants.grade_to_event');
+                    })
+                    ->orWhere(function ($query) {
+                        return $query->whereNull('participants.grade_to_user')
+                                    ->whereIn('participants.grade_to_event', [4, 5]);
+                    })
+                    ->orWhere(function ($query) {
+                        return $query->whereIn('participants.grade_to_user', [4, 5])
+                                    ->whereIn('participants.grade_to_event', [4, 5]);
+                    });
+            })
+            ->orderBy('created_at', 'desc')->withPivot('grade_to_user', 'grade_to_event');
     }
 
     public function scopeNormalUser($query)

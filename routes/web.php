@@ -76,3 +76,6 @@ Route::put('/participant/{event_id}/evaluation', 'ParticipantController@evaluati
 // Record
 Route::get('/record/group/{id}', 'RecordController@groupRecord')->name('record.group');
 Route::get('/record/event/{id}', 'RecordController@eventRecord')->name('record.event');
+
+
+Route::get('/test', 'EventController@calculate_all_similarity');

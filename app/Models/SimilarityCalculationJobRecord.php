@@ -28,14 +28,24 @@ class SimilarityCalculationJobRecord extends Model
     // 1 -> running
     // 2 -> finished
 
-    public function scopeCountWaitingOrRunningJobWithSameUserID($query, int $user_id)
+    public function scopeCountWaitingOrRunningJobWithSameUserIDQuery($query, int $user_id)
     {
-    	return $query->where('pass_id', $user_id)->where('type', self::USER_GIVEN_TYPE)->whereIn('status', self::$runningOrWaiting)->get()->count();
+    	return $query->where('pass_id', $user_id)->where('type', self::USER_GIVEN_TYPE)->whereIn('status', self::$runningOrWaiting);
     }
 
-    public function scopeCountWaitingOrRunningJobWithSameEventID($query, int $event_id)
+    public function scopeCountWaitingOrRunningJobWithSameEventIDQuery($query, int $event_id)
     {
-    	return $query->where('pass_id', $event_id)->where('type', self::EVENT_GIVEN_TYPE)->whereIn('status', self::$runningOrWaiting)->get()->count();
+    	return $query->where('pass_id', $event_id)->where('type', self::EVENT_GIVEN_TYPE)->whereIn('status', self::$runningOrWaiting);
+    }
+
+    public static function countWaitingOrRunningJobWithSameUserID(int $user_id)
+    {
+        return self::countWaitingOrRunningJobWithSameUserIDQuery($user_id)->get()->count();
+    }
+
+    public static function countWaitingOrRunningJobWithSameEventID(int $event_id)
+    {
+        return self::scopeCountWaitingOrRunningJobWithSameEventIDQuery($event_id)->get()->count();
     }
 
     public function toRunning()

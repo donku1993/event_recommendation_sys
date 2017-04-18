@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Event;
 use App\Models\Group;
@@ -12,33 +13,216 @@ use App\Jobs\similarityCalculationForUserGivenJob;
 use App\Jobs\similarityCalculationForEventGivenJob;
 use App\Jobs\recommendationMailSendingJob;
 
+use App\Models\CosineSimilarity;
+
 trait RecommendationTrait
 {
 	public function calculate_similarity(int $user_id, int $event_id)
 	{
 		$mark = 0;
 
-		$user = User::with(['markedGroup', 'markedEvent', 'events_history'])->find($user_id);
-		$event = Event::with(['organizer', 'co_organizer'])->find($event_id);
+		$user = User::find($user_id);
+		$event = Event::find($event_id);
 
-		// interests and skills compare
+		// interests and skills compare, grade: 0 to 5
+		$mark += $this->interest_skills_compare($user, $event);
 
-		// time compare
+		// time compare, grade: 0 to 3
+		$mark += $this->time_compare($user, $event);
 
-		// address compare
+		// address compare, grade: 0 to 1
+		$mark += $this->address_compare($user, $event);
 
-		// user's marked groups are organizer or co_organizer?
+		// user's marked groups are organizer or co_organizer? grade: 0 to 5
+		$mark += $this->is_created_by_marked_group($user, $event);
 
-		// user's marked events are create by the same organizer or co_organizer?
+		// user's marked events are create by the same organizer or co_organizer?: 0 to 5
+		$mark += $this->is_created_by_same_group_of_marked_event($user, $event);
 
-		// user's marked events: compare the similarity of the events (cosine similarity)
+		// user's marked events: compare the similarity of the events (cosine similarity): 0 to 5
+		$mark += $this->is_similarity_to_marked_events($user, $event);
 
-		// user's event_history which has evaluation mark 4, 5: compare the similarity of the events (cosine similarity)
+		// user's history events which has evaluation mark 4, 5: compare the similarity of the events (cosine similarity): 0 to 5
+		$mark += $this->is_similarity_to_history_events($user, $event);
 
 		return $mark;
 	}
 
-	public function fireSimilarityCalculateUserGivenJob(int $user_id)
+	protected function interest_skills_compare(User $user, Event $event)
+	{
+		$user_interest_skills = $user->interest_skills;
+		$event_bonus_skills = $event->bonus_skills;
+
+		$all = 0;
+		$match = 0;
+
+		foreach ($event_bonus_skills as $key => $value)
+		{
+			$all += ($value) ? 1 : 0;
+			$match += ($value && $value == $user_interest_skills[$key]) ? 1 : 0;
+		}
+
+		return $match / $all * 5;
+	}
+
+	protected function time_compare(User $user, Event $event)
+	{
+		$user_avaliable_time = $user->available_time;
+		$event_time_start = $event->startDate;
+		$event_time_end = $event->endDate;
+
+		if ($event_time_start->day !== $event_time_end->day)
+		{
+			return 0;
+		}
+		else
+		{
+			$nine_oclock = Carbon::create($event_time_start->year, $event_time_start->month, $event_time_start->day, 9, 0, 0);
+			$twelve_oclock = Carbon::create($event_time_start->year, $event_time_start->month, $event_time_start->day, 12, 0, 0);
+			$eighteen_oclock = Carbon::create($event_time_start->year, $event_time_start->month, $event_time_start->day, 18, 0, 0);
+			$twenty_two_oclock = Carbon::create($event_time_start->year, $event_time_start->month, $event_time_start->day, 22, 0, 0);
+
+			$all = $event_time_start->diffInMinutes($event_time_end, false);;
+			$match = 0;
+			$end = false;
+
+        	// 09:00-12:00
+			if ($user_avaliable_time[0] && $event_time_start->hour < 12)
+			{
+				if ($event_time_end->hour < 12)
+				{
+					$match = $event_time_start->diffInMinutes($event_time_end, false);
+					$end = true;
+				} else {
+					$match = $event_time_start->diffInMinutes($eighteen_oclock, false);
+				}
+			}
+
+			$event_time_start = $twelve_oclock;
+        	// 12:00-18:00
+			if (!$end && $user_avaliable_time[1] && $event_time_start->hour < 18)
+			{
+				if ($event_time_end->hour < 18)
+				{
+					$match = $event_time_start->diffInMinutes($event_time_end, false);
+					$end = true;
+				} else {
+					$match = $event_time_start->diffInMinutes($twelve_oclock, false);
+				}
+			}
+			$event_time_start = $eighteen_oclock;
+
+        	// 18:00-22:00
+        	if (!$end && $user_avaliable_time[2] && $event_time_start->hour < 22)
+        	{
+				if ($event_time_end->hour < 22)
+				{
+					$match = $event_time_start->diffInMinutes($event_time_end, false);
+					$end = true;
+				} else {
+					$match = $event_time_start->diffInMinutes($twenty_two_oclock, false);
+				}
+        	}
+
+        	return $match / $all * 3;
+		}
+	}
+
+	protected function address_compare(User $user, Event $event)
+	{
+		$user_avaliable_area = $user->available_area;
+		$event_location = $event->location;
+
+		return ($user_avaliable_area[$event_location]) ? 1 : 0;
+	}
+
+	protected function is_created_by_marked_group(User $user, Event $event)
+	{
+		$user_marked_groups = $user->markedGroup->pluck('id');
+		$event_organizers = $event->all_organizer->pluck('id');
+
+		$all = $event_organizers->count();
+		$match = $event_organizers->intersect($user_marked_groups)->count();
+
+		return $match / $all * 5;
+	}
+
+	protected function is_created_by_same_group_of_marked_event(User $user, Event $event)
+	{
+		$user_marked_event = $user->markedEvent;
+		$group_list = collect([]);
+		$event_organizers = $event->all_organizer->pluck('id');
+
+		foreach ($user_marked_event as $event)
+		{
+			$group_list = $group_list->merge($event->all_organizer->pluck('id'));
+		}
+
+		$group_list = $group_list->unique();
+
+		$all = $event_organizers->count();
+		$match = $event_organizers->intersect($group_list)->count();
+
+		return $match / $all * 5;
+	}
+
+	protected function is_similarity_to_marked_events(User $user, Event $event)
+	{
+		$user_marked_events = $user->markedEvent;
+		$sim_grade_list = collect([]);
+		$feature = $event->toFeatures();
+
+		foreach ($user_marked_events as $user_marked_event)
+		{
+			if ($event->id != $user_marked_event->id)
+			{
+				$sim_grade_list->push(CosineSimilarity::tanimoto_similarity($feature, $user_marked_event->toFeatures()));
+			}
+		}
+
+		$sim_grade_list = $sim_grade_list->filter(function ($value, $key){
+			return $value > 0.5;
+		});
+
+		if ($sim_grade_list->count() == 0)
+		{
+			return 0;
+		}
+
+		$average = $sim_grade_list->sum() / $sim_grade_list->count();
+
+		return $average * 5;
+	}
+
+	protected function is_similarity_to_history_events(User $user, Event $event)
+	{
+		$user_history_events = $user->history_events_with_good_grade;
+		$sim_grade_list = collect([]);
+		$feature = $event->toFeatures();
+
+		foreach ($user_history_events as $user_history_event)
+		{
+			if ($event->id != $user_history_event->id)
+			{
+				$sim_grade_list->push(CosineSimilarity::tanimoto_similarity($feature, $user_history_event->toFeatures()));
+			}
+		}
+
+		$sim_grade_list = $sim_grade_list->filter(function ($value, $key){
+			return $value > 0.5;
+		});
+
+		if ($sim_grade_list->count() == 0)
+		{
+			return 0;
+		}
+
+		$average = $sim_grade_list->sum() / $sim_grade_list->count();
+
+		return $average * 5;
+	}
+
+	protected function fireSimilarityCalculateUserGivenJob(int $user_id)
 	{
 		if (SimilarityCalculationJobRecord::countWaitingOrRunningJobWithSameUserID($user_id) == 0)
 		{
@@ -46,7 +230,7 @@ trait RecommendationTrait
 		}
 	}
 
-	public function fireSimilarityCalculateEventGivenJob(int $event_id)
+	protected function fireSimilarityCalculateEventGivenJob(int $event_id)
 	{
 		if (SimilarityCalculationJobRecord::countWaitingOrRunningJobWithSameEventID($event_id) == 0)
 		{
@@ -54,7 +238,7 @@ trait RecommendationTrait
 		}
 	}
 
-	public function fireRecommendationMailSendingJob(int $user_id, int $event_id)
+	protected function fireRecommendationMailSendingJob(int $user_id, int $event_id)
 	{
 		$user = User::find($user_id);
 		$event = Event::find($event_id);
@@ -65,7 +249,7 @@ trait RecommendationTrait
 		}
 	}
 
-	public function update_similarity(int $user_id, int $event_id, double $value)
+	public function update_similarity(int $user_id, int $event_id, float $value)
 	{
 		$s = Similarity::where('user_id', $user_id)->where('event_id', $event_id)->first();
 
@@ -79,7 +263,7 @@ trait RecommendationTrait
 		}
 	}
 
-	public function store_similarity(int $user_id, int $event_id, double $value)
+	public function store_similarity(int $user_id, int $event_id, float $value)
 	{
 		if (User::find($user_id) && Event::find($event_id))
 		{
@@ -172,12 +356,14 @@ trait RecommendationTrait
 		{
 			return $this->randomJoinableEvents($numberOfEvents);
 		}
+
 		// calculate the average
 		$average = $similarities->sum('value') / $similarities->count();
 		// filter out the events that the value is lower than the average
 		$events_after_filter = $similarities->filter(function ($value, $key) use ($average) {
 			return ($value->value >= $average);
 		});
+
 		// output to array format
 		$final_event_id_list = $events_after_filter->pluck('event_id')->toArray();
 

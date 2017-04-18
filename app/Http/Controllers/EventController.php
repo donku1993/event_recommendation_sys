@@ -426,4 +426,13 @@ class EventController extends Controller
 
         return ['message' => 'there is no event with id = ' . $id];
     }
+
+    public function calculate_all_similarity()
+    {
+        $users = User::all();
+
+        foreach ($users as $user) {
+            $this->fireSimilarityCalculateUserGivenJob($user->id);
+        }
+    }
 }

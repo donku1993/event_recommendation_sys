@@ -15,7 +15,7 @@ class similarityCalculationForUserGivenJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, RecommendationTrait;
 
-    protected $user_id
+    protected $user_id;
     protected $similarity_calculation_job_record;
 
     /**
@@ -28,7 +28,7 @@ class similarityCalculationForUserGivenJob implements ShouldQueue
         $this->user_id = $user_id;        
 
         $this->similarity_calculation_job_record = SimilarityCalculationJobRecord::create([
-                'pass_id' => $event_id,
+                'pass_id' => $user_id,
                 'type' => SimilarityCalculationJobRecord::USER_GIVEN_TYPE,
                 'status' => SimilarityCalculationJobRecord::WAITING
             ]);
