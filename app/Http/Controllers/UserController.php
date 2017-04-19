@@ -9,8 +9,6 @@ class UserController extends Controller
     public function status_array(User $user)
     {
         return [
-                'is_login' => $this->isLogin(),
-                'is_admin' => $this->isAdmin(),
                 'is_self' => $this->isSelf($user),
             ];
     }
