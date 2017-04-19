@@ -13,8 +13,6 @@ class GroupController extends Controller
     public function status_array(Group $group)
     {
         return [
-                'is_login' => $this->isLogin(),
-                'is_admin' => $this->isAdmin(),
                 'is_marked_group' => $this->isMarkedGroup($group),
                 'is_group_manager' => $this->isGroupManager($group),
             ];

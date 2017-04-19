@@ -6,14 +6,6 @@ use App\Models\Helper;
 
 class GroupFormController extends Controller
 {
-    public function status_array(Group $group)
-    {
-        return [
-                'is_login' => $this->isLogin(),
-                'is_admin' => $this->isAdmin(),
-            ];
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -46,10 +38,8 @@ class GroupFormController extends Controller
 
         if ($group_form)
         {
-            $status_array = $this->status_array($group_form);
             $data = [
-                'group_form' => $group_form,
-                'status_array' => $status_array
+                'group_form' => $group_form
             ];
 
             return view('group_form.info', $data);

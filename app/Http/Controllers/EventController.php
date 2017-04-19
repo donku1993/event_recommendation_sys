@@ -20,8 +20,6 @@ class EventController extends Controller
     protected function status_array(Event $event = null)
     {
         return [
-                'is_login' => $this->isLogin(),
-                'is_admin' => $this->isAdmin(),
                 'is_participant' => $this->isParticipant($event),
                 'is_marked_event' => $this->isMarkedEvent($event),
                 'is_event_manager' => $this->isEventManager($event),
