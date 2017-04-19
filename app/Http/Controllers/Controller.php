@@ -23,15 +23,5 @@ class Controller extends BaseController
     public function __construct()
     {
     	View::share('constant_array', Helper::AllConstantArray()['constant_array']);
-        View::share('auth_status_array', $this->auth_status_array());
-    }
-
-    public function auth_status_array()
-    {
-        return [
-            'is_login' => $this->isLogin(),
-            'is_admin' => $this->isAdmin(),
-            'is_manager' => $this->isManager()
-        ];
     }
 }

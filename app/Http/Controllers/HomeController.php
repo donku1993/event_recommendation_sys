@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\RecommendationTrait;
 
@@ -18,6 +19,15 @@ class HomeController extends Controller
         parent::__construct();
     }
 
+    public function status_array()
+    {
+        return [
+                'is_login' => $this->isLogin(),
+                'is_admin' => $this->isAdmin(),
+                'is_manager' => $this->isManager(),
+            ];
+    }
+
     /**
      * Show the application dashboard.
      *
@@ -27,7 +37,8 @@ class HomeController extends Controller
     {
         $data = [
                     'newest_events' => $this->newestEvents(),
-                    'most_popular_events' => $this->mostPopularEvents()
+                    'most_popular_events' => $this->mostPopularEvents(),
+                    'recommend_events' => ($this->isLogin()) ? $this->recommendation_user_given(Auth::user()->id) : $this->randomJoinableEvents(4),
                 ];
 
         return view('home', $data);

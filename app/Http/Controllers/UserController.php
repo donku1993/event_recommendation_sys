@@ -9,7 +9,10 @@ class UserController extends Controller
 {
     public function status_array(User $user)
     {
-        return [
+        return [    
+                'is_login' => $this->isLogin(),
+                'is_admin' => $this->isAdmin(),
+                'is_manager' => $this->isManager(),
                 'is_self' => $this->isSelf($user),
             ];
     }
@@ -34,13 +37,12 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::with(['markedGroup', 'markedEvent', 'groups', 'events'])->find($id);
+        $user = User::with(['markedGroup', 'markedEvent', 'groups', 'history_events', 'joined_not_begin_events'])->find($id);
 
         if ($user)
         {
             $status_array = $this->status_array($user);
             $data = [
-
                     'user' => $user,
                     'status_array' => $status_array
                 ];

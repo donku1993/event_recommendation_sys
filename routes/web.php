@@ -80,8 +80,10 @@ Route::group(['middleware' => 'browser_checker'], function() {
 	Route::get('/record/event/{id}', 'RecordController@eventRecord')->name('record.event');
 });
 
-Route::get('/browser_checker', function(){
-	echo 'using firefox';
-});
+/*
+Route::get('/newest_events', 'HomeController@newest_events');
+Route::get('/most_popular_events', 'HomeController@most_popular_events');
+Route::get('/recommend_events', 'HomeController@recommend_events');
+*/
 
 Route::get('/test', 'EventController@calculate_all_similarity');

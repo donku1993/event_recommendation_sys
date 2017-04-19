@@ -2,7 +2,6 @@
 
 @section('content')
     @include('layouts.search-template') {{--need to edit later--}}
-
     <div class="container">
         <div class="row">
             <div class="event-item col-md-12" style="margin-bottom: 10px">
@@ -18,6 +17,7 @@
             </div>
 
         </div>
+        {{ $group_forms->appends(["group_name" => $keywords->group_name, "status" => $keywords->status])->links() }}
     </div>
 
 @endsection
