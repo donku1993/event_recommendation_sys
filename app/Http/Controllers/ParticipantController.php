@@ -9,7 +9,7 @@ use App\Models\Helper;
 use App\Models\Participant;
 
 class ParticipantController extends Controller
-{    
+{
 	/**
      * Give a grade to member by manager
      *

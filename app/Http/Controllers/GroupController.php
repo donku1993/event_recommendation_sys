@@ -13,6 +13,9 @@ class GroupController extends Controller
     public function status_array(Group $group)
     {
         return [
+                'is_login' => $this->isLogin(),
+                'is_admin' => $this->isAdmin(),
+                'is_manager' => $this->isManager(),
                 'is_marked_group' => $this->isMarkedGroup($group),
                 'is_group_manager' => $this->isGroupManager($group),
             ];
@@ -89,6 +92,8 @@ class GroupController extends Controller
                             ]
                         );
 
+        dd($request->all());
+
         $this->validate($request, $validate_array);
 
         $data = $request->all();
@@ -154,7 +159,8 @@ class GroupController extends Controller
     {
         $group = Group::isGroup()->with(['markedUsers', 'manager'])->find($id);
 
-        if ($group)
+        if ($group && $this->isGroupManager($group)
+            || $this->isAdmin())
         {
             $status_array = $this->status_array($group);
             $data = [
@@ -216,6 +222,9 @@ class GroupController extends Controller
     public function update(Request $request, $id)
     {
         $validate_array = $this->basicValidationArray();
+
+        unset($validate_array['registered_id']);
+        unset($validate_array['registered_file']);
 
         $this->validate($request, $validate_array);
 

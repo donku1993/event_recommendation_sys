@@ -6,6 +6,24 @@ use App\Models\Helper;
 
 class GroupFormController extends Controller
 {
+    protected function searchValidationArray()
+    {
+        return [
+            'group_name' => 'string|nullable',
+            'status' => 'integer|nullable'
+        ];
+    }
+
+    public function status_array(Group $group = null)
+    {
+        return [
+                'is_login' => $this->isLogin(),
+                'is_admin' => $this->isAdmin(),
+                'is_manager' => $this->isManager(),
+                'is_unprocess_group_form' => $this->isUnprocessGroupForm($group),
+            ];
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,14 +31,21 @@ class GroupFormController extends Controller
      */
     public function index(Request $request)
     {
-        $this->validate($request, [
-            'group_name' => 'string|nullable',
-            'status' => 'integer|nullable'
-        ]);
+        $this->validate($request, $this->searchValidationArray());
         $keywords = $request->all();
-        $group_forms = Group::searchForm($keywords)->paginate(10);
+
+        $group_forms = Group::searchForm($keywords)->paginate(8);
+
+        foreach ($this->searchValidationArray() as $key => $value) {
+            $keywords[$key] = (!isset($keywords[$key]) || is_null($keywords[$key])) ? "" : $keywords[$key];
+        }
+
+        $status_array = $this->status_array();
+
         $data = [
-                'group_forms' => $group_forms
+                'group_forms' => $group_forms,
+                'keywords' => (object)$keywords,
+                'status_array' => $status_array
             ];
 
         return view('group_form.list', $data);
@@ -38,8 +63,11 @@ class GroupFormController extends Controller
 
         if ($group_form)
         {
+            $status_array = $this->status_array($group_form);
+
             $data = [
-                'group_form' => $group_form
+                'group_form' => $group_form,
+                'status_array' => $status_array
             ];
 
             return view('group_form.info', $data);
@@ -69,7 +97,7 @@ class GroupFormController extends Controller
             $group_form->save();
         }
 
-        return redirect()->route('group_form.info');
+        return redirect()->route('group_form.info', $group_form->id);
     }
 
     /**
@@ -95,7 +123,7 @@ class GroupFormController extends Controller
             $group_form->save();
         }
 
-        return redirect()->route('group_form.info');
+        return redirect()->route('group_form.info', $group_form->id);
     }
 
     /**

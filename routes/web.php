@@ -78,4 +78,9 @@ Route::get('/record/group/{id}', 'RecordController@groupRecord')->name('record.g
 Route::get('/record/event/{id}', 'RecordController@eventRecord')->name('record.event');
 
 
+/*
+Route::get('/newest_events', 'HomeController@newest_events');
+Route::get('/most_popular_events', 'HomeController@most_popular_events');
+Route::get('/recommend_events', 'HomeController@recommend_events');
+*/
 Route::get('/test', 'EventController@calculate_all_similarity');

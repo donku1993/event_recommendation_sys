@@ -139,6 +139,13 @@ trait ControllerHelperTrait
 		}
 	}
 
+	public function isUnprocessGroupForm(Group $group = null)
+	{
+		if (is_null($group)) return false;
+		
+		return ($group->status == 0 || $group->status == 1) ? true : false;
+	}
+
 	public function imageUpload(string $foldername, $id, $image)
 	{
 		if (is_null($image))
@@ -153,6 +160,9 @@ trait ControllerHelperTrait
 		if (!file_exists($folder_path))
 		{
 			mkdir($folder_path, 0777, true);
+		} else
+		{
+			File::cleanDirectory($folder_path);
 		}
 
 		$image->move($folder_path, $filename);
@@ -176,6 +186,9 @@ trait ControllerHelperTrait
 		if (!file_exists($folder_path))
 		{
 			mkdir($folder_path, 0777, true);
+		} else
+		{
+			File::cleanDirectory($folder_path);
 		}
 
 		$file->move($folder_path, $filename);

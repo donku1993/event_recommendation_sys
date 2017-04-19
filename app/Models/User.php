@@ -75,6 +75,11 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\Event', 'participants', 'user_id', 'event_id')->orderBy('created_at', 'desc');
     }
 
+    public function joined_not_begin_events()
+    {
+        return $this->belongsToMany('App\Models\Event', 'participants', 'user_id', 'event_id')->whereIn('events.status', [0, 1])->orderBy('created_at', 'desc');
+    }
+
     public function history_events()
     {
         return $this->belongsToMany('App\Models\Event', 'participants', 'user_id', 'event_id')->where('events.status', 2)->orderBy('created_at', 'desc');

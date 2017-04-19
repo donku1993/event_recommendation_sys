@@ -1,9 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-
-    <form method="POST"  enctype="multipart/form-data" class="form-horizontal" role="form">
-
+    <form method="POST"  enctype="multipart/form-data" class="form-horizontal" role="form" action="{{ route('group_form.approve', $group_form->id) }}">
+        {!! csrf_field() !!}
         <div class="container">
             <div class="row">
                 <div class="col-md-6 col-md-offset-3 ">
@@ -84,14 +83,13 @@
                         <textarea name="remark" class="form-control" rows="4" placeholder="Enter the remark for the group as suggestion."></textarea>
                     </div>
 
-
-                    <a class="btn btn-success" href="/group_form/{{ $group_form->id  }}/approve">Approve</a>
+                    <input class="btn btn-success" type="submit" name="submit" value="Approve">
                     <a class="btn btn-danger" style="right: 13px;position: absolute" href="/group_form/{{ $group_form->id }}/reject">Reject</a>
                 </div>
             </div>
         </div>
-
-    </form>>
+        <input type="hidden" name="_method" value="PUT">
+    </form>
 
 @endsection
 
