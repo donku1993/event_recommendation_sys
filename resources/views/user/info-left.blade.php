@@ -27,7 +27,7 @@
         <!-- SIDEBAR MENU -->
         <div class="profile-usermenu">
             <ul class="nav">
-                <li>
+                <li class="active">
                     <a href="/user/{{ $user->id }}" class="overview">
                         <i class="glyphicon glyphicon-home"></i>
                         總覽 </a>
@@ -44,12 +44,12 @@
                             活動 </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="#" class="user-groups">
                             <i class="user-groups glyphicon glyphicon-tower"></i>
                             組織</a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="#" class="user-timetable">
                             <i class="user-timetable glyphicon glyphicon-time"></i>
                             時間表</a>
                     </li>

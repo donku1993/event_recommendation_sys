@@ -108,14 +108,30 @@ function activeClass() {
         var segment_array = last_str.split( '/' );
         var last_segment = segment_array[segment_array.length - 1];
 
+        var overview = $('.overview');
+        overview.parent().removeClass('active');
+
         switch ( last_segment ){
             case 'edit':
                 var user_info = $('.user-info');
                 user_info.parent().addClass('active');
                 break;
+            case 'groups':
+                var user_groups = $('.user-groups');
+                user_groups.parent().addClass('active');
+                break;
+            case 'events':
+                var user_events = $('.user-events');
+                user_events.parent().addClass('active');
+                break;
+            case 'timetable':
+                var user_timetalbe = $('.user-timetable');
+                user_timetalbe.parent().addClass('active');
+                break;
             default:
                 break;
         }
+
     });
 }
 function openUploadIcon() {
