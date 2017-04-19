@@ -7,11 +7,11 @@
             @include('user.info-left')
 
                 <div class="col-md-9">
-                    <form action="{{ route('user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
-                        <input type="hidden" name="_method" value="PUT">
+
 
                     <div class="profile-content">
-                        <form id="user-info-form" class="form-horizontal" role="form">
+                        <form id="user-info-form" class="form-horizontal" role="form" action="{{ route('user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="_method" value="PUT">
                             {{ csrf_field() }}
 
                             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
@@ -28,17 +28,17 @@
                                 </div>
                             </div>
 
-                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                            <div class="form-group">
                                 <label for="email" class="col-md-4 control-label">E-Mail:</label>
 
                                 <div class="col-md-6">
                                     <input id="email" type="email" class="form-control" name="email" value="{{ $user->email }}" required>
 
-                                    @if ($errors->has('email'))
+{{--                                    @if ($errors->has('email'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
-                                    @endif
+                                    @endif--}}
                                 </div>
                             </div>
 
@@ -153,9 +153,6 @@
                         </form>
                     </div>
                 </div>
-
-            </form>
-
 
 
         </div>
