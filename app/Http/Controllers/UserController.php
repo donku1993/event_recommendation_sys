@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Helper;
 use App\Models\User;
 
 class UserController extends Controller
@@ -17,7 +18,7 @@ class UserController extends Controller
     {
         return [
                 'name' => 'required|max:255',
-                'email' => 'required|email|max:255|unique:users',
+                'email' => 'required|email|max:255',
                 'career' => 'required|integer',
                 'gender' => 'required|integer',
                 'allow_email' => 'required',
@@ -84,7 +85,6 @@ class UserController extends Controller
                                 $this->basicValidationArray(),
                                 array(
                                     'address_location' => 'integer',
-                                    'icon_image' => 'image',
                                     'year_of_volunteer' => 'integer',
                                     'self_introduction' => '',
                                 )
@@ -99,17 +99,17 @@ class UserController extends Controller
             || $this->isAdmin())
         {
             $data = Helper::JsonDataConverter($data, 'available_time', 'available_time');
-            $data = Helper::JsonDataConverter($data, 'interest_skills', 'interest_skills');
             $data = Helper::JsonDataConverter($data, 'available_area', 'location');
+            $data = Helper::JsonDataConverter($data, 'interest_skills', 'interest_skills');
             $user->fill([
                     'name' => $data['name'],
                     'email' => $data['email'],
                     'career' => $data['career'],
                     'gender' => $data['gender'],
                     'phone' => $data['phone'],
-                    'year_of_volunteer' => $data['year_of_volunteer'],
-                    'address_location' => $request->input('address_location', ''),
-                    'self_introduction' => $request->input('self_introduction', ''),
+                    'year_of_volunteer' => $request->input('year_of_volunteer', $user->year_of_volunteer),
+                    'address_location' => $request->input('address_location', $user->address_location),
+                    'self_introduction' => $request->input('self_introduction', $user->self_introduction),
                     'allow_email' => ($data['allow_email'] === 'true') ? 1 : 0,
                     'available_time' => $data['available_time'],
                     'available_area' => $data['available_area'],
@@ -117,14 +117,9 @@ class UserController extends Controller
                 ]);
 
             $user->save();
-
-            return [
-                'message' => 'success',
-                'user_id' => $user->id
-            ];
         }
 
-        return ['message' => 'need to be a user himself/herself or administrator.'];
+        return redirect()->route('user.edit',$user->id);
     }
 
     /**

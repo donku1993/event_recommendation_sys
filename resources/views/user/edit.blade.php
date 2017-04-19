@@ -8,7 +8,6 @@
 
                 <div class="col-md-9">
 
-
                     <div class="profile-content">
                         <form id="user-info-form" class="form-horizontal" role="form" action="{{ route('user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="_method" value="PUT">
@@ -76,7 +75,7 @@
                                 <label for="career" class="col-md-4 control-label">職業</label>
 
                                 <div class="col-md-6">
-                                    <select class="form-control" name="career" form="user_register_form" required>
+                                    <select class="form-control" name="career" required>
                                         @foreach ($constant_array['career']['value'] as $key => $value)
                                             @if( $user->career ==  $key )
                                                 <option selected value="{{ $key }}">{{ $value }}</option>
@@ -125,19 +124,19 @@
                                 @if( $user->allow_email )
                                     <div class="col-md-6">
                                         <label class="radio-inline">
-                                            <input type="radio" name="allow_email" checked> 是
+                                            <input type="radio" name="allow_email" value="true" checked> 是
                                         </label>
                                         <label class="radio-inline">
-                                            <input type="radio" name="allow_email" > 否
+                                            <input type="radio" name="allow_email" value="false"> 否
                                         </label>
                                     </div>
                                 @else
                                     <div class="col-md-6">
                                         <label class="radio-inline">
-                                            <input type="radio" name="allow_email" > 是
+                                            <input type="radio" name="allow_email" value="true"> 是
                                         </label>
                                         <label class="radio-inline">
-                                            <input type="radio" name="allow_email" checked> 否
+                                            <input type="radio" name="allow_email" value="false" checked> 否
                                         </label>
                                     </div>
                                 @endif
