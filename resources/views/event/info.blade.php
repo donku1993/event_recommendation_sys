@@ -117,8 +117,8 @@
 
                 <div class="col-md-12 ">
                     <hr style="width: 100%; color: black; height: 1px; background-color:gray;" >
-                    <a data-remote="true" href="javascript:void(0)" id="latest">
-                        <h4 style=""><i class="glyphicon glyphicon-fire"></i> 推薦活動</h4>
+                    <a data-remote="true" href="javascript:void(0)" id="also_view">
+                        <h4 style=""><i class="glyphicon glyphicon-eye-open"></i> 看過這個活動的人也看過</h4>
                     </a>
                     <hr>
 
