@@ -72,10 +72,14 @@ class EventController extends Controller
             $keywords[$key] = (!isset($keywords[$key]) || is_null($keywords[$key])) ? "" : $keywords[$key];
         }
 
+        $status_array = $this->status_array();
+
         $data = [
                 'events' => $events,
-                'keywords' => (object)$keywords
-            ];
+                'keywords' => (object)$keywords,
+                'status_array' => $status_array
+
+        ];
 
         return view('event.list', $data);
     }
@@ -92,7 +96,15 @@ class EventController extends Controller
         {
             $user = Auth::user();
 
-            return view('event.create', ['groups' => $user->groups]);
+            $status_array = $this->status_array();
+
+            $data = [
+                'groups' => $user->groups,
+                'status_array' => $status_array
+            ];
+
+
+            return view('event.create', $data);
         }
     }
 
@@ -141,7 +153,7 @@ class EventController extends Controller
 
             if ($event)
             {
-                $event->previewImage = $this->imageUpload('event_cover', $event->id, $request->input('previewImage', null));
+                $event->previewImage = $this->imageUpload('event_cover', $event->id, $request->file('previewImage', null));
                 $event->save();
 
                 DB::table('groups_events_relation')->insert([
@@ -397,7 +409,7 @@ class EventController extends Controller
             || $this->isAdmin())
         {
             $event->fill([
-                    'previewImage' => $this->imageUpload('event_cover', $event->id, $request->input('previewImage', null)),
+                    'previewImage' => $this->imageUpload('event_cover', $event->id, $request->file('previewImage', null)),
                 ]);
 
             $event->save();

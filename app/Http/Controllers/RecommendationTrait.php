@@ -463,20 +463,53 @@ trait RecommendationTrait
 		return $events;
 	}
 
-	public function newestEvents()
+	public function newestEvents(int $num = null)
 	{
 		$events = Event::orderBy('created_at', 'desc')->get();
 
-		return Event::getJoinable($events)->take(4);
+		if (!is_null($num))
+		{
+			return Event::getJoinable($events)->take($num);
+		}
+
+		return Event::getJoinable($events);
 	}
 
-	public function mostPopularEvents()
+	public function mostPopularEvents(int $num = null)
 	{
 		$events = Event::all()->sortByDesc(function ($event, $key) {
 			return $event->numberOfJoin;
 		});
 
-		return Event::getJoinable($events)->take(4);
+		if (!is_null($num))
+		{
+			return Event::getJoinable($events)->take($num);
+		}
+
+		return Event::getJoinable($events);
+	}
+
+	public function sort_by_recommendation_user_given(int $user_id)
+	{
+		// get all the similarity value of the user to all events
+		$similarities = Similarity::where('user_id', $user_id)->orderBy('value', 'desc')->get();
+		// filter out the similarity which for the ended event
+		$similarities = $similarities->filter(function ($value, $key) {
+			return $value->isForJoinableEvent;
+		});
+
+		// output to array format
+		$final_event_id_list = $similarities->pluck('event_id')->toArray();
+
+		// get the events that can be join
+		$events = Event::whereIn('id', $final_event_id_list)->get();
+
+		// sorted it by similarity value on desc
+		$events = $events->sortBy(function($event) use ($final_event_id_list) {
+			return array_search($event->id, $final_event_id_list);
+		});
+
+		return $events;
 	}
 
 	public function randomJoinableEvents(int $numberOfEvents)

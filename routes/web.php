@@ -37,7 +37,7 @@ Route::group(['middleware' => 'browser_checker'], function() {
 	Route::post('/event', 'EventController@store')->name('event.store');
 	Route::put('/event/{id}', 'EventController@update')->name('event.update');
 	Route::put('/event/{id}/mark', 'EventController@mark')->name('event.mark');
-	Route::put('/event/{id}/join', 'EventController@join')->name('event.join');
+	Route::put('/event/{id}/join', 'EventController@join')->name('event.join')->middleware('auth');
 	Route::put('/event/{id}/evaluation', 'EventController@evaluation')->name('event.evaluation');
 	Route::put('/event/{id}/cover_update', 'EventController@cover_update')->name('event.cover_update');
 
@@ -80,10 +80,10 @@ Route::group(['middleware' => 'browser_checker'], function() {
 	Route::get('/record/event/{id}', 'RecordController@eventRecord')->name('record.event');
 });
 
-/*
+
 Route::get('/newest_events', 'HomeController@newest_events');
 Route::get('/most_popular_events', 'HomeController@most_popular_events');
 Route::get('/recommend_events', 'HomeController@recommend_events');
-*/
+
 
 Route::get('/test', 'EventController@calculate_all_similarity');
