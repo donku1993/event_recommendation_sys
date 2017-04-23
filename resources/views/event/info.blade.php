@@ -150,7 +150,7 @@
                                     </tr>
 
                                     <tr>
-                                        <td><i class="glyphicon glyphicon-tags"></i>{{ $constant_array['event_type']['value'][$event->type] }}</td>
+                                        <td><i class="glyphicon glyphicon-tags"></i>{{ $constant_array['event_type']['value'][$also_view_event->type] }}</td>
                                     </tr>
 
                                     </tbody>

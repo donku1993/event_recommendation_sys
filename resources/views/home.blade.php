@@ -15,7 +15,7 @@
                                 <hr style="width: 100%; color: black; height: 1px; background-color:gray;" >
                             </div>
 
-                            <a data-remote="true" href="javascript:void(0)" id="latest">
+                            <a data-remote="true" href="/newest_events" id="latest">
                                 <h4 style=""><i class="glyphicon glyphicon-star-empty"></i> 最新活動</h4>
                             </a>
                             <hr>
@@ -63,7 +63,7 @@
                                 <hr style="width: 100%; color: black; height: 1px; background-color:gray;" >
                             </div>
 
-                            <a data-remote="true" href="javascript:void(0)" id="most_popular">
+                            <a data-remote="true" href="/most_popular_events" id="most_popular">
                                 <h4 style=""><i class="glyphicon glyphicon-fire"></i> 最受歡迎活動</h4>
                             </a>
                             <hr>
@@ -110,7 +110,7 @@
                                 <hr style="width: 100%; color: black; height: 1px; background-color:gray;" >
                             </div>
 
-                            <a data-remote="true" href="javascript:void(0)" id="recommend">
+                            <a data-remote="true" href="/recommend_events" id="recommend">
                                 <h4 style=""><i class="glyphicon glyphicon-fire"></i> 推薦活動</h4>
                             </a>
                             <hr>

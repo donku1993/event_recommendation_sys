@@ -58,6 +58,9 @@
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
+                    @if( $status_array['is_admin'] )
+                        <li><a href="{{ url('group_form') }}">Check Group Form</a></li>
+                    @endif
                     @if( $status_array['is_manager'] || $status_array['is_admin'] )
                         <li><a href="{{ url('event/create') }}">Create Event</a></li>
                     @endif
@@ -76,7 +79,7 @@
 
                             <ul class="dropdown-menu" role="menu">
                                 <li>
-                                    <a href="{{ route('user.info', Auth::user()->id) }}">
+                                    <a href="{{ route('user.events', Auth::user()->id) }}">
                                         Profile
                                     </a>
                                     <a href="{{ route('logout') }}"

@@ -27,14 +27,14 @@
         <!-- SIDEBAR MENU -->
         <div class="profile-usermenu">
             <ul class="nav">
-                <li class="active">
-                    <a href="#" class="user-events">
+                <li>
+                    <a href="/user/{{ $user->id }}/events" class="user-events">
                         <i class="glyphicon glyphicon-flag"></i>
                         活動 </a>
                 </li>
 
                 <li>
-                    <a href="#" class="user-groups">
+                    <a href="/user/{{ $user->id }}/groups" class="user-groups">
                         <i class="user-groups glyphicon glyphicon-tower"></i>
                         組織</a>
                 </li>
