@@ -11,7 +11,10 @@
                     <div class="panel-body">
                         <div class="col-md-12 ">
 
-                            <hr style="width: 100%; color: black; height: 1px; background-color:gray;" >
+                            <div class="col-md-12">
+                                <hr style="width: 100%; color: black; height: 1px; background-color:gray;" >
+                            </div>
+
                             <a data-remote="true" href="javascript:void(0)" id="latest">
                                 <h4 style=""><i class="glyphicon glyphicon-star-empty"></i> 最新活動</h4>
                             </a>
@@ -56,8 +59,11 @@
                             @endforeach
 
 
-                            <hr style="width: 100%; color: black; height: 1px; background-color:gray;" >
-                            <a data-remote="true" href="javascript:void(0)" id="latest">
+                            <div class="col-md-12">
+                                <hr style="width: 100%; color: black; height: 1px; background-color:gray;" >
+                            </div>
+
+                            <a data-remote="true" href="javascript:void(0)" id="most_popular">
                                 <h4 style=""><i class="glyphicon glyphicon-fire"></i> 最受歡迎活動</h4>
                             </a>
                             <hr>
@@ -94,6 +100,53 @@
                                             </tbody>
                                         </table>
                                         <button type="button" class="btn btn-success btn-lg btn-block"><a href="/event/{{ $most_popular_event->id }}" style="color: #f5f8fa"><i class="fa fa-pencil-square" aria-hidden="true"></i>查看詳情</a></button>
+                                    </div>
+
+
+                                </div>
+                            @endforeach
+
+                            <div class="col-md-12">
+                                <hr style="width: 100%; color: black; height: 1px; background-color:gray;" >
+                            </div>
+
+                            <a data-remote="true" href="javascript:void(0)" id="recommend">
+                                <h4 style=""><i class="glyphicon glyphicon-fire"></i> 推薦活動</h4>
+                            </a>
+                            <hr>
+                            @foreach($recommend_events as $recommend_event)
+                                <div class="event-item col-md-6">
+                                    <div class="col-md-5">
+                                        <a href="/event/{{ $recommend_event->id }}">
+                                            <img src="{{ $recommend_event->iconPath }}" alt="" style="width: 210px; height: 210px">
+                                        </a>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <h4 class="lf_title_h4"><i class="glyphicon glyphicon-hand-right" aria-hidden="true"></i> {{ $recommend_event->title }}</h4>
+
+                                        <table>
+                                            <tbody>
+                                            <tr>
+                                                <td><i class="glyphicon glyphicon-calendar">{{ $recommend_event->startDate->toDateString() }}</i></td>
+                                                <td><i class="glyphicon glyphicon-time">{{ $recommend_event->hours }}</i>
+                                                    hrs
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><i class="glyphicon glyphicon-map-marker"></i>{{ $constant_array['location']['value'][$recommend_event->location] }}</td>
+
+                                                <td><i class="glyphicon glyphicon-user" aria-hidden="true"></i> 需求{{ $recommend_event->numberOfPeople }}人</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><i class="glyphicon glyphicon-tags"></i>{{ $constant_array['event_type']['value'][$recommend_event->type] }}</td>
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+                                        <button type="button" class="btn btn-success btn-lg btn-block"><a href="/event/{{ $recommend_event->id }}" style="color: #f5f8fa"><i class="fa fa-pencil-square" aria-hidden="true"></i>查看詳情</a></button>
                                     </div>
 
 

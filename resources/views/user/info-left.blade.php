@@ -28,31 +28,24 @@
         <div class="profile-usermenu">
             <ul class="nav">
                 <li class="active">
-                    <a href="/user/{{ $user->id }}" class="overview">
-                        <i class="glyphicon glyphicon-home"></i>
-                        總覽 </a>
+                    <a href="#" class="user-events">
+                        <i class="glyphicon glyphicon-flag"></i>
+                        活動 </a>
                 </li>
+
+                <li>
+                    <a href="#" class="user-groups">
+                        <i class="user-groups glyphicon glyphicon-tower"></i>
+                        組織</a>
+                </li>
+
                 @if( $status_array['is_self'] )
                     <li>
                         <a href="/user/{{ $user->id }}/edit" class="user-info">
                             <i class="glyphicon glyphicon-user"></i>
                             個人資料與設定 </a>
                     </li>
-                    <li>
-                        <a href="#" class="user-events">
-                            <i class="glyphicon glyphicon-flag"></i>
-                            活動 </a>
-                    </li>
-                    <li>
-                        <a href="#" class="user-groups">
-                            <i class="user-groups glyphicon glyphicon-tower"></i>
-                            組織</a>
-                    </li>
-                    <li>
-                        <a href="#" class="user-timetable">
-                            <i class="user-timetable glyphicon glyphicon-time"></i>
-                            時間表</a>
-                    </li>
+
                     <li>
                         <a href="/password/reset" class="user-password-reset">
                             <i class="glyphicon glyphicon-alert"></i>
@@ -74,7 +67,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">上傳頭像</h4>
+                <h4 class="modal-title">上傳頭像(上限2MB)</h4>
             </div>
             <div class="modal-body">
 

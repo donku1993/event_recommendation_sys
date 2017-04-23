@@ -249,9 +249,12 @@
 
             $.ajax({
                 url: "/event",
-                data: $('#registration-form-event').serialize(),
                 type:"POST",
                 dataType:'json',
+                cache: false,
+                data: new FormData($('#registration-form-event')[0]),
+                processData: false,
+                contentType: false,
 
                 success: function(data){
                     if (data['message'] == "success"){
