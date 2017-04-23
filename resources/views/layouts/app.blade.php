@@ -58,9 +58,12 @@
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
-{{--                    @if( $status_array['is_group_manager'] )
+                    @if( $status_array['is_manager'] || $status_array['is_admin'] )
                         <li><a href="{{ url('event/create') }}">Create Event</a></li>
-                    @endif--}}
+                    @endif
+                    @if( $status_array['is_login'] )
+                        <li><a href="{{ url('group/create') }}">Create Group</a></li>
+                    @endif
                     @if (Auth::guest())
                         <li><a href="{{ route('login') }}">Login</a></li>
                         <li><a href="{{ route('register') }}">Register</a></li>

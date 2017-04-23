@@ -224,9 +224,13 @@
 
             $.ajax({
                 url: "/group",
-                data: $('#registration-form-group').serialize(),
                 type:"POST",
                 dataType:'json',
+                cache: false,
+                data: new FormData($('#registration-form-group')[0]),
+                processData: false,
+                contentType: false,
+
 
                 success: function(data){
                     if (data['message'] == "success"){

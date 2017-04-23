@@ -10,7 +10,7 @@ use App\Models\Helper;
 
 class GroupController extends Controller
 {
-    public function status_array(Group $group)
+    public function status_array(Group $group = null)
     {
         return [
                 'is_login' => $this->isLogin(),
@@ -59,10 +59,13 @@ class GroupController extends Controller
             $keywords[$key] = (!isset($keywords[$key]) || is_null($keywords[$key])) ? "" : $keywords[$key];
         }
 
+        $status_array = $this->status_array();
+
         $data = [
                 'groups' => $groups,
-                'keywords' => (object)$keywords
-            ];
+                'keywords' => (object)$keywords,
+                'status_array' => $status_array
+        ];
 
         return view('group.list', $data);
     }
@@ -74,7 +77,13 @@ class GroupController extends Controller
      */
     public function create()
     {
-        return view('group.create');
+        $status_array = $this->status_array();
+
+        $data = [
+            'status_array' => $status_array
+        ];
+
+        return view('group.create',$data);
     }
 
     /**
@@ -92,8 +101,6 @@ class GroupController extends Controller
                             ]
                         );
 
-        dd($request->all());
-
         $this->validate($request, $validate_array);
 
         $data = $request->all();
@@ -104,7 +111,7 @@ class GroupController extends Controller
             $group = Group::create([
                     'name' => $data['name'],
                     'registered_id' => $data['registered_id'],
-                    'registered_file' => $this->fileUpload('group_application_form_file', $data['registered_file']),
+                    'registered_file' => $this->fileUpload('group_application_form_file', $data['registered_file']),  // no id
                     'establishment_date' => new Carbon($data['establishment_date']),
                     'principal_name' => $data['principal_name'],
                     'email' => $data['email'],
@@ -114,7 +121,7 @@ class GroupController extends Controller
 
             if ($group)
             {
-                $group->icon_image = $this->imageUpload('group_icon', $group->id, $request->input('icon_image', null));
+                $group->icon_image = $this->imageUpload('group_icon', $group->id, $request->file('icon_image', null));
                 $group->save();
 
                 return [
@@ -272,7 +279,7 @@ class GroupController extends Controller
             || $this->isAdmin())
         {
             $group->fill([
-                    'icon_image' => $this->imageUpload('group_icon', $group->id, $request->input('icon_image', null)),
+                    'icon_image' => $this->imageUpload('group_icon', $group->id, $request->file('icon_image', null)),
                 ]);
 
             $group->save();

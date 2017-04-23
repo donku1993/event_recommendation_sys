@@ -55,7 +55,6 @@
                                 </div>
                             @endforeach
 
-
                             <hr style="width: 100%; color: black; height: 1px; background-color:gray;" >
                             <a data-remote="true" href="javascript:void(0)" id="latest">
                                 <h4 style=""><i class="glyphicon glyphicon-fire"></i> 最受歡迎活動</h4>

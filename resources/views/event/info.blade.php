@@ -36,7 +36,7 @@
                         </table>
 
                         {{--Group can edit, wait for middleware--}}
-                        @if( $status_array['is_event_manager'] )
+                        @if( $status_array['is_event_manager'] || $status_array['is_admin'] )
                             <a class="btn btn-primary" href="/event/{{ $event->id }}/edit">修改</a>
                         @endif
                         @if( $status_array['is_login'] )
@@ -132,21 +132,21 @@
 
 
                             <div class="col-md-10" style="padding-left: 0px;">
-                                <h4 class="lf_title_h4"><i class="glyphicon glyphicon-hand-right" aria-hidden="true"></i> {{ $event->title }}</h4>
+                                <h4 class="lf_title_h4"><i class="glyphicon glyphicon-hand-right" aria-hidden="true"></i> {{ $also_view_event->title }}</h4>
 
                                 <table class="recommend-events">
                                     <tbody>
                                     <tr>
-                                        <td style="padding-right: 40px"><i class="glyphicon glyphicon-calendar">{{ $event->startDate->toDateString() }}</i></td>
-                                        <td><i class="glyphicon glyphicon-time">{{ $event->hours }}</i>
+                                        <td style="padding-right: 40px"><i class="glyphicon glyphicon-calendar">{{ $also_view_event->startDate->toDateString() }}</i></td>
+                                        <td><i class="glyphicon glyphicon-time">{{ $also_view_event->hours }}</i>
                                             hrs
                                         </td>
                                     </tr>
 
                                     <tr>
-                                        <td><i class="glyphicon glyphicon-map-marker"></i>{{ $constant_array['location']['value'][$event->location] }}</td>
+                                        <td><i class="glyphicon glyphicon-map-marker"></i>{{ $constant_array['location']['value'][$also_view_event->location] }}</td>
 
-                                        <td><i class="glyphicon glyphicon-user" aria-hidden="true"></i> 需求{{ $event->numberOfPeople }}人</td>
+                                        <td><i class="glyphicon glyphicon-user" aria-hidden="true"></i> 需求{{ $also_view_event->numberOfPeople }}人</td>
                                     </tr>
 
                                     <tr>

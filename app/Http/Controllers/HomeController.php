@@ -47,11 +47,14 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $status_array = $this->status_array();
+
         $data = [
                     'newest_events' => $this->newestEvents(4),
                     'most_popular_events' => $this->mostPopularEvents(4),
                     'recommend_events' => ($this->isLogin()) ? $this->recommendation_user_given(Auth::user()->id) : $this->randomJoinableEvents(4),
-                ];
+                    'status_array' => $status_array
+        ];
 
         return view('home', $data);
     }
