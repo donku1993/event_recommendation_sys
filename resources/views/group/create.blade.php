@@ -250,7 +250,7 @@
                             else {
                                 curCount--;
                                 $(".modal-title").text("递交成功");
-                                $(".modal-body").html("<strong>递交申請成功!</strong><br>"+"系統會在" + curCount +"秒後轉到待批頁！");
+                                $(".modal-body").html("<strong>递交申請成功!</strong><br>"+"系統會在" + curCount +"秒後跳轉！");
                             }
                         }, 1000);
 

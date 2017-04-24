@@ -275,7 +275,7 @@
                                 else {
                                     curCount--;
                                     $(".modal-title").text("建立成功");
-                                    $(".modal-body").html("<strong>活動建立成功!</strong><br>"+"系統會在" + curCount +"秒後跳到首頁！");
+                                    $(".modal-body").html("<strong>活動建立成功!</strong><br>"+"系統會在" + curCount +"秒後跳轉！");
                                 }
                             }, 1000);
 

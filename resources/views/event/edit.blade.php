@@ -271,12 +271,12 @@
                         InterValObj = window.setInterval(function () {
                             if (curCount == 0) {
                                 window.clearInterval(InterValObj);
-                                window.location = "/user/{{ Auth::user()->id }}/events";
+                                window.location = "/event/{{ $event->id }}";
                             }
                             else {
                                 curCount--;
                                 $(".modal-title").text("活動修改成功");
-                                $(".modal-body").html("<strong>活動修改成功!</strong><br>"+"系統會在" + curCount +"秒後跳到首頁！");
+                                $(".modal-body").html("<strong>活動修改成功!</strong><br>"+"系統會在" + curCount +"秒後跳轉！");
                             }
                         }, 1000);
 
