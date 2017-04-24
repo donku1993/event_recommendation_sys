@@ -58,6 +58,7 @@ Route::group(['middleware' => 'browser_checker'], function() {
 	Route::put('/group/{id}', 'GroupController@update')->name('group.update');
 	Route::put('/group/{id}/mark', 'GroupController@mark')->name('group.mark');
 	Route::put('/group/{id}/icon_update', 'GroupController@icon_update')->name('group.icon_update');
+	Route::get('/group/{id}/download_registered_file', 'GroupController@download_registered_file')->name('group.download_registered_file');
 
 	Route::delete('/group/{id}', 'GroupController@destroy')->name('group.delete');
 

@@ -89,7 +89,7 @@ class GroupFormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function approve(Request $request, $id)
+    public function approve($id, Request $request)
     {
         $data = $request->all();
 
@@ -124,7 +124,7 @@ class GroupFormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function reject(Request $request, $id)
+    public function reject($id, Request $request)
     {
         $data = $request->all();
 

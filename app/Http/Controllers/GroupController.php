@@ -311,4 +311,14 @@ class GroupController extends Controller
 
         return redirect()->route('group.list');
     }
+
+    public function download_registered_file($id)
+    {
+        $group = Group::find($id);
+
+        if ($group && ($this->isAdmin() || $this->isGroupManager($group)) && $group->registered_file != '')
+        {
+            return response()->download($group->downloadRegisteredFile);
+        }
+    }
 }

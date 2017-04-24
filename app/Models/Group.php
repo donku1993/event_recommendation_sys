@@ -27,6 +27,11 @@ class Group extends Model
         return '/storage/group_icon/' . $this->icon_image;
     }
 
+    public function getDownloadRegisteredFileAttribute()
+    {
+        return public_path('storage/group_application_form_file/' . $this->registered_file);
+    }
+
     public function applicant()
     {
         return $this->belongsTo('App\Models\User', 'user_id');
