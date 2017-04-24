@@ -23,6 +23,7 @@
                         @endif
 
                         <form id="registration-form-group" enctype="multipart/form-data">
+                            <input type="hidden" name="_method" value="PUT">
                             {!! csrf_field() !!}
                             <div class="progress">
                                 <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
@@ -101,7 +102,15 @@
                             </fieldset>
 
                             <fieldset>
-                                <h2>第二步: 修改組織頭像</h2>
+                                <h2>第二步: 修改組織資料</h2>
+
+                                <div class="panel panel-warning">
+                                    <div class="panel-heading">輸入組織會長名字</div>
+                                    <div class="panel-body">
+                                        <input type="text" name="principal_name" class="form-control"  value="{{ $group->principal_name }}" id="content-principal_name" placeholder="輸入組織會長名字">
+                                    </div>
+                                </div>
+                                <br>
 
                                 <div class="panel panel-info">
                                     <div class="panel-heading">加入組織頭像</div>
@@ -118,7 +127,7 @@
 
                                         <div class="btn btn-default image-preview-input">
                                         <span class="glyphicon glyphicon-folder-open"></span>
-                                        <span class="image-preview-input-title">Browse</span>
+                                        <span class="image-preview-input-title">Browse (上限2MB)</span>
                                         <input type="file" accept="image/png, image/jpeg, image/gif" name="icon_image"/>
                                             <input type="hidden" value="{{ csrf_token() }}" name="_token">
                                          </div>
@@ -182,7 +191,7 @@
         $(".submit").click(function () {
 
             $.ajax({
-                url: "/group",
+                url: "/group/{{ $group->id }}",
                 type:"POST",
                 dataType:'json',
                 cache: false,
@@ -203,7 +212,7 @@
                         InterValObj = window.setInterval(function () {
                             if (curCount == 0) {
                                 window.clearInterval(InterValObj);
-                                window.location = "/group_form/"+data['group_id'];
+                                window.location = "/user/{{ Auth::user()->id }}/groups";
                             }
                             else {
                                 curCount--;

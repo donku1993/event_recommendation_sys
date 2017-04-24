@@ -22,6 +22,7 @@
                         @endif
 
                         <form id="registration-form-event" enctype="multipart/form-data">
+                            <input type="hidden" name="_method" value="PUT">
                             {!! csrf_field() !!}
                             <div class="progress">
                                 <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
@@ -248,7 +249,7 @@
         $(".submit").click(function () {
 
             $.ajax({
-                url: "/event",
+                url: "/event/{{ $event->id }}",
                 type:"POST",
                 dataType:'json',
                 cache: false,
@@ -270,7 +271,7 @@
                         InterValObj = window.setInterval(function () {
                             if (curCount == 0) {
                                 window.clearInterval(InterValObj);
-                                window.location = "/";
+                                window.location = "/user/{{ Auth::user()->id }}/events";
                             }
                             else {
                                 curCount--;
