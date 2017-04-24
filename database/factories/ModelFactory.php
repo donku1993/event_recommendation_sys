@@ -91,7 +91,6 @@ $factory->define(App\Models\Group::class, function(Faker\Generator $faker)
 
     return [
         'registered_id' => $faker->unique()->numberBetween(100000000000, 999999999999),
-        'registered_file' => str_random(10) . '.pdf',
         'establishment_date' => $faker->date($format = 'Y-m-d', $max = 'now'),
         'email' => $faker->unique()->safeEmail,
         'phone' => '28' . strval(rand(100000, 999999)),
