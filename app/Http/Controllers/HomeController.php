@@ -3,7 +3,6 @@ namespace App\Http\Controllers;
 
 use Auth;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\Paginator;
 use App\Http\Controllers\RecommendationTrait;
 
 class HomeController extends Controller
@@ -65,7 +64,8 @@ class HomeController extends Controller
 
         $keywords = $request->all();
         $events = $this->newestEvents();
-        $events = new Paginator($events, 8);
+        $events = $this->collectionPaginate($events, 8, $request->input('page', 1), route('newest_events'));
+
 
         foreach ($this->searchValidationArray() as $key => $value) {
             $keywords[$key] = (!isset($keywords[$key]) || is_null($keywords[$key])) ? "" : $keywords[$key];
@@ -88,7 +88,7 @@ class HomeController extends Controller
 
         $keywords = $request->all();
         $events = $this->mostPopularEvents();
-        $events = new Paginator($events, 8);
+        $events = $this->collectionPaginate($events, 8, $request->input('page', 1), route('most_popular_events'));
 
         foreach ($this->searchValidationArray() as $key => $value) {
             $keywords[$key] = (!isset($keywords[$key]) || is_null($keywords[$key])) ? "" : $keywords[$key];
@@ -111,7 +111,7 @@ class HomeController extends Controller
 
         $keywords = $request->all();
         $events = ($this->isLogin()) ? $this->sort_by_recommendation_user_given(Auth::user()->id) : $this->randomJoinableEvents(0);
-        $events = new Paginator($events, 8);
+        $events = $this->collectionPaginate($events, 8, $request->input('page', 1), route('recommend_events'));
 
         foreach ($this->searchValidationArray() as $key => $value) {
             $keywords[$key] = (!isset($keywords[$key]) || is_null($keywords[$key])) ? "" : $keywords[$key];

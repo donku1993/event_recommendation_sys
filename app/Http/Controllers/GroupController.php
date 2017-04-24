@@ -107,12 +107,15 @@ class GroupController extends Controller
 
         if ($this->isLogin())
         {
+            $user = Auth::user();
+
             $data = Helper::JsonDataConverter($data, 'activity_area', 'location');
             $group = Group::create([
+                    'user_id' => $user->id,
                     'name' => $data['name'],
                     'registered_id' => $data['registered_id'],
-                    'registered_file' => $this->fileUpload('group_application_form_file', $data['registered_file']),  // no id
                     'establishment_date' => new Carbon($data['establishment_date']),
+                    'activity_area' => $data['activity_area'],
                     'principal_name' => $data['principal_name'],
                     'email' => $data['email'],
                     'phone' => $data['phone'],
@@ -122,6 +125,7 @@ class GroupController extends Controller
             if ($group)
             {
                 $group->icon_image = $this->imageUpload('group_icon', $group->id, $request->file('icon_image', null));
+                $group->registered_file = $this->fileUpload('group_application_form_file', $group->id, $data['registered_file']);
                 $group->save();
 
                 return [
@@ -303,10 +307,8 @@ class GroupController extends Controller
         {
             $group->show = 0;
             $group->save();
-        
-            return ['message' => 'success'];
         }
 
-        return ['message' => 'there is no group with id = ' . $id];
+        return redirect()->route('group.list');
     }
 }

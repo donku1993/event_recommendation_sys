@@ -10,6 +10,8 @@ use App\Models\Event;
 use App\Models\Group;
 use App\Models\Helper;
 use App\Models\Participant;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 trait ControllerHelperTrait
 {
@@ -174,7 +176,7 @@ trait ControllerHelperTrait
 
 	public function fileUpload(string $foldername, $id, $file)
 	{
-		if (is_null($image))
+		if (is_null($file))
 		{
 			return '';
 		}
@@ -194,5 +196,18 @@ trait ControllerHelperTrait
 		$file->move($folder_path, $filename);
 
 		return $id . '/' . $filename;
+	}
+
+	public function collectionPaginate($collection, $perPage, $currentPage, $path)
+	{
+		$offset = ($currentPage * $perPage) - $perPage;
+
+		return new LengthAwarePaginator(
+		    $collection->slice($offset, $perPage), // Only grab the items we need
+		    $collection->count(), // Total items
+		    $perPage, // Items per page
+		    $currentPage, // Current page
+		    ['path' => $path] // We need this so we can keep all old query parameters from the url
+		);
 	}
 }

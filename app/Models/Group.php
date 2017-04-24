@@ -46,17 +46,7 @@ class Group extends Model
     {
     	return $this->belongsToMany('App\Models\Event', 'groups_events_relation', 'group_id', 'event_id')->orderBy('created_at', 'desc');
     }
-/*
-    public function events_with_organizer()
-    {
-    	return $this->belongsToMany('App\Models\Event', 'groups_events_relation', 'group_id', 'event_id')->wherePivot('main', 1);
-    }
 
-    public function events_with_co_organizer()
-    {
-    	return $this->belongsToMany('App\Models\Event', 'groups_events_relation', 'group_id', 'event_id')->wherePivot('main', 0);
-    }
-*/
     public function scopeIsGroupForm($query)
     {
     	return $query->whereIn('status', $this->form_status);

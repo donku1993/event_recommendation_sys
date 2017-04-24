@@ -18,7 +18,7 @@ class CreateGroupsTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->string('name')->unique();
             $table->string('registered_id')->unique();
-            $table->string('registered_file');
+            $table->string('registered_file')->default('');
             $table->string('icon_image')->default('default.png');
             $table->date('establishment_date');
             $table->string('principal_name');
