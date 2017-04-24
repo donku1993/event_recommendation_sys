@@ -32,23 +32,29 @@ class GroupFormController extends Controller
     public function index(Request $request)
     {
         $this->validate($request, $this->searchValidationArray());
-        $keywords = $request->all();
 
-        $group_forms = Group::searchForm($keywords)->paginate(8);
+        if ($this->isAdmin())
+        {
+            $keywords = $request->all();
 
-        foreach ($this->searchValidationArray() as $key => $value) {
-            $keywords[$key] = (!isset($keywords[$key]) || is_null($keywords[$key])) ? "" : $keywords[$key];
+            $group_forms = Group::searchForm($keywords)->orderBy('created_at', 'desc')->paginate(8);
+
+            foreach ($this->searchValidationArray() as $key => $value) {
+                $keywords[$key] = (!isset($keywords[$key]) || is_null($keywords[$key])) ? "" : $keywords[$key];
+            }
+
+            $status_array = $this->status_array();
+
+            $data = [
+                    'group_forms' => $group_forms,
+                    'keywords' => (object)$keywords,
+                    'status_array' => $status_array
+                ];
+
+            return view('group_form.list', $data);
         }
 
-        $status_array = $this->status_array();
-
-        $data = [
-                'group_forms' => $group_forms,
-                'keywords' => (object)$keywords,
-                'status_array' => $status_array
-            ];
-
-        return view('group_form.list', $data);
+        return redirect()->route('home');
     }
 
     /**
@@ -61,7 +67,7 @@ class GroupFormController extends Controller
     {
         $group_form = Group::with(['markedUsers', 'applicant', 'events'])->find($id);
 
-        if ($group_form)
+        if ($group_form && ($this->isAdmin() || $this->isGroupManager($group_form)))
         {
             $status_array = $this->status_array($group_form);
 
@@ -72,6 +78,8 @@ class GroupFormController extends Controller
 
             return view('group_form.info', $data);
         }
+
+        return redirect()->route('home');
     }
 
     /**
@@ -102,9 +110,11 @@ class GroupFormController extends Controller
 
             $group_form->save();
             $manager->save();
+
+            return redirect()->route('group_form.info', $group_form->id);
         }
 
-        return redirect()->route('group_form.info', $group_form->id);
+        return redirect()->route('group_form.list');
     }
 
     /**
@@ -128,9 +138,11 @@ class GroupFormController extends Controller
                 ]);
 
             $group_form->save();
+
+            return redirect()->route('group_form.info', $group_form->id);
         }
 
-        return redirect()->route('group_form.info', $group_form->id);
+        return redirect()->route('group_form.list');
     }
 
     /**

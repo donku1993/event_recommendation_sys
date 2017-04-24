@@ -14,7 +14,7 @@ Route::group(['middleware' => 'browser_checker'], function() {
 	Auth::routes();
 
 	// Home
-	Route::get('/', 'HomeController@index');
+	Route::get('/', 'HomeController@index')->name('home');
 
 
 
@@ -84,9 +84,9 @@ Route::group(['middleware' => 'browser_checker'], function() {
 
 
 
-	Route::get('/newest_events', 'HomeController@newest_events');
-	Route::get('/most_popular_events', 'HomeController@most_popular_events');
-	Route::get('/recommend_events', 'HomeController@recommend_events');
+	Route::get('/newest_events', 'HomeController@newest_events')->name('newest_events');
+	Route::get('/most_popular_events', 'HomeController@most_popular_events')->name('most_popular_events');
+	Route::get('/recommend_events', 'HomeController@recommend_events')->name('recommend_events');
 });
 
 Route::get('/test', 'EventController@calculate_all_similarity');

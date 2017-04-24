@@ -5,7 +5,6 @@ use DB;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\Paginator;
 use App\Models\User;
 use App\Models\Event;
 use App\Models\Group;
@@ -180,7 +179,7 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function showMember($id)
+    public function showMember($id, Request $request)
     {
         $event = Event::with(['markedUsers', 'organizer', 'co_organizer', 'participants'])->find($id);
 
@@ -189,7 +188,7 @@ class EventController extends Controller
             $status_array = $this->status_array($event);
             $data = [
                     'event' => $event,
-                    'participants' => new Paginator($event->participants, 10),
+                    'participants' => $this->collectionPaginate($event->participants, 10, $request->input('page', 1), route('event.member', $event->id)),
                     'status_array' => $status_array
                 ];
 

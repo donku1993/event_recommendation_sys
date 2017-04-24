@@ -309,6 +309,6 @@ class GroupController extends Controller
             $group->save();
         }
 
-        return redirect()->route('group.index');
+        return redirect()->route('group.list');
     }
 }
