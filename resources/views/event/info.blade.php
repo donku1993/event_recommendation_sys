@@ -39,11 +39,39 @@
                         @if( $status_array['is_event_manager'] || $status_array['is_admin'] )
                             <a class="btn btn-primary" href="/event/{{ $event->id }}/edit">修改</a>
                         @endif
-                        <form id="user-info-form" style="display: inline-block" class="form-horizontal" role="form" action="/event/{{ $event->id }}/join" method="POST" enctype="multipart/form-data">
-                            <input type="hidden" name="_method" value="PUT">
-                            {{ csrf_field() }}
-                            <input type="submit" class="btn btn-success"  value="報名">
-                        </form>
+                    @if( $status_array['is_participant'] )
+                            <span class="label label-success">您已報名</span>
+                        @else
+                            <form id="user-info-form" style="display: inline-block" class="form-horizontal" role="form" action="/event/{{ $event->id }}/join" method="POST" enctype="multipart/form-data">
+                                <input type="hidden" name="_method" value="PUT">
+                                {{ csrf_field() }}
+
+                                @if( $status_array['is_login'] )
+                                    <input type="button" class="submit btn btn-success"  value="報名">
+                                    <div class="modal fade" id="myModal" role="dialog">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">確認報名</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <strong>注意:確認報名後不能再取消。</strong>
+                                                    <p>確認報名嗎?</p>
+                                                </div>
+                                                <div class="modal-footer" >
+                                                    <input  type="submit" class="pull-left confirm-submit btn btn-success" >
+                                                    <button style="text-align: right" type="button" class="btn btn-danger" data-dismiss="modal">關閉</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @else
+                                    <input type="button" class="non-login-submit btn btn-success"  value="報名">
+                                @endif
+
+                            </form>
+                        @endif
                     </div>
                 </div>
 
@@ -100,7 +128,7 @@
 
                 </div>
 
-                @if( $status_array['is_event_manager'] || $status_array['is_admin'] )
+                @if( $status_array['is_participant'] || $status_array['is_event_manager'] || $status_array['is_admin'] )
                     <div class="right-nav" style="text-align: center">
                         <div class="col-md-2 pull-right">
                             <div class="panel panel-default">
@@ -108,9 +136,8 @@
                                     已參加的成員
                                 </div>
                                 <div class="panel panel-body">
-                                    <a class="check-all" href="/event/{{ $event->id }}/member">
-                                        <i>查看全部</i>
-                                    </a>
+                                    <a href="/event/{{ $event->id }}/member" style="color: #f5f8fa"><button type="button" class="btn btn-warning"><i class="fa fa-pencil-square" aria-hidden="true"></i>查看詳情</button></a>
+
                                 </div>
                             </div>
                         </div>
@@ -172,6 +199,14 @@
 @section('script')
 
     <script>
+        $('.submit').click(function () {
+            $('#myModal').modal('show');
+        });
+
+        $('.non-login-submit').click(function () {
+            window.location = "/login";
+        });
+
         $('.img-holder').hover(function () {
             $(this).css("opacity","0.2");
             $(this).prev('a').css({

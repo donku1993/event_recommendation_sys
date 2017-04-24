@@ -7,49 +7,59 @@
 
             <form action="/participant/{{ $event->id }}/evaluation" method="POST">
                 <input type="hidden" name="_method" value="PUT">
+                <input type="hidden" name="page" value="">
                 {{ csrf_field() }}
                 <div class="col-md-12">
                     <table class="member-table table table-striped table-hover">
                         <thead>
                         <tr>
-                            <th class="col-md-2">用戶頭像</th>
-                            <th class="col-md-2">用戶名稱</th>
-                            <th style="text-align: center" class="col-md-3">評分</th>
-                            <th style="text-align: center" class="col-md-5">評論</th>
+                            @if( $status_array['is_participant'] )
+                                <th class="col-md-2">用戶頭像</th>
+                                <th class="col-md-2">用戶名稱</th>
+                            @else
+                                <th class="col-md-2">用戶頭像</th>
+                                <th class="col-md-2">用戶名稱</th>
+                                <th style="text-align: center" class="col-md-3">評分</th>
+                                <th style="text-align: center" class="col-md-5">評論</th>
+                            @endif
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($participants as $participant)
                             <tr>
                                 <td class="col-md-2">
-                                    <img style="width: 50px;height: 50px;" src="{{ $participant->icon_image }}" alt="Usericon">
+                                    <img style="width: 50px;height: 50px;" src="{{ $participant->iconPath }}" alt="Usericon">
                                 </td>
                                 <td class="col-md-2" style="padding-top: 20px;">{{ $participant->name }}</td>
-                                <td class="col-md-3">
+                                @if( $status_array['is_participant'] )
 
-                                    @if( !is_null($participant->pivot->grade_to_user) )
+                                @else
+                                    <td class="col-md-3">
+                                        @if( !is_null($participant->pivot->grade_to_user) )
                                             <p style="text-align-last: center">{{ $constant_array['event_evaulation']['value'][$participant->pivot->grade_to_user] }}</p>
-                                    @else
-                                        <select style="text-align-last: center" class="form-control" name="grade_{{ $participant->id }}">
-                                            @foreach ($constant_array['event_evaulation']['value'] as $key => $value)
-                                                <option value="{{ $key }}">{{ $value }}</option>
-                                            @endforeach
-                                        </select>
-                                    @endif
-
-                                </td>
-
-                                <td class="col-md-5">
-                                    @if( !is_null($participant->pivot->grade_to_user) )
-                                        @if(!is_null($participant->pivot->remark_to_user) )
-                                            <p style="text-align-last: center">{{ $participant->pivot->remark_to_user }}</p>
                                         @else
-                                            <p style="text-align-last: center">沒有評論。</p>
+                                            <select style="text-align-last: center" class="form-control" name="grade_{{ $participant->id }}">
+                                                <option class="placeholder" style="display: none" selected disabled value="0">未填寫</option>
+                                                @foreach ($constant_array['event_evaulation']['value'] as $key => $value)
+                                                    <option value="{{ $key }}">{{ $value }}</option>
+                                                @endforeach
+                                            </select>
                                         @endif
-                                    @else
-                                        <input type="text" placeholder="輸入評論"  name="remark_{{ $participant->id }}" maxlength="60" class="form-control" >
-                                    @endif
-                                </td>
+
+                                    </td>
+
+                                    <td class="col-md-5">
+                                        @if( !is_null($participant->pivot->grade_to_user) )
+                                            @if(!is_null($participant->pivot->remark_to_user) )
+                                                <p style="text-align-last: center">{{ $participant->pivot->remark_to_user }}</p>
+                                            @else
+                                                <p style="text-align-last: center">沒有評論。</p>
+                                            @endif
+                                        @else
+                                            <input type="text" placeholder="輸入評論"  name="remark_{{ $participant->id }}" maxlength="60" class="form-control" >
+                                        @endif
+                                    </td>
+                                @endif
 
 
                             </tr>
