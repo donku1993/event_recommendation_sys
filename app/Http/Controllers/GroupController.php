@@ -141,7 +141,7 @@ class GroupController extends Controller
             }
         }
 
-        return ['message' => 'need to log in'];
+        return response()->json(['message' => 'need to log in'], 422);
     }
 
     /**
@@ -262,9 +262,9 @@ class GroupController extends Controller
         if ($this->isGroupManager($group)
             || $this->isAdmin())
         {
-            if (!Group::checkUnique($data))
+            if (!$group->checkUniqueOnUpdate($data))
             {
-                return ['message' => 'email or group name has already exist'];
+                return response()->json(['message' => 'email or group name has already exist'], 422);
             }
 
             $data = Helper::JsonDataConverter($data, 'activity_area', 'location');
@@ -285,7 +285,7 @@ class GroupController extends Controller
             ];
         }
 
-        return ['message' => 'need to be the manager of the group'];
+        return response()->json(['message' => 'need to be the manager of the group'], 422);
     }
 
     /**

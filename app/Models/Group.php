@@ -103,4 +103,26 @@ class Group extends Model
 
         return ($checkName + $checkRegisteredID + $checkEmail > 0) ? false : true;
     }
+
+    public function checkUniqueOnUpdate($column)
+    {
+        $need_to_check_column = [];
+
+        if (isset($column['name']) && $column['name'] != $this->name)
+        {
+            $need_to_check_column['name'] = $column['name'];
+        }
+
+        if (isset($column['registered_id']) && $column['registered_id'] != $this->registered_id)
+        {
+            $need_to_check_column['registered_id'] = $column['registered_id'];
+        }
+
+        if (isset($column['email']) && $column['email'] != $this->email)
+        {
+            $need_to_check_column['email'] = $column['email'];
+        }
+
+        return self::checkUnique($need_to_check_column);
+    }
 }

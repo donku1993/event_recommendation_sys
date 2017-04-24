@@ -93,8 +93,6 @@ class GroupFormController extends Controller
      */
     public function approve($id, Request $request)
     {
-        $data = $request->all();
-
         $group_form = Group::unprocessForm()->find($id);
 
         $result = Helper::getKeyByArrayNameAndValue('group_status', '已拒絕');
@@ -103,6 +101,8 @@ class GroupFormController extends Controller
 
         if ($this->isAdmin() && $group_form)
         {
+            $remark = $request->input('remark', '');
+
             if ($result == Helper::getKeyByArrayNameAndValue('group_status', '已批準'))
             {
                 $column_need_to_be_unique = [
@@ -111,9 +111,10 @@ class GroupFormController extends Controller
                         'email' => $group_form->email
                     ];
 
-                if (!Group::checkUnique($column_need_to_be_unique))
+                if (!$group_form->checkUniqueOnUpdate($column_need_to_be_unique))
                 {
                     $result = Helper::getKeyByArrayNameAndValue('group_status', '已拒絕');
+                    $remark = 'group email, group name or registered ID has already exist;' . $remark;
                 }
                 else
                 {
@@ -128,7 +129,7 @@ class GroupFormController extends Controller
 
             $group_form->fill([
                     'status' => $result,
-                    'remark' => $request->input('remark', '')
+                    'remark' => $remark;
                 ]);
 
             $group_form->save();

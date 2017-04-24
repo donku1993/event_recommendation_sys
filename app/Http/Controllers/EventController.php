@@ -166,10 +166,10 @@ class EventController extends Controller
                 ];
             }
 
-            return ['message' => 'error'];
+            return response()->json(['message' => 'error'], 422);
         }
 
-        return ['message' => 'need to be a group manager'];
+        return response()->json(['message' => 'need to be a group manager'], 422);
     }
 
     /**
@@ -396,7 +396,7 @@ class EventController extends Controller
             ];
         }
 
-        return ['message' => 'need to be a manager of this event'];
+        return response()->json(['need to be a manager of this event' => 'error'], 422);
     }
 
     /**
