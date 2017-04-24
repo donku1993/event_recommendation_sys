@@ -270,7 +270,7 @@
                             InterValObj = window.setInterval(function () {
                                 if (curCount == 0) {
                                     window.clearInterval(InterValObj);
-                                    window.location = "/";
+                                    window.location = "/user/{{ Auth::user()->id }}/events";
                                 }
                                 else {
                                     curCount--;

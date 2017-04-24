@@ -30,7 +30,7 @@
                             </tr>
                             <tr>
                                 <td><i class="glyphicon glyphicon-user"></i>可報名人數: {{ $event->numberOfPeople }} 人</td>
-                                <td><i class="glyphicon glyphicon-ok"></i>已報名人數: </td>
+                                <td><i class="glyphicon glyphicon-ok"></i>已報名人數:  {{ $event->numberOfJoin }} 人</td>
                             </tr>
                             </tbody>
                         </table>
@@ -127,7 +127,7 @@
                             <a href="javascript:viod(0)" id="check-more" class="btn btn-block btn-warning" style="opacity: 0;width: 180px;margin-left: 15px;margin-right: 15px;position: absolute; "><i class="glyphicon glyphicon-exclamation-sign"></i>查看詳情</a>
 
                             <a class="img-holder" href="/event/{{ $also_view_event->id }}">
-                                <img src="{{ $also_view_event->icon_image }}" alt="" style="width: 210px; height: 210px;">
+                                <img src="{{ $also_view_event->iconPath }}" alt="" style="width: 210px; height: 210px;">
                             </a>
 
 

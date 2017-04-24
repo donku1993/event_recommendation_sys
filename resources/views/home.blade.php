@@ -28,7 +28,7 @@
                                     </div>
 
                                     <div class="col-md-5">
-                                        <h4 class="lf_title_h4"><i class="glyphicon glyphicon-hand-right" aria-hidden="true"></i> {{ $newest_event->title }}</h4>
+                                        <h4 class="lf_title_h4" style=""><i class="glyphicon glyphicon-hand-right" aria-hidden="true"></i> {{ $newest_event->title }}</h4>
 
                                         <table>
                                             <tbody>
@@ -47,11 +47,12 @@
 
                                             <tr>
                                                 <td><i class="glyphicon glyphicon-tags"></i>{{ $constant_array['event_type']['value'][$newest_event->type] }}</td>
+                                                <td><i class="glyphicon glyphicon-pencil"></i>報名{{ $newest_event->numberOfJoin }} 人</td>
                                             </tr>
 
                                             </tbody>
                                         </table>
-                                        <button type="button" class="btn btn-success btn-lg btn-block"><a href="/event/{{ $newest_event->id }}" style="color: #f5f8fa"><i class="fa fa-pencil-square" aria-hidden="true"></i>查看詳情</a></button>
+                                        <a href="/event/{{ $newest_event->id }}" style="color: #f5f8fa"><button type="button" class="btn btn-success btn-lg btn-block"><i class="fa fa-pencil-square" aria-hidden="true"></i>查看詳情</button></a>
                                     </div>
 
 
@@ -95,11 +96,12 @@
 
                                             <tr>
                                                 <td><i class="glyphicon glyphicon-tags"></i>{{ $constant_array['event_type']['value'][$most_popular_event->type] }}</td>
+                                                <td><i class="glyphicon glyphicon-pencil"></i>報名{{ $most_popular_event->numberOfJoin }} 人</td>
                                             </tr>
 
                                             </tbody>
                                         </table>
-                                        <button type="button" class="btn btn-success btn-lg btn-block"><a href="/event/{{ $most_popular_event->id }}" style="color: #f5f8fa"><i class="fa fa-pencil-square" aria-hidden="true"></i>查看詳情</a></button>
+                                        <a href="/event/{{ $most_popular_event->id }}" style="color: #f5f8fa"><button type="button" class="btn btn-success btn-lg btn-block"><i class="fa fa-pencil-square" aria-hidden="true"></i>查看詳情</button></a>
                                     </div>
 
 
@@ -142,11 +144,12 @@
 
                                             <tr>
                                                 <td><i class="glyphicon glyphicon-tags"></i>{{ $constant_array['event_type']['value'][$recommend_event->type] }}</td>
+                                                <td><i class="glyphicon glyphicon-pencil"></i>報名{{ $recommend_event->numberOfJoin }} 人</td>
                                             </tr>
 
                                             </tbody>
                                         </table>
-                                        <button type="button" class="btn btn-success btn-lg btn-block"><a href="/event/{{ $recommend_event->id }}" style="color: #f5f8fa"><i class="fa fa-pencil-square" aria-hidden="true"></i>查看詳情</a></button>
+                                        <a href="/event/{{ $recommend_event->id }}" style="color: #f5f8fa"><button type="button" class="btn btn-success btn-lg btn-block"><i class="fa fa-pencil-square" aria-hidden="true"></i>查看詳情</button></a>
                                     </div>
 
 
