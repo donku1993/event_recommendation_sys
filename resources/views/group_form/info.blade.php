@@ -87,10 +87,20 @@
                         <input class="btn btn-success" type="submit" name="approve" value="Approve">
                         <input class="btn btn-danger" style="right: 13px;position: absolute" type="submit" name="reject" value="Reject">
                     @elseif( $group_form->status == 2 )
+                        <div class="group-form-remark " style="margin-bottom: 30px">
+                            <label for="remark">Remark:</label>
+                            <p>{{ $group_form->remark }}</p>
+                        </div>
+
                         <div class="col-md-11" style="text-align: center">
                             <span class="label label-success">已批準</span>
                         </div>
                     @elseif( $group_form->status == 3 )
+                        <div class="group-form-remark " style="margin-bottom: 30px">
+                            <label for="remark">Remark:</label>
+                            <p>{{ $group_form->remark }}</p>
+                        </div>
+
                         <div class="col-md-11" style="text-align: center">
                             <span class="label label-danger">已拒絕</span>
                         </div>
