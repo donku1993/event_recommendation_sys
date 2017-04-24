@@ -94,7 +94,14 @@ class GroupFormController extends Controller
                     'remark' => $request->input('remark', '')
                 ]);
 
+            $manager = $group_form->manager;
+
+            $manager->fill([
+                    'type' => Helper::getKeyByArrayNameAndValue('user_type', '組職管理員')
+                ]);
+
             $group_form->save();
+            $manager->save();
         }
 
         return redirect()->route('group_form.info', $group_form->id);

@@ -174,7 +174,7 @@ trait ControllerHelperTrait
 
 	public function fileUpload(string $foldername, $id, $file)
 	{
-		if (is_null($image))
+		if (is_null($file))
 		{
 			return '';
 		}
