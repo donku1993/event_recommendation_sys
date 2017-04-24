@@ -103,21 +103,33 @@ class GroupFormController extends Controller
 
         if ($this->isAdmin() && $group_form)
         {
+            if ($result == Helper::getKeyByArrayNameAndValue('group_status', '已批準'))
+            {
+                $column_need_to_be_unique = [
+                        'name' => $group_form->name,
+                        'registered_id' => $group_form->registered_id,
+                        'email' => $group_form->email
+                    ];
+
+                if (!Group::checkUnique($column_need_to_be_unique))
+                {
+                    $result = Helper::getKeyByArrayNameAndValue('group_status', '已拒絕');
+                }
+                else
+                {
+                    $manager = $group_form->manager;
+                    $manager->fill([
+                            'type' => Helper::getKeyByArrayNameAndValue('user_type', '組職管理員')
+                        ]);
+
+                    $manager->save();
+                }
+            }
+
             $group_form->fill([
                     'status' => $result,
                     'remark' => $request->input('remark', '')
                 ]);
-
-            $manager = $group_form->manager;
-
-            if ($result == Helper::getKeyByArrayNameAndValue('group_status', '已批準'))
-            {
-                $manager->fill([
-                        'type' => Helper::getKeyByArrayNameAndValue('user_type', '組職管理員')
-                    ]);
-
-                $manager->save();
-            }
 
             $group_form->save();
 

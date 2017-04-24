@@ -16,13 +16,13 @@ class CreateGroupsTable extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->string('name')->unique();
-            $table->string('registered_id')->unique();
+            $table->string('name');
+            $table->string('registered_id');
             $table->string('registered_file')->default('');
             $table->string('icon_image')->default('default.png');
             $table->date('establishment_date');
             $table->string('principal_name');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('phone');
             $table->string('address');
             $table->mediumText('introduction')->nullable();

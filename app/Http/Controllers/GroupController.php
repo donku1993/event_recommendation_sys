@@ -110,7 +110,7 @@ class GroupController extends Controller
 
         $data = $request->all();
 
-        if ($this->isLogin())
+        if ($this->isLogin() && Group::checkUnique($data))
         {
             $user = Auth::user();
 
@@ -124,7 +124,8 @@ class GroupController extends Controller
                     'principal_name' => $data['principal_name'],
                     'email' => $data['email'],
                     'phone' => $data['phone'],
-                    'address' => $data['address']
+                    'address' => $data['address'],
+                    'introduction' => $data['introduction']
                 ]);
 
             if ($group)
@@ -261,12 +262,19 @@ class GroupController extends Controller
         if ($this->isGroupManager($group)
             || $this->isAdmin())
         {
+            if (!Group::checkUnique($data))
+            {
+                return ['message' => 'email or group name has already exist'];
+            }
+
             $data = Helper::JsonDataConverter($data, 'activity_area', 'location');
             $group->fill([
+                    'name' => $data['name'],
                     'principal_name' => $data['principal_name'],
                     'email' => $data['email'],
                     'phone' => $data['phone'],
-                    'address' => $data['address']
+                    'address' => $data['address'],
+                    'introduction' => $data['introduction']
                 ]);
 
             $group->save();

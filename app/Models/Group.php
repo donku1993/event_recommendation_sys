@@ -94,4 +94,13 @@ class Group extends Model
         }
         return $query;
     }
+
+    public static function checkUnique($column)
+    {
+        $checkName = (isset($column['name'])) ? self::isGroup()->where('name', $column['name'])->get()->count() : 0;
+        $checkRegisteredID = (isset($column['registered_id'])) ? self::isGroup()->where('registered_id', $column['registered_id'])->get()->count() : 0;
+        $checkEmail = (isset($column['email'])) ? self::isGroup()->where('email', $column['email'])->get()->count() : 0;
+
+        return ($checkName + $checkRegisteredID + $checkEmail > 0) ? false : true;
+    }
 }
