@@ -99,7 +99,7 @@ class GroupFormController extends Controller
 
         $result = Helper::getKeyByArrayNameAndValue('group_status', '已拒絕');
 
-        $result = ($request->exist('approve')) ? Helper::getKeyByArrayNameAndValue('group_status', '已批準') : $result;
+        $result = ($request->has('approve')) ? Helper::getKeyByArrayNameAndValue('group_status', '已批準') : $result;
 
         if ($this->isAdmin() && $group_form)
         {
