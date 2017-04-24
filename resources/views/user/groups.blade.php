@@ -18,7 +18,7 @@
                             <div class="col-md-3 recommend-events-holder">
                                 <a href="javascript:viod(0)" id="check-more" class="btn btn-block btn-warning" style="opacity: 0;width: 120px;margin-left: 15px;margin-right: 15px;position: absolute; "><i class="glyphicon glyphicon-exclamation-sign"></i>查看詳情</a>
 
-                                <a class="img-holder" href="/event/{{ $group->id }}">
+                                <a class="img-holder" href="/group/{{ $group->id }}">
                                     <img src="{{ $group->icon_image }}" alt="" style="width: 150px; height: 150px;">
                                 </a>
                                 <div class="col-md-12" style="padding-left: 0px;">
@@ -36,7 +36,7 @@
                             <div class="col-md-3 recommend-events-holder">
                                 <a href="javascript:viod(0)" id="check-more" class="btn btn-block btn-warning" style="opacity: 0;width: 120px;margin-left: 15px;margin-right: 15px;position: absolute; "><i class="glyphicon glyphicon-exclamation-sign"></i>查看詳情</a>
 
-                                <a class="img-holder" href="/event/{{ $markedGroup->id }}">
+                                <a class="img-holder" href="/group/{{ $markedGroup->id }}">
                                     <img src="{{ $markedGroup->icon_image }}" alt="" style="width: 150px; height: 150px;">
                                 </a>
 
