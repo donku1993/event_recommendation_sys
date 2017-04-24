@@ -74,10 +74,9 @@ class EventController extends Controller
         $status_array = $this->status_array();
 
         $data = [
-                'events' => $events,
-                'keywords' => (object)$keywords,
-                'status_array' => $status_array
-
+            'events' => $events,
+            'keywords' => (object)$keywords,
+            'status_array' => $status_array
         ];
 
         return view('event.list', $data);
@@ -90,8 +89,7 @@ class EventController extends Controller
      */
     public function create()
     {
-        if ($this->isManager()
-            || $this->isAdmin())
+        if ($this->isManager() || $this->isAdmin())
         {
             $user = Auth::user();
 
@@ -102,9 +100,10 @@ class EventController extends Controller
                 'status_array' => $status_array
             ];
 
-
             return view('event.create', $data);
         }
+
+        return back()->withInput();
     }
 
     /**
@@ -183,17 +182,22 @@ class EventController extends Controller
     {
         $event = Event::with(['markedUsers', 'organizer', 'co_organizer', 'participants'])->find($id);
 
-        if ($event)
+        $page = $request->input('page', 1);
+
+        if ($this->isEventManager($event) || $this->isParticipant($event) || $this->isAdmin())
         {
             $status_array = $this->status_array($event);
             $data = [
                     'event' => $event,
-                    'participants' => $this->collectionPaginate($event->participants, 10, $request->input('page', 1), route('event.member', $event->id)),
-                    'status_array' => $status_array
+                    'participants' => $this->collectionPaginate($event->participants, 10, $page, route('event.member', $event->id)),
+                    'status_array' => $status_array,
+                    'page' => $page
                 ];
 
             return view('event.member', $data);
         }
+
+        return back()->withInput();
     }
 
     /**
@@ -217,6 +221,8 @@ class EventController extends Controller
 
             return view('event.info', $data);
         }
+
+        return back()->withInput();
     }
 
     /**
@@ -229,7 +235,7 @@ class EventController extends Controller
     {
         $event = Event::with(['markedUsers', 'organizer', 'co_organizer'])->find($id);
 
-        if ($event)
+        if (($this->isEventManager($event) || $this->isAdmin()) && $event && !$event->isFinished)
         {
             $status_array = $this->status_array($event);
             $data = [
@@ -239,6 +245,8 @@ class EventController extends Controller
 
             return view('event.edit', $data);
         }
+
+        return back()->withInput();
     }
 
     /**
@@ -273,7 +281,7 @@ class EventController extends Controller
             }
         }
 
-        return redirect()->route('event.info', $id);
+        return back()->withInput();
     }   
 
     /**
@@ -296,7 +304,7 @@ class EventController extends Controller
                 ]);
         }
 
-        return redirect()->route('event.info', $id);
+        return back()->withInput();
     }
 
     /**
@@ -335,7 +343,7 @@ class EventController extends Controller
             }
         }
 
-        return redirect()->route('event.info', $id);
+        return back()->withInput();
     }
 
     /**
@@ -362,8 +370,7 @@ class EventController extends Controller
 
         $event = Event::with(['markedUsers', 'organizer', 'co_organizer'])->find($id);
 
-        if ($this->isEventManager($event)
-            || $this->isAdmin())
+        if (($this->isEventManager($event) || $this->isAdmin()) && $event && !$event->isFinished)
         {
             $data = Helper::JsonDataConverter($data, 'bonus_skills', 'interest_skills');
             $event->fill([
@@ -417,7 +424,7 @@ class EventController extends Controller
             $event->save();
         }
 
-        return redirect()->route('event.info');
+        return back()->withInput();
     }
 
     /**

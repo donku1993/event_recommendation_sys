@@ -3,6 +3,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
+use App\Models\Helper;
 use DB;
 
 class Event extends Model
@@ -18,6 +19,11 @@ class Event extends Model
     public function getNumberOfMarkedAttribute()
     {
         return $this->markedUsers->count();
+    }
+
+    public function getIsFinishedAttribute()
+    {
+        return $this->status == Helper::getKeyByArrayNameAndValue('event_status', '活動已完結');
     }
 
     public function getIconPathAttribute()

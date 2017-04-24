@@ -35,7 +35,8 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-/*    public function show($id)
+/*
+    public function show($id)
     {
         $user = User::with(['markedGroup', 'markedEvent', 'groups', 'history_events', 'joined_not_begin_events'])->find($id);
 
@@ -49,7 +50,8 @@ class UserController extends Controller
 
             return view('user.info', $data);
         }
-    }*/
+    }
+*/
 
     /**
      * Show the form for editing the specified resource.
@@ -72,6 +74,8 @@ class UserController extends Controller
 
             return view('user.edit', $data);
         }
+
+        return back()->withInput();
     }
 
     public function infoEvent($id)
@@ -82,13 +86,14 @@ class UserController extends Controller
         {
             $status_array = $this->status_array($user);
             $data = [
-
                 'user' => $user,
                 'status_array' => $status_array
             ];
 
             return view('user.events', $data);
         }
+
+        return back()->withInput();
     }
 
     public function infoGroup($id)
@@ -99,13 +104,14 @@ class UserController extends Controller
         {
             $status_array = $this->status_array($user);
             $data = [
-
                 'user' => $user,
                 'status_array' => $status_array
             ];
 
             return view('user.groups', $data);
         }
+
+        return back()->withInput();
     }
 
     /**
@@ -155,7 +161,7 @@ class UserController extends Controller
             $user->save();
         }
 
-        return redirect()->route('user.edit',$user->id);
+        return back()->withInput();
     }
 
     /**
@@ -183,6 +189,6 @@ class UserController extends Controller
             $user->save();
         }
 
-        return redirect()->route('user.info',$user->id);
+        return back()->withInput();
     }
 }

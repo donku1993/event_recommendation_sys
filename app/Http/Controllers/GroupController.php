@@ -79,11 +79,14 @@ class GroupController extends Controller
     {
         $status_array = $this->status_array();
 
-        $data = [
-            'status_array' => $status_array
-        ];
+        if ($this->isLogin())
+        {
+            $data = [
+                'status_array' => $status_array
+            ];
+        }
 
-        return view('group.create',$data);
+        return back()->withInput();
     }
 
     /**
@@ -158,6 +161,8 @@ class GroupController extends Controller
 
             return view('group.info', $data);
         }
+
+        return back()->withInput();
     }
 
     /**
@@ -181,6 +186,8 @@ class GroupController extends Controller
 
             return view('group.edit', $data);
         }
+
+        return back()->withInput();
     }
 
     /**
@@ -220,7 +227,7 @@ class GroupController extends Controller
             }
         }
 
-        return redirect()->route('group.info', $id);
+        return back()->withInput();
     }
 
     /**
@@ -289,7 +296,7 @@ class GroupController extends Controller
             $group->save();
         }
 
-        return redirect()->route('group.info');
+        return back()->withInput();
     }
 
     /**
@@ -309,7 +316,7 @@ class GroupController extends Controller
             $group->save();
         }
 
-        return redirect()->route('group.list');
+        return back()->withInput();
     }
 
     public function download_registered_file($id)
@@ -320,5 +327,7 @@ class GroupController extends Controller
         {
             return response()->download($group->downloadRegisteredFile);
         }
+
+        return back()->withInput();
     }
 }

@@ -54,7 +54,7 @@ class GroupFormController extends Controller
             return view('group_form.list', $data);
         }
 
-        return redirect()->route('home');
+        return back()->withInput();
     }
 
     /**
@@ -79,7 +79,7 @@ class GroupFormController extends Controller
             return view('group_form.info', $data);
         }
 
-        return redirect()->route('home');
+        return back()->withInput();
     }
 
     /**
@@ -114,7 +114,7 @@ class GroupFormController extends Controller
             return redirect()->route('group_form.info', $group_form->id);
         }
 
-        return redirect()->route('group_form.list');
+        return back()->withInput();
     }
 
     /**
@@ -142,7 +142,7 @@ class GroupFormController extends Controller
             return redirect()->route('group_form.info', $group_form->id);
         }
 
-        return redirect()->route('group_form.list');
+        return back()->withInput();
     }
 
     /**
@@ -163,5 +163,7 @@ class GroupFormController extends Controller
 
             $group_form->save();
         }
+
+        return back()->withInput();
     }
 }

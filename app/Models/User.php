@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Helper;
+use App\Models\Event;
+use DB;
 
 class User extends Authenticatable
 {
@@ -53,6 +55,20 @@ class User extends Authenticatable
     public function getIsNormalUserAttribute()
     {
         return in_array($this->type, [Helper::getKeyByArrayNameAndValue('user_type', '普通會員'), Helper::getKeyByArrayNameAndValue('user_type', '活躍會員')]);
+    }
+
+    public function getEventsCreatedBySelfAttribute()
+    {
+        if ($this->type == 3)
+        {
+            $groups_id_list = $this->groups->pluck('id')->toArray();
+
+            $event_id_list = DB::table('groups_events_relation')->whereIn('group_id', $groups_id_list)->select('event_id')->get()->pluck('event_id')->toArray();
+
+            return Event::whereIn('id', $event_id_list)->orderBy('created_at', 'desc')->get();
+        }
+
+        return [];
     }
 
     public function markedGroup()

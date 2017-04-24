@@ -23,6 +23,8 @@ class ParticipantController extends Controller
 
         $page = $request->input('page', 1);
 
+        dd($request->all());
+
         $event = Event::with(['markedUsers', 'organizer', 'co_organizer'])->find($event_id);
 
         if ($this->isManagerCanEvaluate($event)
@@ -32,7 +34,7 @@ class ParticipantController extends Controller
 
             foreach ($data as $key => $value)
             {
-                $participant = Participant::where('event_id', $event->id)->where('id', $key)->first();
+                $participant = Participant::where('event_id', $event->id)->where('user_id', $key)->first();
 
                 if ($participant)
                 {
@@ -46,7 +48,7 @@ class ParticipantController extends Controller
             }
         }
 
-        return redirect()->route('event.member', $event_id, ['page' => $page]);
+        return redirect()->route('event.member', ['event_id' => $event_id, 'page' => $page]);
     }
 
     public function evaluation_data_pre_processing($data)
@@ -60,7 +62,7 @@ class ParticipantController extends Controller
             {
                 $id = (int)substr($key, 6);
 
-                $result[$id]['grade'] = $value;
+                $result[$id]['grade'] = ($value == 0) ? null : $value;
 
                 continue;
             }
