@@ -324,12 +324,15 @@ class EventController extends Controller
         {
             $participant = Participant::where('event_id', $event->id)->where('user_id', Auth::user()->id)->first();
 
-            $participant->fill([
-                    'grade_to_event' => $data['grade'],
-                    'remark_to_event' => $data['remark'],
-                ]);
+            if ($participant)
+            {
+                $participant->fill([
+                        'grade_to_event' => $data['grade'],
+                        'remark_to_event' => $data['remark'],
+                    ]);
 
-            $participant->save();
+                $participant->save();
+            }
         }
 
         return redirect()->route('event.info', $id);
