@@ -5,7 +5,9 @@
     <div class="container">
         <div class="row">
 
-            <form action="/event/{{ $event->id }}/evaluation" method="POST">
+            <form action="/participant/{{ $event->id }}/evaluation" method="POST">
+                <input type="hidden" name="_method" value="PUT">
+                {{ csrf_field() }}
                 <div class="col-md-12">
                     <table class="member-table table table-striped table-hover">
                         <thead>
@@ -25,10 +27,8 @@
                                 <td class="col-md-2" style="padding-top: 20px;">{{ $participant->name }}</td>
                                 <td class="col-md-3">
 
-                                    @if( !is_null($participant->grade_to_user) )
-                                        @foreach ($constant_array['event_evaulation']['value'] as $key => $value)
-                                            <p style="text-align-last: center">{{ $participant->grade_to_user }}</p>
-                                        @endforeach
+                                    @if( !is_null($participant->pivot->grade_to_user) )
+                                            <p style="text-align-last: center">{{ $constant_array['event_evaulation']['value'][$participant->pivot->grade_to_user] }}</p>
                                     @else
                                         <select style="text-align-last: center" class="form-control" name="grade_{{ $participant->id }}">
                                             @foreach ($constant_array['event_evaulation']['value'] as $key => $value)
@@ -40,8 +40,12 @@
                                 </td>
 
                                 <td class="col-md-5">
-                                    @if( !is_null($participant->grade_to_user) )
-                                        <p style="text-align-last: center">{{ $participant->remark_to_user }}</p>
+                                    @if( !is_null($participant->pivot->grade_to_user) )
+                                        @if(!is_null($participant->pivot->remark_to_user) )
+                                            <p style="text-align-last: center">{{ $participant->pivot->remark_to_user }}</p>
+                                        @else
+                                            <p style="text-align-last: center">沒有評論。</p>
+                                        @endif
                                     @else
                                         <input type="text" placeholder="輸入評論"  name="remark_{{ $participant->id }}" maxlength="60" class="form-control" >
                                     @endif
@@ -55,6 +59,7 @@
                     <hr/>
 
                     {{ $participants->links() }}
+
                 </div>
 
                 <div class="col-md-6 col-lg-offset-3">

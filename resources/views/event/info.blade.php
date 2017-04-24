@@ -39,7 +39,11 @@
                         @if( $status_array['is_event_manager'] || $status_array['is_admin'] )
                             <a class="btn btn-primary" href="/event/{{ $event->id }}/edit">修改</a>
                         @endif
-                        <a class="btn btn-success" href="/event/{{ $event->id }}/join">報名</a>
+                        <form id="user-info-form" style="display: inline-block" class="form-horizontal" role="form" action="/event/{{ $event->id }}/join" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="_method" value="PUT">
+                            {{ csrf_field() }}
+                            <input type="submit" class="btn btn-success"  value="報名">
+                        </form>
                     </div>
                 </div>
 

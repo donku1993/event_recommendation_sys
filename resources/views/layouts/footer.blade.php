@@ -62,7 +62,7 @@
             background-color: #4d6bab;
         }
         .mendi-social-networks li.twitter {
-            background-color: #4ec6f8;
+            background-color: #34f838;
         }
         .mendi-social-networks li.googleplus {
             background-color: #d34836;
@@ -90,7 +90,7 @@
                     <li class="twitter">
                         <a href="" title="">
                             <i class="fa fa-twitter"> </i>
-                            <p>FOLLOW US ON TWITTER</p>
+                            <p>FOLLOW US ON WECHAT</p>
                             <span class="followers">Twitter</span>
                         </a>
                     </li>

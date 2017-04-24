@@ -130,7 +130,7 @@
 
                                         <div class="btn btn-default image-preview-input">
                                         <span class="glyphicon glyphicon-folder-open"></span>
-                                        <span class="image-preview-input-title">Browse</span>
+                                        <span class="image-preview-input-title">Browse (上限2MB)</span>
                                         <input type="file" accept="image/png, image/jpeg, image/gif" name="icon_image"/>
                                             <input type="hidden" value="{{ csrf_token() }}" name="_token">
                                          </div>
@@ -158,7 +158,7 @@
 
                                         <div class="btn btn-default file-input">
                                         <span class="glyphicon glyphicon-folder-open"></span>
-                                        <span class="file-input-title">Browse</span>
+                                        <span class="file-input-title">Browse (上限2MB)</span>
                                         <input type="file"
                                                accept=".pdf, .csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel, text/plain, text/html, application/msword"
                                                name="registered_file"/>
