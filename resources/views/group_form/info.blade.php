@@ -84,8 +84,8 @@
                             <textarea name="remark" class="form-control" rows="4" placeholder="Enter the remark for the group as suggestion."></textarea>
                         </div>
 
-                        <input class="btn btn-success" type="submit" name="submit" value="Approve">
-                        <a class="btn btn-danger" style="right: 13px;position: absolute" href="/group_form/{{ $group_form->id }}/reject">Reject</a>
+                        <input class="btn btn-success" type="submit" name="approve" value="Approve">
+                        <input class="btn btn-danger" style="right: 13px;position: absolute" type="submit" name="reject" value="Reject">
                     @elseif( $group_form->status == 2 )
                         <div class="col-md-11" style="text-align: center">
                             <span class="label label-success">已批準</span>
