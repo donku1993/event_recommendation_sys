@@ -14,8 +14,10 @@
                     </a>
                 </div>
 
-                <div class="col-md-5">
-                    <h4 class="lf_title_h4" style="text-align: center;width: 210px"><i class="glyphicon glyphicon-hand-right" aria-hidden="true"></i> {{ $event->title }}</h4>
+                <div class="col-md-6">
+                    <div class="col-md-12">
+                        <h4 class="lf_title_h4" style="text-align: center"><i class="glyphicon glyphicon-hand-right" aria-hidden="true"></i> {{ $event->title }}</h4>
+                    </div>
 
                     <table>
                         <tbody>

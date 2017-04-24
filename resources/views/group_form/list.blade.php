@@ -12,7 +12,7 @@
                             </a>
                             <h4 class="group-name-list" style="text-align: center; width: 210px; color: #368976;"><i class="user-groups glyphicon glyphicon-tower"></i></i> {{ str_limit($group_form->name , $limit = 19, $end = '...') }}</h4>
                             <div class="col-md-9" style="margin-bottom: 15px;text-align: center">
-                                @if( $group_form->statu == 0 || $group_form->statu == 1 )
+                                @if( $group_form->status == 0 || $group_form->status == 1 )
                                     <span class="label label-warning">審批中</span>
                                 @else
                                     <span class="label label-primary">已審批</span>

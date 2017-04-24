@@ -78,7 +78,7 @@
                         </div>
                     </div>
 
-                    @if( $group_form->statu == 0 || $group_form->statu == 1 )
+                    @if( $group_form->status == 0 || $group_form->status == 1 )
                         <div class="group-form-remark " style="margin-bottom: 30px">
                             <label for="remark">Remark:</label>
                             <textarea name="remark" class="form-control" rows="4" placeholder="Enter the remark for the group as suggestion."></textarea>
@@ -86,11 +86,11 @@
 
                         <input class="btn btn-success" type="submit" name="submit" value="Approve">
                         <a class="btn btn-danger" style="right: 13px;position: absolute" href="/group_form/{{ $group_form->id }}/reject">Reject</a>
-                    @elseif( $group_form->statu == 2 )
+                    @elseif( $group_form->status == 2 )
                         <div class="col-md-11" style="text-align: center">
                             <span class="label label-success">已批準</span>
                         </div>
-                    @elseif( $group_form->statu == 3 )
+                    @elseif( $group_form->status == 3 )
                         <div class="col-md-11" style="text-align: center">
                             <span class="label label-danger">已拒絕</span>
                         </div>

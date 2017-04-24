@@ -25,20 +25,36 @@
                                 <td class="col-md-2" style="padding-top: 20px;">{{ $participant->name }}</td>
                                 <td class="col-md-3">
 
-                                    <select style="text-align-last: center" class="form-control" name="grade_{{ $participant->id }}">
+                                    @if( !is_null($participant->grade_to_user) )
                                         @foreach ($constant_array['event_evaulation']['value'] as $key => $value)
-                                            <option value="{{ $key }}">{{ $value }}</option>
+                                            <p style="text-align-last: center">{{ $participant->grade_to_user }}</p>
                                         @endforeach
-                                    </select>
+                                    @else
+                                        <select style="text-align-last: center" class="form-control" name="grade_{{ $participant->id }}">
+                                            @foreach ($constant_array['event_evaulation']['value'] as $key => $value)
+                                                <option value="{{ $key }}">{{ $value }}</option>
+                                            @endforeach
+                                        </select>
+                                    @endif
+
                                 </td>
+
                                 <td class="col-md-5">
-                                    <input type="text" placeholder="輸入評論"  name="remark_{{ $participant->id }}" maxlength="60" class="form-control" >
+                                    @if( !is_null($participant->grade_to_user) )
+                                        <p style="text-align-last: center">{{ $participant->remark_to_user }}</p>
+                                    @else
+                                        <input type="text" placeholder="輸入評論"  name="remark_{{ $participant->id }}" maxlength="60" class="form-control" >
+                                    @endif
                                 </td>
+
+
                             </tr>
                         @endforeach
                         </tbody>
                     </table>
                     <hr/>
+
+                    {{ $participants->links() }}
                 </div>
 
                 <div class="col-md-6 col-lg-offset-3">
@@ -64,9 +80,6 @@
                         </div>
                     </div>
                 </div>
-
-
-
 
             </form>
 

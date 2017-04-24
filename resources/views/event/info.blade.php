@@ -39,9 +39,7 @@
                         @if( $status_array['is_event_manager'] || $status_array['is_admin'] )
                             <a class="btn btn-primary" href="/event/{{ $event->id }}/edit">修改</a>
                         @endif
-                        @if( $status_array['is_login'] )
-                            <a class="btn btn-success" href="/event/{{ $event->id }}/join">報名</a>
-                        @endif
+                        <a class="btn btn-success" href="/event/{{ $event->id }}/join">報名</a>
                     </div>
                 </div>
 
@@ -98,7 +96,7 @@
 
                 </div>
 
-                @if( $status_array['is_event_manager'] )
+                @if( $status_array['is_event_manager'] || $status_array['is_admin'] )
                     <div class="right-nav" style="text-align: center">
                         <div class="col-md-2 pull-right">
                             <div class="panel panel-default">
