@@ -7,7 +7,7 @@
 
             <form action="/participant/{{ $event->id }}/evaluation" method="POST">
                 <input type="hidden" name="_method" value="PUT">
-                <input type="hidden" name="page" value="">
+                <input type="hidden" name="page" value="{{ $page }}">
                 {{ csrf_field() }}
                 <div class="col-md-12">
                     <table class="member-table table table-striped table-hover">

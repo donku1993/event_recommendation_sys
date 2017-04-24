@@ -30,6 +30,12 @@
         <div class="profile-usermenu">
             <ul class="nav">
                 <li>
+                    <a href="/user/{{ $user->id }}/info" class="user-info">
+                        <i class="glyphicon glyphicon-user"></i>
+                        個人資料 </a>
+                </li>
+
+                <li>
                     <a href="/user/{{ $user->id }}/events" class="user-events">
                         <i class="glyphicon glyphicon-flag"></i>
                         活動 </a>
@@ -43,9 +49,9 @@
 
                 @if( $status_array['is_self'] )
                     <li>
-                        <a href="/user/{{ $user->id }}/edit" class="user-info">
-                            <i class="glyphicon glyphicon-user"></i>
-                            個人資料與設定 </a>
+                        <a href="/user/{{ $user->id }}/edit" class="user-edit">
+                            <i class="glyphicon glyphicon-wrench"></i>
+                            修改個人資料 </a>
                     </li>
 
                     <li>

@@ -62,12 +62,23 @@
                                 <label for="gender" class="col-md-4 control-label">性別</label>
 
                                 <div class="col-md-6">
-                                    <label class="radio-inline">
-                                        <input type="radio" id="gender-m" name="gender" value="0" checked> 男
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" id="gender-f" name="gender" value="1"> 女
-                                    </label>
+                                        @if( $user->gender == 0 )
+                                            <label class="radio-inline">
+                                                <input type="radio" id="gender-m" name="gender" value="0" checked> 男
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" id="gender-f" name="gender" value="1"> 女
+                                            </label>
+                                        @else
+                                            <label class="radio-inline">
+                                                <input type="radio" id="gender-m" name="gender" value="0" > 男
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" id="gender-f" name="gender" value="1" checked> 女
+                                            </label>
+                                        @endif
+
+
                                 </div>
                             </div>
 

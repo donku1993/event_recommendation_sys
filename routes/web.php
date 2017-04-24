@@ -19,7 +19,7 @@ Route::group(['middleware' => 'browser_checker'], function() {
 
 
 	// User
-	Route::get('/user/{id}', 'UserController@show')->name('user.info');
+	Route::get('/user/{id}/info', 'UserController@show')->name('user.info');
 	Route::get('/user/{id}/edit', 'UserController@edit')->name('user.edit');
     Route::get('/user/{id}/events', 'UserController@infoEvent')->name('user.events');
     Route::get('/user/{id}/groups', 'UserController@infoGroup')->name('user.groups');

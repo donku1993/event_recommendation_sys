@@ -35,7 +35,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-/*
+
     public function show($id)
     {
         $user = User::with(['markedGroup', 'markedEvent', 'groups', 'history_events', 'joined_not_begin_events'])->find($id);
@@ -51,7 +51,7 @@ class UserController extends Controller
             return view('user.info', $data);
         }
     }
-*/
+
 
     /**
      * Show the form for editing the specified resource.

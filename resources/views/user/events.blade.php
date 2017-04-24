@@ -19,7 +19,7 @@
                                 <a href="javascript:viod(0)" id="check-more" class="btn btn-block btn-warning" style="opacity: 0;width: 120px;margin-left: 15px;margin-right: 15px;position: absolute; "><i class="glyphicon glyphicon-exclamation-sign"></i>查看詳情</a>
 
                                 <a class="img-holder" href="/event/{{ $joined_not_begin_event->id }}">
-                                    <img src="{{ $joined_not_begin_event->icon_image }}" alt="" style="width: 150px; height: 150px;">
+                                    <img src="{{ $joined_not_begin_event->iconPath }}" alt="" style="width: 150px; height: 150px;">
                                 </a>
                                 <div class="col-md-12" style="padding-left: 0px;">
                                     <h4 class="lf_title_h4">{{ $joined_not_begin_event->title }}</h4>
@@ -37,7 +37,7 @@
                                 <a href="javascript:viod(0)" id="check-more" class="btn btn-block btn-warning" style="opacity: 0;width: 120px;margin-left: 15px;margin-right: 15px;position: absolute; "><i class="glyphicon glyphicon-exclamation-sign"></i>查看詳情</a>
 
                                 <a class="img-holder" href="/event/{{ $markedEvent->id }}">
-                                    <img src="{{ $markedEvent->icon_image }}" alt="" style="width: 150px; height: 150px;">
+                                    <img src="{{ $markedEvent->iconPath }}" alt="" style="width: 150px; height: 150px;">
                                 </a>
 
                                 <div class="col-md-12" style="padding-left: 0px;">
@@ -56,7 +56,7 @@
                                 <a href="javascript:viod(0)" id="check-more" class="btn btn-block btn-warning" style="opacity: 0;width: 120px;margin-left: 15px;margin-right: 15px;position: absolute; "><i class="glyphicon glyphicon-exclamation-sign"></i>查看詳情</a>
 
                                 <a class="img-holder" href="/event/{{ $history_event->id }}">
-                                    <img src="{{ $history_event->icon_image }}" alt="" style="width: 150px; height: 150px;">
+                                    <img src="{{ $history_event->iconPath }}" alt="" style="width: 150px; height: 150px;">
                                 </a>
 
                                 <div class="col-md-12" style="padding-left: 0px;">

@@ -109,9 +109,13 @@ function activeClass() {
         var last_segment = segment_array[segment_array.length - 1];
 
         switch ( last_segment ){
-            case 'edit':
+            case 'info':
                 var user_info = $('.user-info');
                 user_info.parent().addClass('active');
+                break;
+            case 'edit':
+                var user_edit = $('.user-edit');
+                user_edit.parent().addClass('active');
                 break;
             case 'groups':
                 var user_groups = $('.user-groups');
