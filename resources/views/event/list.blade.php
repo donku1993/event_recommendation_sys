@@ -15,7 +15,7 @@
                 </div>
 
                 <div class="col-md-5">
-                    <h4 class="lf_title_h4"><i class="glyphicon glyphicon-hand-right" aria-hidden="true"></i> {{ $event->title }}</h4>
+                    <h4 class="lf_title_h4" style="text-align: center;width: 210px"><i class="glyphicon glyphicon-hand-right" aria-hidden="true"></i> {{ $event->title }}</h4>
 
                     <table>
                         <tbody>
@@ -34,11 +34,12 @@
 
                         <tr>
                             <td><i class="glyphicon glyphicon-tags"></i>{{ $constant_array['event_type']['value'][$event->type] }}</td>
+                            <td><i class="glyphicon glyphicon-pencil"></i>報名{{ $event->numberOfJoin }} 人</td>
                         </tr>
 
                         </tbody>
                     </table>
-                    <button type="button" class="btn btn-success btn-lg btn-block"><a href="/event/{{ $event->id }}" style="color: #f5f8fa"><i class="fa fa-pencil-square" aria-hidden="true"></i>查看詳情</a></button>
+                    <a href="/event/{{ $event->id }}" style="color: #f5f8fa"><button type="button" class="btn btn-success btn-lg btn-block"><i class="fa fa-pencil-square" aria-hidden="true"></i>查看詳情</button></a>
                 </div>
 
 

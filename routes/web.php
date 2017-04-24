@@ -21,8 +21,11 @@ Route::group(['middleware' => 'browser_checker'], function() {
 	// User
 	Route::get('/user/{id}', 'UserController@show')->name('user.info');
 	Route::get('/user/{id}/edit', 'UserController@edit')->name('user.edit');
+    Route::get('/user/{id}/events', 'UserController@infoEvent')->name('user.events');
+    Route::get('/user/{id}/groups', 'UserController@infoGroup')->name('user.groups');
 
-	Route::put('/user/{id}', 'UserController@update')->name('user.update');
+
+    Route::put('/user/{id}', 'UserController@update')->name('user.update');
 	Route::post('/user/{id}/icon_update', 'UserController@icon_update')->name('user.icon_update');
 
 

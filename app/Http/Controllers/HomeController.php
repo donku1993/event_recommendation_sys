@@ -71,10 +71,13 @@ class HomeController extends Controller
             $keywords[$key] = (!isset($keywords[$key]) || is_null($keywords[$key])) ? "" : $keywords[$key];
         }
 
+        $status_array = $this->status_array();
+
         $data = [
                 'events' => $events,
-                'keywords' => (object)$keywords
-            ];
+                'keywords' => (object)$keywords,
+                'status_array' => $status_array
+        ];
 
         return view('event.list', $data);
     }
@@ -91,9 +94,12 @@ class HomeController extends Controller
             $keywords[$key] = (!isset($keywords[$key]) || is_null($keywords[$key])) ? "" : $keywords[$key];
         }
 
+        $status_array = $this->status_array();
+
         $data = [
                 'events' => $events,
-                'keywords' => (object)$keywords
+                'keywords' => (object)$keywords,
+                'status_array' => $status_array
             ];
 
         return view('event.list', $data);
@@ -111,10 +117,13 @@ class HomeController extends Controller
             $keywords[$key] = (!isset($keywords[$key]) || is_null($keywords[$key])) ? "" : $keywords[$key];
         }
 
+        $status_array = $this->status_array();
+
         $data = [
                 'events' => $events,
-                'keywords' => (object)$keywords
-            ];
+                'keywords' => (object)$keywords,
+                'status_array' => $status_array
+        ];
 
         return view('event.list', $data);
     }

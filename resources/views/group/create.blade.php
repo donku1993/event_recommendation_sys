@@ -245,7 +245,7 @@
                         InterValObj = window.setInterval(function () {
                             if (curCount == 0) {
                                 window.clearInterval(InterValObj);
-                                window.location = "/group_form/"+data['group_id'];
+                                window.location = "/user/{{ Auth::user()->id }}/groups";
                             }
                             else {
                                 curCount--;
