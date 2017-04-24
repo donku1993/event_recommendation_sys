@@ -91,7 +91,7 @@
                         <a href="" title="">
                             <i class="fa fa-twitter"> </i>
                             <p>FOLLOW US ON WECHAT</p>
-                            <span class="followers">Twitter</span>
+                            <span class="followers">WECHAT</span>
                         </a>
                     </li>
                     <li class="googleplus">

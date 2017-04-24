@@ -4,9 +4,11 @@
         <div class="profile-userpic">
             <img src="{{ $user->iconPath }}" style="width: 180px;height: 180px;" class="img-responsive" alt="Icon">
         </div>
+        @if( $status_array['is_self'] )
         <div class="profile-userpic-edit profile-userbuttons">
             <button onclick="uploadImage();openUploadIcon();" class="btn btn-warning btn-sm">更換圖片</button>
         </div>
+        @endif
         <!-- END SIDEBAR USERPIC -->
         <!-- SIDEBAR USER TITLE -->
         <div class="profile-usertitle">
