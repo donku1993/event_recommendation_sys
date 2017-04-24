@@ -23,8 +23,6 @@ class ParticipantController extends Controller
 
         $page = $request->input('page', 1);
 
-        dd($request->all());
-
         $event = Event::with(['markedUsers', 'organizer', 'co_organizer'])->find($event_id);
 
         if ($this->isManagerCanEvaluate($event)

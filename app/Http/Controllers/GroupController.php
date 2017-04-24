@@ -84,6 +84,8 @@ class GroupController extends Controller
             $data = [
                 'status_array' => $status_array
             ];
+
+            return view('group.create', $data);
         }
 
         return back()->withInput();
@@ -160,6 +162,13 @@ class GroupController extends Controller
             ];
 
             return view('group.info', $data);
+        }
+
+        $group = Group::find($id);
+
+        if ($group)
+        {
+            return redirect()->route('group_form.info', $group->id);
         }
 
         return back()->withInput();

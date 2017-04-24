@@ -51,24 +51,6 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
-    /**
-     * Log the user out of the application.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function logout(Request $request)
-    {
-        $this->guard()->logout();
-
-        $request->session()->flush();
-
-        $request->session()->regenerate();
-
-        //return redirect('/');
-        return redirect(URL::previous());
-    }
-
     public function redirectTo()
     {
         return session('login-pre-url', '/');

@@ -67,7 +67,9 @@ class GroupFormController extends Controller
     {
         $group_form = Group::with(['markedUsers', 'applicant', 'events'])->find($id);
 
-        if ($group_form && ($this->isAdmin() || $this->isGroupManager($group_form)))
+        $this->form_read($id);
+
+        if ($group_form && ($this->isAdmin() || $this->isGroupCreatedBySelf($group_form)))
         {
             $status_array = $this->status_array($group_form);
 
@@ -95,49 +97,31 @@ class GroupFormController extends Controller
 
         $group_form = Group::unprocessForm()->find($id);
 
+        $result = Helper::getKeyByArrayNameAndValue('group_status', '已拒絕');
+
+        $result = ($request->exist('approve')) ? Helper::getKeyByArrayNameAndValue('group_status', '已批準') : $result;
+
         if ($this->isAdmin() && $group_form)
         {
             $group_form->fill([
-                    'status' => Helper::getKeyByArrayNameAndValue('group_status', '已批準'),
+                    'status' => $result,
                     'remark' => $request->input('remark', '')
                 ]);
 
             $manager = $group_form->manager;
 
-            $manager->fill([
-                    'type' => Helper::getKeyByArrayNameAndValue('user_type', '組職管理員')
-                ]);
+            if ($result == Helper::getKeyByArrayNameAndValue('group_status', '已批準'))
+            {
+                $manager->fill([
+                        'type' => Helper::getKeyByArrayNameAndValue('user_type', '組職管理員')
+                    ]);
+
+                $manager->save();
+            }
 
             $group_form->save();
-            $manager->save();
 
-            return redirect()->route('group_form.info', $group_form->id);
-        }
-
-        return back()->withInput();
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function reject($id, Request $request)
-    {
-        $data = $request->all();
-
-        $group_form = Group::unprocessForm()->find($id);
-
-        if ($this->isAdmin() && $group_form)
-        {
-            $group_form->fill([
-                    'status' => Helper::getKeyByArrayNameAndValue('group_status', '已拒絕'),
-                    'remark' => $request->input('remark', '')
-                ]);
-
-            $group_form->save();
+            $this->fireGroupFormApprovedMailSendingJob($group_form->user_id, $group_form->id);
 
             return redirect()->route('group_form.info', $group_form->id);
         }
@@ -149,7 +133,6 @@ class GroupFormController extends Controller
      * Update the specified resource in storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function form_read($id)
     {
@@ -163,7 +146,5 @@ class GroupFormController extends Controller
 
             $group_form->save();
         }
-
-        return back()->withInput();
     }
 }

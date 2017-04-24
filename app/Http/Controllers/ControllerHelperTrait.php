@@ -10,6 +10,7 @@ use App\Models\Event;
 use App\Models\Group;
 use App\Models\Helper;
 use App\Models\Participant;
+use App\Jobs\groupFormApprovedMailSendingJob;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
@@ -125,6 +126,18 @@ trait ControllerHelperTrait
 		}
 	}
 
+	public function isGroupCreatedBySelf(Group $group = null)
+	{
+		if ($this->isLogin() && $group)
+		{
+			return (
+					Auth::user()->id === $group->user_id
+				);
+		} else {
+			return false;
+		}
+	}
+
 	public function isMarkedGroup(Group $group = null)
 	{
 		if ($this->isLogin() && $group)
@@ -209,5 +222,16 @@ trait ControllerHelperTrait
 		    $currentPage, // Current page
 		    ['path' => $path] // We need this so we can keep all old query parameters from the url
 		);
+	}
+
+	protected function fireGroupFormApprovedMailSendingJob(int $user_id, int $group_form_id)
+	{
+		$user = User::find($user_id);
+		$group_form = Group::find($group_form_id);
+
+		if ($user && $group_form)
+		{
+			dispatch(new groupFormApprovedMailSendingJob($user, $group_form));
+		}
 	}
 }
