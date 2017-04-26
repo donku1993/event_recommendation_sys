@@ -26,6 +26,24 @@ class Event extends Model
         return $this->status == Helper::getKeyByArrayNameAndValue('event_status', '活動已完結');
     }
 
+    public function getPopularLevelAttribute()
+    {
+        // percentage of join number (0 to 5)
+        $mark_1 = ( $this->numberOfJoin / $this->numberOfPeople ) * 5;
+
+        // percentage of clicks (0 to 5)
+        $numberOfClickIn7Days = DB::table('records')
+                                    ->where('event_id', $this->id)
+                                    ->where('created_at', '>', Carbon::now()->subWeek())
+                                    ->count();
+        $numberOfAllClickIn7Days = DB::table('records')
+                                        ->where('created_at', '>', Carbon::now()->subWeek())
+                                        ->count() + 1;
+        $mark_2 = ( $numberOfClickIn7Days / $numberOfAllClickIn7Days ) * 5;
+
+        return $mark_1 + $mark_2;
+    }
+
     public function getIconPathAttribute()
     {
         return '/storage/event_cover/' . $this->previewImage;
