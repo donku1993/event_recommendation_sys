@@ -24,12 +24,28 @@
                         </div>
                         <br>
 
-
-
                         {{--Group can edit, wait for middleware--}}
-                        @if( $status_array['is_group_manager'] )
+                        @if( $status_array['is_group_manager'] ||  $status_array['is_admin'])
                             <a class="btn btn-primary" href="/group/{{ $group->id }}/edit">修改</a>
                         @endif
+
+                        <div class="mark-group" style="display: inline-block">
+                            <form id="user-info-form"  class="form-horizontal" role="form" action="/group/{{ $group->id }}/mark" method="POST" enctype="multipart/form-data">
+                                <input type="hidden" name="_method" value="PUT">
+                                {{ csrf_field() }}
+                                    @if( $status_array['is_marked_group'] )
+                                        <input type="submit" class="btn btn-danger"  value="取消標記">
+                                    @else
+
+                                    @if( $status_array['is_login'] )
+                                        <input type="submit" class="btn btn-danger"  value="標記">
+                                    @else
+                                        <input type="button" class="non-login-submit btn btn-danger"  value="標記">
+                                    @endif
+
+                                @endif
+                            </form>
+                        </div>
 
                     </div>
             </div>
@@ -103,7 +119,9 @@
 
 @section('script')
 
-<script>
+    <script type="text/javascript" src="{{ route('record.group', $group->id) }}"></script>
+
+    <script>
     $(function(){
         var len = 250;
         $(".group-info-event").each(function(i){

@@ -25,7 +25,7 @@
                                 <td><i class="glyphicon glyphicon-calendar"></i>活動結束: {{ $event->endDate }} {{ $event->endTime }} </td>
                             </tr>
                             <tr>
-                                <td><i class="glyphicon glyphicon-time"></i>活動時數: hrs</td>
+                                <td><i class="glyphicon glyphicon-time"></i>活動時數: {{ $event->hours }}hrs</td>
                                 <td><i class="glyphicon glyphicon-exclamation-sign"></i>報名截止: {{ $event->signUpEndDate }} {{ $event->signUpEndTime }}</td>
                             </tr>
                             <tr>
@@ -39,6 +39,25 @@
                         @if( $status_array['is_event_manager'] || $status_array['is_admin'] )
                             <a class="btn btn-primary" href="/event/{{ $event->id }}/edit">修改</a>
                         @endif
+
+                        <div class="mark-event" style="display: inline-block">
+                            <form id="user-info-form"  class="form-horizontal" role="form" action="/event/{{ $event->id }}/mark" method="POST" enctype="multipart/form-data">
+                                    <input type="hidden" name="_method" value="PUT">
+                                    {{ csrf_field() }}
+                                    @if( $status_array['is_marked_event'] )
+                                        <input type="submit" class="btn btn-danger"  value="取消標記">
+                                    @else
+
+                                    @if( $status_array['is_login'] )
+                                        <input type="submit" class="btn btn-danger"  value="標記">
+                                    @else
+                                        <input type="button" class="non-login-submit btn btn-danger"  value="標記">
+                                    @endif
+
+                                    @endif
+                                </form>
+                        </div>
+
                     @if( $status_array['is_participant'] )
                             <span class="label label-success">您已報名</span>
                         @else
@@ -70,8 +89,9 @@
                                     <input type="button" class="non-login-submit btn btn-success"  value="報名">
                                 @endif
 
-                            </form>
                         @endif
+                            </form>
+
                     </div>
                 </div>
 
@@ -197,6 +217,7 @@
 @endsection
 
 @section('script')
+    <script type="text/javascript" src="{{ route('record.event', $event->id) }}"></script>
 
     <script>
         $('.submit').click(function () {
