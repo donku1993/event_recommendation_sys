@@ -48,9 +48,9 @@
                         @endforeach
                     </div>
 
-{{--                    @if( $status_array['is_event_manager'] )
+                    @if( $status_array['is_manager'] )
                         <div class="col-md-12 panel panel-success">
-                            <h4 style=""><i class="glyphicon glyphicon-bookmark"></i> 您建立的活動</h4>
+                            <h4 style=""><i class="glyphicon glyphicon-flag"></i> 您建立的活動</h4>
                             <hr>
                             @foreach ($user->EventsCreatedBySelf as $eventSelf)
                                 <div class="col-md-3 recommend-events-holder">
@@ -67,7 +67,7 @@
                                 </div>
                             @endforeach
                         </div>
-                    @endif--}}
+                    @endif
 
 
 
