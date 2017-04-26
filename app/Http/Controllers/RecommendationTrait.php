@@ -478,7 +478,7 @@ trait RecommendationTrait
 	public function mostPopularEvents(int $num = null)
 	{
 		$events = Event::all()->sortByDesc(function ($event, $key) {
-			return $event->numberOfJoin;
+			return $event->popularLevel;
 		});
 
 		if (!is_null($num))

@@ -361,6 +361,7 @@ class EventController extends Controller
                                 'schedule' => '',
                                 'requirement' => '',
                                 'remark' => '',
+                                'previewImage' => 'image',
                             ]
                         );
 
@@ -387,6 +388,11 @@ class EventController extends Controller
                     'remark' => $request->input('remark', ''),
                     'bonus_skills' => $data['bonus_skills'],
                 ]);
+
+            if (isset($data['previewImage']))
+            {
+                $event->previewImage = $this->imageUpload('event_cover', $event->id, $request->file('previewImage', null));
+            }
 
             $event->save();
 

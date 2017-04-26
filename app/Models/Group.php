@@ -1,7 +1,9 @@
 <?php
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Helper;
+
 class Group extends Model
 {
     protected $table = 'groups';

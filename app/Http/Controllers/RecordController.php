@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use Request as GlobalRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Record;
 use App\Models\Group;
@@ -19,7 +20,8 @@ class RecordController extends Controller
     		Record::insert([
     				'ip' => GlobalRequest::ip(),
     				'user_id' => (Auth::user()) ? Auth::user()->id : null,
-    				'group_id' => $group->id
+    				'group_id' => $group->id,
+                    'created_at' => Carbon::now()
     			]);
     	}
     }
@@ -32,7 +34,8 @@ class RecordController extends Controller
     		Record::insert([
     				'ip' => GlobalRequest::ip(),
     				'user_id' => (Auth::user()) ? Auth::user()->id : null,
-    				'event_id' => $event->id
+    				'event_id' => $event->id,
+                    'created_at' => Carbon::now()
     			]);
     	}
     }

@@ -129,7 +129,7 @@ class GroupFormController extends Controller
 
             $group_form->fill([
                     'status' => $result,
-                    'remark' => $remark;
+                    'remark' => $remark
                 ]);
 
             $group_form->save();

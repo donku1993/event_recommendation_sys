@@ -249,7 +249,12 @@ class GroupController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validate_array = $this->basicValidationArray();
+        $validate_array = array_merge(
+                            $this->basicValidationArray(),
+                            [
+                                'icon_image' => 'image'
+                            ]
+                        );
 
         unset($validate_array['registered_id']);
         unset($validate_array['registered_file']);
@@ -257,6 +262,7 @@ class GroupController extends Controller
         $this->validate($request, $validate_array);
 
         $data = $request->all();
+
         $group = Group::isGroup()->with(['markedUsers', 'manager', 'events'])->find($id);
 
         if ($this->isGroupManager($group)
@@ -276,6 +282,11 @@ class GroupController extends Controller
                     'address' => $data['address'],
                     'introduction' => $data['introduction']
                 ]);
+
+            if (isset($data['icon_image']))
+            {
+                $group->icon_image = $this->imageUpload('group_icon', $group->id, $request->file('icon_image', null));   
+            }
 
             $group->save();
 
