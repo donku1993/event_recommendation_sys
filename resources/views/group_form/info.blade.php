@@ -62,7 +62,7 @@
                                             <label class="control-label" for="registered_id">Registered id:</label>
                                             <p class="form-horizontal form-control-static">{{ $group_form->registered_id }}</p>
                                             <label class="control-label" for="registered_file">Registered File:</label>
-                                            <a href="{{ $group_form->registered_file }}" download="registered_file">
+                                            <a href="{{ $group_form->DownloadRegisteredFile }}" download="registered_file">
                                                 <p class="form-horizontal form-control-static">Registered_File_From_Group_{{ $group_form->id }}</p>
                                             </a>
 

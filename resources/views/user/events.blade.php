@@ -48,6 +48,29 @@
                         @endforeach
                     </div>
 
+{{--                    @if( $status_array['is_event_manager'] )
+                        <div class="col-md-12 panel panel-success">
+                            <h4 style=""><i class="glyphicon glyphicon-bookmark"></i> 您建立的活動</h4>
+                            <hr>
+                            @foreach ($user->EventsCreatedBySelf as $eventSelf)
+                                <div class="col-md-3 recommend-events-holder">
+                                    <a href="javascript:viod(0)" id="check-more" class="btn btn-block btn-warning" style="opacity: 0;width: 120px;margin-left: 15px;margin-right: 15px;position: absolute; "><i class="glyphicon glyphicon-exclamation-sign"></i>查看詳情</a>
+
+                                    <a class="img-holder" href="/event/{{ $eventSelf->id }}">
+                                        <img src="{{ $eventSelf->iconPath }}" alt="" style="width: 150px; height: 150px;">
+                                    </a>
+
+                                    <div class="col-md-12" style="padding-left: 0px;">
+                                        <h4 class="lf_title_h4">{{ $eventSelf->title }}</h4>
+                                    </div>
+
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif--}}
+
+
+
                     <div class="col-md-12 panel panel-warning">
                             <h4 style=""><i class="glyphicon glyphicon-book"></i> 活動歷史記錄</h4>
                         <hr>
