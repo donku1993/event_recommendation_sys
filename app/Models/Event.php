@@ -32,13 +32,20 @@ class Event extends Model
         $mark_1 = ( $this->numberOfJoin / $this->numberOfPeople ) * 5;
 
         // percentage of clicks (0 to 5)
-        $numberOfClickIn7Days = DB::table('records')
-                                    ->where('event_id', $this->id)
-                                    ->where('created_at', '>', Carbon::now()->subWeek())
-                                    ->count();
-        $numberOfAllClickIn7Days = DB::table('records')
+        $numberOfClickIn7Days = collect(
+                                        DB::table('records')
+                                        ->select('ip')
+                                        ->where('event_id', $this->id)
                                         ->where('created_at', '>', Carbon::now()->subWeek())
-                                        ->count() + 1;
+                                        ->get()->toArray()
+                                    )->unique()->count();
+        $numberOfAllClickIn7Days = collect(
+                                            DB::table('records')
+                                            ->select('ip', 'event_id')
+                                            ->where('created_at', '>', Carbon::now()->subWeek())
+                                            ->get()->toArray()
+                                        )->unique()->count();
+
         $mark_2 = ( $numberOfClickIn7Days / $numberOfAllClickIn7Days ) * 5;
 
         return $mark_1 + $mark_2;
