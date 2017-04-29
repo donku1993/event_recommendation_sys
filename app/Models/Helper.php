@@ -120,6 +120,16 @@ class Helper extends Model
         ]
     ];
 
+    protected static $year_of_volunteer_array = [
+        'prefix' => 'year_of_volunteer',
+        'value' => [
+            0 => '沒有經驗',
+            1 => '不足一年',
+            2 => '一至兩年',
+            3 => '兩年以上',
+        ]
+    ];
+
     protected static $users_groups_relation_type_array = [
         'prefix' => 'users_groups_relation_type',
         'value' => [
@@ -164,14 +174,17 @@ class Helper extends Model
             case 'group_status':
                 return self::$group_status_array;
                 break;
+            case 'event_evaulation':
+                return self::$event_evaluation_array;
+                break;
+            case 'year_of_volunteer':
+                return self::$year_of_volunteer_array;
+                break;
             case 'users_groups_relation_type':
                 return self::$users_groups_relation_type_array;
                 break;
             case 'user_gender':
                 return self::$user_gender_array;
-                break;
-            case 'event_evaulation':
-                return self::$event_evaluation_array;
                 break;
             default:
                 return null;
@@ -219,6 +232,7 @@ class Helper extends Model
             self::$event_status_array['prefix'] => self::$event_status_array,
             self::$group_status_array['prefix'] => self::$group_status_array,
             self::$event_evaluation_array['prefix'] => self::$event_evaluation_array,
+            self::$year_of_volunteer_array['prefix'] => self::$year_of_volunteer_array,
         ]];
     }
 

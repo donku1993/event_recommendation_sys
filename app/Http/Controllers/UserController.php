@@ -159,6 +159,8 @@ class UserController extends Controller
                 ]);
 
             $user->save();
+
+            self::fireSimilarityCalculateUserGivenJob($user->id);
         }
 
         return back()->withInput();

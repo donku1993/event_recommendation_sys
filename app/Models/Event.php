@@ -1,5 +1,6 @@
 <?php
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
@@ -46,7 +47,7 @@ class Event extends Model
                                             ->get()->toArray()
                                         )->unique()->count();
 
-        $mark_2 = ( $numberOfClickIn7Days / $numberOfAllClickIn7Days ) * 5;
+        $mark_2 = ($numberOfAllClickIn7Days !== 0) ? ( $numberOfClickIn7Days / $numberOfAllClickIn7Days ) * 5 : 0;
 
         return $mark_1 + $mark_2;
     }
@@ -70,7 +71,7 @@ class Event extends Model
     {
         $count = DB::table('participants')->where('event_id', $this->id)->count();
 
-        if ($this->signUpEndDate > Carbon::now() &&
+        if ($this->signUpEndDate->diffInSeconds(Carbon::now(), false) < 0 &&
             $this->numberOfPeople > $count)
         {
             return true;
@@ -143,10 +144,36 @@ class Event extends Model
         return $query;
     }
 
+    public function scopeNotFinished($query)
+    {
+        return $query->whereIn('status', [0, 1]);
+    }
+
     public static function getJoinable(Collection $events)
     {
         return $events->filter(function ($event) {
             return $event->isJoinableEvent;
         });
+    }
+
+    public function update_status()
+    {
+        if ($this->status == 0)
+        {
+            if ($this->signUpEndDate->diffInSeconds(Carbon::now(), false) > 0)
+            {
+                $this->status = 1;
+            }
+        }
+
+        if ($this->status == 1)
+        {
+            if ($this->endDate->diffInSeconds(Carbon::now(), false) > 0)
+            {
+                $this->status = 2;
+            }
+        }
+
+        $this->save();
     }
 }

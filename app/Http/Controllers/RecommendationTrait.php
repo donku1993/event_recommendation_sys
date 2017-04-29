@@ -62,7 +62,7 @@ trait RecommendationTrait
 			$match += ($value && $value == $user_interest_skills[$key]) ? 1 : 0;
 		}
 
-		return $match / $all * 5;
+		return ($all !== 0) ? $match / $all * 5 : 0;
 	}
 
 	protected function time_compare(User $user, Event $event)
@@ -82,7 +82,7 @@ trait RecommendationTrait
 			$eighteen_oclock = Carbon::create($event_time_start->year, $event_time_start->month, $event_time_start->day, 18, 0, 0);
 			$twenty_two_oclock = Carbon::create($event_time_start->year, $event_time_start->month, $event_time_start->day, 22, 0, 0);
 
-			$all = $event_time_start->diffInMinutes($event_time_end, false);;
+			$all = $event_time_start->diffInMinutes($event_time_end, false);
 			$match = 0;
 			$end = false;
 
@@ -124,7 +124,7 @@ trait RecommendationTrait
 				}
         	}
 
-        	return $match / $all * 3;
+			return ($all !== 0) ? $match / $all * 3 : 0;
 		}
 	}
 
@@ -144,7 +144,7 @@ trait RecommendationTrait
 		$all = $event_organizers->count();
 		$match = $event_organizers->intersect($user_marked_groups)->count();
 
-		return $match / $all * 5;
+		return ($all !== 0) ? $match / $all * 5 : 0;
 	}
 
 	protected function is_created_by_same_group_of_marked_event(User $user, Event $event)
@@ -163,7 +163,7 @@ trait RecommendationTrait
 		$all = $event_organizers->count();
 		$match = $event_organizers->intersect($group_list)->count();
 
-		return $match / $all * 5;
+		return ($all !== 0) ? $match / $all * 5 : 0;
 	}
 
 	protected function is_similarity_to_marked_events(User $user, Event $event)
@@ -222,7 +222,7 @@ trait RecommendationTrait
 		return $average * 5;
 	}
 
-	protected function fireSimilarityCalculateUserGivenJob(int $user_id)
+	public static function fireSimilarityCalculateUserGivenJob(int $user_id)
 	{
 		if (SimilarityCalculationJobRecord::countWaitingOrRunningJobWithSameUserID($user_id) == 0)
 		{
@@ -230,7 +230,7 @@ trait RecommendationTrait
 		}
 	}
 
-	protected function fireSimilarityCalculateEventGivenJob(int $event_id)
+	public static function fireSimilarityCalculateEventGivenJob(int $event_id)
 	{
 		if (SimilarityCalculationJobRecord::countWaitingOrRunningJobWithSameEventID($event_id) == 0)
 		{
@@ -238,14 +238,34 @@ trait RecommendationTrait
 		}
 	}
 
-	protected function fireRecommendationMailSendingJob(int $user_id, int $event_id)
+	public static function fireRecommendationMailSendingJob(int $user_id, int $event_id)
 	{
 		$user = User::find($user_id);
 		$event = Event::find($event_id);
 
-		if ($user && $user->allow_email === 1 && $event)
+		if ($user && $user->allow_email == 1 && $event)
 		{
 			dispatch(new recommendationMailSendingJob($user, $event));
+		}
+	}
+
+	public static function sendRecommendationMailToUser()
+	{
+		$users = User::allowSendMail()->normalUser()->get();
+
+		foreach ($users as $user) {
+			$most_recommend_records = Similarity::orderByValue($user->id);
+
+			$most_recommend_records = $most_recommend_records->filter(function ($value, $key) {
+				return $value->isForJoinableEvent;
+			});
+
+			$most_recommend_record = $most_recommend_records->first();
+
+			if ($most_recommend_record)
+			{
+				self::fireRecommendationMailSendingJob($user->id, $most_recommend_record->event_id);
+			}
 		}
 	}
 
