@@ -15,7 +15,7 @@
                         <hr>
 
                         @foreach ($user->joined_not_begin_events as $joined_not_begin_event)
-                            <div class="col-md-3 recommend-events-holder">
+                            <div class="col-md-3 sign-events-holder">
                                 <a href="javascript:viod(0)" id="check-more" class="btn btn-block btn-warning" style="opacity: 0;width: 120px;margin-left: 15px;margin-right: 15px;position: absolute; "><i class="glyphicon glyphicon-exclamation-sign"></i>查看詳情</a>
 
                                 <a class="img-holder" href="/event/{{ $joined_not_begin_event->id }}">
@@ -33,7 +33,7 @@
                             <h4 style=""><i class="glyphicon glyphicon-bookmark"></i> 已標記的活動</h4>
                         <hr>
                         @foreach ($user->markedEvent as $markedEvent)
-                            <div class="col-md-3 recommend-events-holder">
+                            <div class="col-md-3 mark-events-holder">
                                 <a href="javascript:viod(0)" id="check-more" class="btn btn-block btn-warning" style="opacity: 0;width: 120px;margin-left: 15px;margin-right: 15px;position: absolute; "><i class="glyphicon glyphicon-exclamation-sign"></i>查看詳情</a>
 
                                 <a class="img-holder" href="/event/{{ $markedEvent->id }}">
@@ -53,7 +53,7 @@
                             <h4 style=""><i class="glyphicon glyphicon-flag"></i> 您建立的活動</h4>
                             <hr>
                             @foreach ($user->EventsCreatedBySelf as $eventSelf)
-                                <div class="col-md-3 recommend-events-holder">
+                                <div class="col-md-3 self-events-holder">
                                     <a href="javascript:viod(0)" id="check-more" class="btn btn-block btn-warning" style="opacity: 0;width: 120px;margin-left: 15px;margin-right: 15px;position: absolute; "><i class="glyphicon glyphicon-exclamation-sign"></i>查看詳情</a>
 
                                     <a class="img-holder" href="/event/{{ $eventSelf->id }}">
@@ -66,6 +66,7 @@
 
                                 </div>
                             @endforeach
+                            <div id="loadMore">載入更多</div>
                         </div>
                     @endif
 
@@ -75,7 +76,7 @@
                             <h4 style=""><i class="glyphicon glyphicon-book"></i> 活動歷史記錄</h4>
                         <hr>
                         @foreach ($user->history_events as $history_event)
-                            <div class="col-md-3 recommend-events-holder">
+                            <div class="col-md-3 history-events-holder">
                                 <a href="javascript:viod(0)" id="check-more" class="btn btn-block btn-warning" style="opacity: 0;width: 120px;margin-left: 15px;margin-right: 15px;position: absolute; "><i class="glyphicon glyphicon-exclamation-sign"></i>查看詳情</a>
 
                                 <a class="img-holder" href="/event/{{ $history_event->id }}">

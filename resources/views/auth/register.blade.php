@@ -197,10 +197,14 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="career" class="col-md-4 control-label">志願者年資</label>
+                            <label for="year_of_volunteer" class="col-md-4 control-label">志願者年資</label>
 
                             <div class="col-md-6">
-                                <input type="number" min="0" name="year_of_volunteer" class="check-value form-control" placeholder="請輸入年資" >
+                                <select class="form-control" name="year_of_volunteer" form="user_register_form" required>
+                                    @foreach ($constant_array['year_of_volunteer']['value'] as $key => $value)
+                                        <option value="{{ $key }}">{{ $value }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
 

@@ -99,6 +99,22 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="year_of_volunteer" class="col-md-4 control-label">志願者年資</label>
+
+                                <div class="col-md-6">
+                                    <select class="form-control" name="year_of_volunteer" required>
+                                        @foreach ($constant_array['year_of_volunteer']['value'] as $key => $value)
+                                            @if( $user->year_of_volunteer ==  $key )
+                                                <option selected value="{{ $key }}">{{ $value }}</option>
+                                            @else
+                                                <option value="{{ $key }}">{{ $value }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="available-time" class="col-md-4 control-label">比較有空的時間:</label>
 
                                 <div class="col-md-6">

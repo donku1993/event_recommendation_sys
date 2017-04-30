@@ -29,6 +29,15 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="year_of_volunteer" class="col-md-4 control-label">志願者年資:</label>
+                            <div class="col-md-6">
+                                <p class="form-control">{{ $constant_array['year_of_volunteer']['value'][$user->year_of_volunteer] }}</p>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
                             <label for="gender" class="col-md-4 control-label">性別</label>
 
                             <div class="col-md-6">
@@ -62,10 +71,10 @@
                             <label for="available-area" class="col-md-4 control-label">經常活動的地區:</label>
 
                             <div class="col-md-6">
-                                <ul>
+                                <ul class="form-group">
                                 @foreach($constant_array['location']['value'] as $key => $value)
                                         @if( $user->available_area[$key] )
-                                            <li style="vertical-align: middle">{{ $value }}</li>
+                                            <li>{{ $value }}</li>
                                         @endif
                                 @endforeach
                                 </ul>
