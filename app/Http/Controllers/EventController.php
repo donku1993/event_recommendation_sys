@@ -10,12 +10,14 @@ use App\Models\Event;
 use App\Models\Group;
 use App\Models\Helper;
 use App\Models\Participant;
-use App\Http\Controllers\RecommendationTrait;
+
+
+use App\Jobs\hourlyDataUpdateJob;
+use App\Jobs\weeklyDataUpdateJob;
+use App\Jobs\monthlyDataUpdateJob;
 
 class EventController extends Controller
 {
-    use RecommendationTrait;
-
     protected function status_array(Event $event = null)
     {
         return [
@@ -159,6 +161,8 @@ class EventController extends Controller
                         'event_id' => $event->id,
                         'main' => 1
                     ]);
+
+                self::fireSimilarityCalculateEventGivenJob($event->id);
 
                 return [
                     'message' => 'success',
@@ -396,6 +400,8 @@ class EventController extends Controller
 
             $event->save();
 
+            self::fireSimilarityCalculateEventGivenJob($event->id);
+
             return [
                 'message' => 'success',
                 'event_id' => $event->id
@@ -457,10 +463,6 @@ class EventController extends Controller
 
     public function calculate_all_similarity()
     {
-        $users = User::all();
-
-        foreach ($users as $user) {
-            $this->fireSimilarityCalculateUserGivenJob($user->id);
-        }
+        \App\Models\Similarity::updateAll();
     }
 }

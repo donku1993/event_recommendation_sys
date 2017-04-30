@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 use App\Models\Helper;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -86,5 +87,17 @@ class RegisterController extends Controller
             'interest_skills' => $data['interest_skills'],
             'year_of_volunteer' => $data['year_of_volunteer']
         ]);
+    }
+
+    /**
+     * The user has been registered.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function registered(Request $request = null, $user)
+    {
+        self::fireSimilarityCalculateUserGivenJob($user->id);
     }
 }

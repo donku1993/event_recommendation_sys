@@ -4,6 +4,9 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Jobs\hourlyDataUpdateJob;
+use App\Jobs\weeklyDataUpdateJob;
+use App\Jobs\monthlyDataUpdateJob;
 
 class Kernel extends ConsoleKernel
 {
@@ -26,6 +29,18 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+
+        $schedule->call(function () {
+            dispatch(new hourlyDataUpdateJob());
+        })->hourly(5);
+
+        $schedule->call(function () {
+            dispatch(new weeklyDataUpdateJob());
+        })->weekly();
+
+        $schedule->call(function () {
+            dispatch(new monthlyDataUpdateJob());
+        })->monthly(1, '01:00');
     }
 
     /**

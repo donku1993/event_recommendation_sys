@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Helper;
@@ -124,6 +125,54 @@ class User extends Authenticatable
 
     public function scopeNormalUser($query)
     {
-        return $query->whereIn('type', [1, 2]);
+        return $query->whereIn('type', [
+            Helper::getKeyByArrayNameAndValue('user_type', '普通會員'),
+            Helper::getKeyByArrayNameAndValue('user_type', '活躍會員')
+        ]);
+    }
+
+    public function scopeNeedToUpdate($query)
+    {
+        return $query->whereIn('year_of_volunteer', [
+            Helper::getKeyByArrayNameAndValue('year_of_volunteer', '沒有經驗'),
+            Helper::getKeyByArrayNameAndValue('year_of_volunteer', '不足一年'),
+            Helper::getKeyByArrayNameAndValue('year_of_volunteer', '一至兩年')
+        ]);
+    }
+
+    public function scopeAllowSendMail($query)
+    {
+        return $query->where('allow_email', 1);
+    }
+
+    public function update_year_of_volunteer()
+    {
+        if ($this->year_of_volunteer == 0 && $this->history_events->count() > 2)
+        {
+            $this->year_of_volunteer = 1;
+            $this->save();
+
+            return;
+        }
+
+        if ($this->year_of_volunteer == 1 
+            && $this->created_at->diffInYears(Carbon::now(), false) > 1 
+            && $this->history_events->count() > 5)
+        {
+            $this->year_of_volunteer = 2;
+            $this->save();
+
+            return;
+        }
+
+        if ($this->year_of_volunteer == 2 
+            && $this->created_at->diffInYears(Carbon::now(), false) > 2 
+            && $this->history_events->count() > 10)
+        {
+            $this->year_of_volunteer = 3;
+            $this->save();
+
+            return;
+        }
     }
 } 

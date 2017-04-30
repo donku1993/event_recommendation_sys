@@ -10,10 +10,11 @@ use View;
 
 use App\Models\Helper;
 use App\Http\Controllers\ControllerHelperTrait;
+use App\Http\Controllers\RecommendationTrait;
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, ControllerHelperTrait;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, ControllerHelperTrait, RecommendationTrait;
 
     /**
      * Create a new controller instance.
