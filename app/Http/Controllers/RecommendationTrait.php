@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Event;
 use App\Models\Group;
 use App\Models\Record;
+use App\Models\Helper;
 use App\Models\Similarity;
 use App\Models\SimilarityCalculationJobRecord;
 use App\Jobs\similarityCalculationForUserGivenJob;
@@ -44,6 +45,9 @@ trait RecommendationTrait
 
 		// user's history events which has evaluation mark 4, 5: compare the similarity of the events (cosine similarity): 0 to 5
 		$mark += $this->is_similarity_to_history_events($user, $event);
+
+		// compare the type of the event and the year of volunteer of user: 0 to 1
+		$mark += $this->user_year_of_volunteer_and_event_type($user, $event);
 
 		return $mark;
 	}
@@ -180,18 +184,20 @@ trait RecommendationTrait
 			}
 		}
 
+		$total = $sim_grade_list->count();
+
 		$sim_grade_list = $sim_grade_list->filter(function ($value, $key){
 			return $value > 0.5;
 		});
 
-		if ($sim_grade_list->count() == 0)
+		if ($sim_grade_list->count() == 0 || $total == 0)
 		{
 			return 0;
 		}
 
 		$average = $sim_grade_list->sum() / $sim_grade_list->count();
 
-		return $average * 5;
+		return $average * 5 * ( $sim_grade_list / $total );
 	}
 
 	protected function is_similarity_to_history_events(User $user, Event $event)
@@ -208,18 +214,31 @@ trait RecommendationTrait
 			}
 		}
 
+		$total = $sim_grade_list->count();
+
 		$sim_grade_list = $sim_grade_list->filter(function ($value, $key){
 			return $value > 0.5;
 		});
 
-		if ($sim_grade_list->count() == 0)
+		if ($sim_grade_list->count() == 0 || $total == 0)
 		{
 			return 0;
 		}
 
 		$average = $sim_grade_list->sum() / $sim_grade_list->count();
 
-		return $average * 5;
+		return $average * 5 * ( $sim_grade_list / $total );
+	}
+
+	protected function user_year_of_volunteer_and_event_type(User $user, Event $event)
+	{
+		if ($user->year_of_volunteer == Helper::getKeyByArrayNameAndValue('year_of_volunteer', '沒有經驗')
+			&& $event->type == Helper::getKeyByArrayNameAndValue('event_type', '志工培訓'))
+		{
+			return 1;
+		}
+
+		return 0;
 	}
 
 	public static function fireSimilarityCalculateUserGivenJob(int $user_id)
@@ -246,26 +265,6 @@ trait RecommendationTrait
 		if ($user && $user->allow_email == 1 && $event)
 		{
 			dispatch(new recommendationMailSendingJob($user, $event));
-		}
-	}
-
-	public static function sendRecommendationMailToUser()
-	{
-		$users = User::allowSendMail()->normalUser()->get();
-
-		foreach ($users as $user) {
-			$most_recommend_records = Similarity::orderByValue($user->id);
-
-			$most_recommend_records = $most_recommend_records->filter(function ($value, $key) {
-				return $value->isForJoinableEvent;
-			});
-
-			$most_recommend_record = $most_recommend_records->first();
-
-			if ($most_recommend_record)
-			{
-				self::fireRecommendationMailSendingJob($user->id, $most_recommend_record->event_id);
-			}
 		}
 	}
 

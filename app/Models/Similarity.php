@@ -47,4 +47,24 @@ class Similarity extends Model
             self::fireSimilarityCalculateUserGivenJob($user->id);
         }
     }
+
+    public static function sendRecommendationMailToUser()
+    {
+        $users = User::allowSendMail()->normalUser()->get();
+
+        foreach ($users as $user) {
+            $most_recommend_records = self::orderByValue($user->id);
+
+            $most_recommend_records = $most_recommend_records->filter(function ($value, $key) {
+                return $value->isForJoinableEvent;
+            });
+
+            $most_recommend_record = $most_recommend_records->first();
+
+            if ($most_recommend_record)
+            {
+                self::fireRecommendationMailSendingJob($user->id, $most_recommend_record->event_id);
+            }
+        }
+    }
 }
