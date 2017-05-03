@@ -197,7 +197,7 @@ trait RecommendationTrait
 
 		$average = $sim_grade_list->sum() / $sim_grade_list->count();
 
-		return $average * 5 * ( $sim_grade_list / $total );
+		return $average * 5 * ( $sim_grade_list->count() / $total );
 	}
 
 	protected function is_similarity_to_history_events(User $user, Event $event)
@@ -227,7 +227,7 @@ trait RecommendationTrait
 
 		$average = $sim_grade_list->sum() / $sim_grade_list->count();
 
-		return $average * 5 * ( $sim_grade_list / $total );
+		return $average * 5 * ( $sim_grade_list->count() / $total );
 	}
 
 	protected function user_year_of_volunteer_and_event_type(User $user, Event $event)

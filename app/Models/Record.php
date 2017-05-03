@@ -13,7 +13,12 @@ class Record extends Model
 
     public function getIsForJoinableEventAttribute()
     {
-        return $this->event->isJoinableEvent;
+        if (!is_null($this->event))
+        {
+            return $this->event->isJoinableEvent;
+        }
+
+        return false;
     }
 
     public function user()
