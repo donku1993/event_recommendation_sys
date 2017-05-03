@@ -65,28 +65,33 @@
                                 <input type="hidden" name="_method" value="PUT">
                                 {{ csrf_field() }}
 
-                                @if( $status_array['is_login'] )
-                                    <input type="button" class="submit btn btn-success"  value="報名">
-                                    <div class="modal fade" id="myModal" role="dialog">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                    <h4 class="modal-title">確認報名</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <strong>注意:確認報名後不能再取消。</strong>
-                                                    <p>確認報名嗎?</p>
-                                                </div>
-                                                <div class="modal-footer" >
-                                                    <input  type="submit" class="pull-left confirm-submit btn btn-success" >
-                                                    <button style="text-align: right" type="button" class="btn btn-danger" data-dismiss="modal">關閉</button>
+                                @if( $event->IsJoinableEvent )
+                                    @if( $status_array['is_login'] )
+                                        <input type="button" class="submit btn btn-success"  value="報名">
+                                        <div class="modal fade" id="myModal" role="dialog">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <h4 class="modal-title">確認報名</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <strong>注意:確認報名後不能再取消。</strong>
+                                                        <p>確認報名嗎?</p>
+                                                    </div>
+                                                    <div class="modal-footer" >
+                                                        <input  type="submit" class="pull-left confirm-submit btn btn-success" >
+                                                        <button style="text-align: right" type="button" class="btn btn-danger" data-dismiss="modal">關閉</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                @else
-                                    <input type="button" class="non-login-submit btn btn-success"  value="報名">
+                                    @else
+                                        <input type="button" class="non-login-submit btn btn-success"  value="報名">
+                                    @endif
+
+                                    @else
+                                        <input type="button" disabled class="submit btn btn-danger"  value="活動己截止">
                                 @endif
 
                         @endif

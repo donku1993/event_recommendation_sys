@@ -21,10 +21,10 @@
         </div>
         <!-- END SIDEBAR USER TITLE -->
         <!-- SIDEBAR BUTTONS -->
-        <div class="profile-userbuttons">
+{{--        <div class="profile-userbuttons">
             <button type="button" class="btn btn-success btn-sm">追隨</button>
             <button type="button" class="btn btn-danger btn-sm">訊息</button>
-        </div>
+        </div>--}}
         <!-- END SIDEBAR BUTTONS -->
         <!-- SIDEBAR MENU -->
         <div class="profile-usermenu">

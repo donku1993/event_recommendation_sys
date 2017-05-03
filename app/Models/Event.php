@@ -156,6 +156,7 @@ class Event extends Model
         });
     }
 
+    //date update
     public function update_status()
     {
         if ($this->status == 0)

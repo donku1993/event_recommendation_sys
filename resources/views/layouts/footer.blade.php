@@ -7,7 +7,7 @@
         .mendi-social-networks li {
             float: left;
             display: inline;
-            width: 25%;
+            width: 100%;
             color: #ffffff;
             position: relative;
         }
@@ -39,7 +39,7 @@
         }
         .mendi-social-networks li:before {
             position: absolute;
-            content: "\f105";
+            content: "\2b";
             right: 30px;
             top: 0;
             bottom: 0;
@@ -78,9 +78,9 @@
     <hr>
     <div class="container">
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-md-12">
                 <ul class="mendi-social-networks">
-                    <li class="facebook">
+{{--                    <li class="facebook">
                         <a href="" title="">
                             <i class="fa fa-facebook"> </i>
                             <p>JOIN US ON FACEBOOK</p>
@@ -100,10 +100,10 @@
                             <p>SEE US ON YOUTUBE</p>
                             <span class="followers">Youtube</span>
                         </a>
-                    </li>
+                    </li>--}}
                     <li class="linkedin">
                         <a href="" title="">
-                            <i class="fa fa-linkedin"> </i>
+                            <i class="glyphicon glyphicon-envelope"> </i>
                             <p>CONTACT US</p>
                             <span class="contact">umac.mo</span>
                         </a>
