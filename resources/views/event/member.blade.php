@@ -28,7 +28,9 @@
                         @foreach($participants as $participant)
                             <tr>
                                 <td class="col-md-2">
-                                    <img style="width: 50px;height: 50px;" src="{{ $participant->iconPath }}" alt="Usericon">
+                                    <a href="{{ route('user.info', $participant->id) }}">
+                                        <img style="width: 50px;height: 50px;" src="{{ $participant->iconPath }}" alt="Usericon">
+                                    </a>
                                 </td>
                                 <td class="col-md-2" style="padding-top: 20px;">{{ $participant->name }}</td>
                                 @if( $status_array['is_participant'] )
