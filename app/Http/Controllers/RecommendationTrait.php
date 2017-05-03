@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Event;
@@ -12,6 +13,7 @@ use App\Models\Similarity;
 use App\Models\SimilarityCalculationJobRecord;
 use App\Jobs\similarityCalculationForUserGivenJob;
 use App\Jobs\similarityCalculationForEventGivenJob;
+use App\Jobs\similarityCalculationEventToEventJob;
 use App\Jobs\recommendationMailSendingJob;
 
 use App\Models\CosineSimilarity;
@@ -26,28 +28,28 @@ trait RecommendationTrait
 		$event = Event::find($event_id);
 
 		// interests and skills compare, grade: 0 to 5
-		$mark += $this->interest_skills_compare($user, $event);
+		$mark += 5 * $this->interest_skills_compare($user, $event);
 
 		// time compare, grade: 0 to 3
-		$mark += $this->time_compare($user, $event);
+		$mark += 3 * $this->time_compare($user, $event);
 
 		// address compare, grade: 0 to 1
-		$mark += $this->address_compare($user, $event);
+		$mark += 1 * $this->address_compare($user, $event);
 
 		// user's marked groups are organizer or co_organizer? grade: 0 to 5
-		$mark += $this->is_created_by_marked_group($user, $event);
+		$mark += 5 * $this->is_created_by_marked_group($user, $event);
 
 		// user's marked events are create by the same organizer or co_organizer?: 0 to 5
-		$mark += $this->is_created_by_same_group_of_marked_event($user, $event);
+		$mark += 5 * $this->is_created_by_same_group_of_marked_event($user, $event);
 
-		// user's marked events: compare the similarity of the events (cosine similarity): 0 to 5
-		$mark += $this->is_similarity_to_marked_events($user, $event);
+		// user's marked events: compare the similarity of the events (cosine similarity): 0 to 8
+		$mark += 8 * $this->is_similarity_to_marked_events($user, $event);
 
-		// user's history events which has evaluation mark 4, 5: compare the similarity of the events (cosine similarity): 0 to 5
-		$mark += $this->is_similarity_to_history_events($user, $event);
+		// user's history events which has evaluation mark 4, 5: compare the similarity of the events (cosine similarity): 0 to 8
+		$mark += 8 * $this->is_similarity_to_history_events($user, $event);
 
-		// compare the type of the event and the year of volunteer of user: 0 to 1
-		$mark += $this->user_year_of_volunteer_and_event_type($user, $event);
+		// compare the type of the event and the year of volunteer of user: 0 to 2
+		$mark += 2 * $this->user_year_of_volunteer_and_event_type($user, $event);
 
 		return $mark;
 	}
@@ -66,7 +68,12 @@ trait RecommendationTrait
 			$match += ($value && $value == $user_interest_skills[$key]) ? 1 : 0;
 		}
 
-		return ($all !== 0) ? $match / $all * 5 : 0;
+		if ($all == 0)
+		{
+			return 0;
+		}
+
+		return $match / $all;
 	}
 
 	protected function time_compare(User $user, Event $event)
@@ -128,7 +135,12 @@ trait RecommendationTrait
 				}
         	}
 
-			return ($all !== 0) ? $match / $all * 3 : 0;
+			if ($all == 0)
+			{
+				return 0;
+			}
+
+			return $match / $all;
 		}
 	}
 
@@ -148,7 +160,12 @@ trait RecommendationTrait
 		$all = $event_organizers->count();
 		$match = $event_organizers->intersect($user_marked_groups)->count();
 
-		return ($all !== 0) ? $match / $all * 5 : 0;
+		if ($all == 0)
+		{
+			return 0;
+		}
+
+		return $match / $all;
 	}
 
 	protected function is_created_by_same_group_of_marked_event(User $user, Event $event)
@@ -167,20 +184,24 @@ trait RecommendationTrait
 		$all = $event_organizers->count();
 		$match = $event_organizers->intersect($group_list)->count();
 
-		return ($all !== 0) ? $match / $all * 5 : 0;
+		if ($all == 0)
+		{
+			return 0;
+		}
+
+		return $match / $all;
 	}
 
 	protected function is_similarity_to_marked_events(User $user, Event $event)
 	{
 		$user_marked_events = $user->markedEvent;
 		$sim_grade_list = collect([]);
-		$feature = $event->toFeatures();
 
 		foreach ($user_marked_events as $user_marked_event)
 		{
 			if ($event->id != $user_marked_event->id)
 			{
-				$sim_grade_list->push(CosineSimilarity::tanimoto_similarity($feature, $user_marked_event->toFeatures()));
+				$sim_grade_list->push($this->get_tanimoto_similarity($event, $user_marked_event));
 			}
 		}
 
@@ -197,20 +218,19 @@ trait RecommendationTrait
 
 		$average = $sim_grade_list->sum() / $sim_grade_list->count();
 
-		return $average * 5 * ( $sim_grade_list->count() / $total );
+		return $average * ( $sim_grade_list->count() / $total );
 	}
 
 	protected function is_similarity_to_history_events(User $user, Event $event)
 	{
 		$user_history_events = $user->history_events_with_good_grade;
 		$sim_grade_list = collect([]);
-		$feature = $event->toFeatures();
 
 		foreach ($user_history_events as $user_history_event)
 		{
 			if ($event->id != $user_history_event->id)
 			{
-				$sim_grade_list->push(CosineSimilarity::tanimoto_similarity($feature, $user_history_event->toFeatures()));
+				$sim_grade_list->push($this->get_tanimoto_similarity($event, $user_history_event));
 			}
 		}
 
@@ -227,7 +247,7 @@ trait RecommendationTrait
 
 		$average = $sim_grade_list->sum() / $sim_grade_list->count();
 
-		return $average * 5 * ( $sim_grade_list->count() / $total );
+		return $average * ( $sim_grade_list->count() / $total );
 	}
 
 	protected function user_year_of_volunteer_and_event_type(User $user, Event $event)
@@ -239,6 +259,35 @@ trait RecommendationTrait
 		}
 
 		return 0;
+	}
+
+	protected function get_tanimoto_similarity(Event $event_1, Event $event_2)
+	{
+		$record = DB::table('similarity_event_to_event')
+					->where(function ($query) use ($event_1, $event_2)
+						{
+							return $query->where('event_one_id', $event_1->id)->where('event_two_id', $event_2->id);
+						})
+					->orWhere(function ($query) use ($event_1, $event_2)
+						{
+							return $query->where('event_two_id', $event_1->id)->where('event_one_id', $event_2->id);
+						})
+					->first();
+
+		if ($record)
+		{
+			return $record->value;
+		}
+
+		$value = CosineSimilarity::tanimoto_similarity($event_1->toFeatures(), $event_2->toFeatures());
+
+		DB::table('similarity_event_to_event')->insert([
+				'event_one_id' => $event_1->id,
+				'event_two_id' => $event_2->id,
+				'value' => $value
+			]);
+
+		return $value;
 	}
 
 	public static function fireSimilarityCalculateUserGivenJob(int $user_id)
@@ -254,6 +303,14 @@ trait RecommendationTrait
 		if (SimilarityCalculationJobRecord::countWaitingOrRunningJobWithSameEventID($event_id) == 0)
 		{
 			dispatch(new similarityCalculationForEventGivenJob($event_id));
+		}
+	}
+
+	public static function fireSimilarityCalculateEventToEventJob(int $event_id)
+	{
+		if (SimilarityCalculationJobRecord::countWaitingOrRunningJobForEventToEvent($event_id) == 0)
+		{
+			dispatch(new similarityCalculationEventToEventJob($event_id));
 		}
 	}
 
@@ -291,6 +348,50 @@ trait RecommendationTrait
 					'event_id' => $event_id,
 					'value' => $value
 				]);
+		}
+	}
+
+	public function similarityCalculation_event_to_event(int $event_id)
+	{
+		$event_1 = Event::find($event_id);
+
+		if ($event_1)
+		{
+			$other_events = Event::where('id', '<>', $event_1->id)->get();
+
+			foreach ($other_events as $event_2)
+			{
+				$value = CosineSimilarity::tanimoto_similarity($event_1->toFeatures(), $event_2->toFeatures());
+
+				$record = DB::table('similarity_event_to_event')
+						->where(function ($query) use ($event_1, $event_2)
+							{
+								return $query->where('event_one_id', $event_1->id)->where('event_two_id', $event_2->id);
+							})
+						->orWhere(function ($query) use ($event_1, $event_2)
+							{
+								return $query->where('event_two_id', $event_1->id)->where('event_one_id', $event_2->id);
+							})
+						->first();
+
+				if ($record)
+				{
+					if ($record->value !== $value)
+					{
+						DB::table('similarity_event_to_event')
+							->where('id', $record->id)
+							->update(['value' => $value]);
+					}
+				}
+				else
+				{
+					DB::table('similarity_event_to_event')->insert([
+						'event_one_id' => $event_1->id,
+						'event_two_id' => $event_2->id,
+						'value' => $value
+					]);
+				}
+			}
 		}
 	}
 

@@ -163,6 +163,7 @@ class EventController extends Controller
                     ]);
 
                 self::fireSimilarityCalculateEventGivenJob($event->id);
+                self::fireSimilarityCalculateEventToEventJob($event->id);
 
                 return [
                     'message' => 'success',
@@ -401,6 +402,7 @@ class EventController extends Controller
             $event->save();
 
             self::fireSimilarityCalculateEventGivenJob($event->id);
+            self::fireSimilarityCalculateEventToEventJob($event->id);
 
             return [
                 'message' => 'success',
