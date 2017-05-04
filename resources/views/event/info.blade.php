@@ -11,9 +11,12 @@
                     </div>
                     <div class="col-md-9 event-information">
                         <div class="eventIdrow">
-                            <span class="eventId">#{{ $event->id }}</span>
-                            <span><i class="glyphicon glyphicon-fire"></i>活動人氣: </span>
-                            <span><i class="glyphicon glyphicon-heart"></i>組織評價: </span>
+                            <span class="eventId">#id: {{ $event->id }}</span>
+                            <span><i class="glyphicon glyphicon-tower"></i>主辦單位: 
+                                <a href="{{ route('group.info', $event->organizer[0]->id) }}">
+                                    <span class="label label-warning">{{ $event->organizer[0]->name }}</span>
+                                </a>
+                             </span>
                         </div>
 
                         <h1 class="info-title">{{ $event->title }}</h1>

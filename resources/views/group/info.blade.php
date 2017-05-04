@@ -10,9 +10,7 @@
                     </div>
                     <div class="col-md-8 group-information">
                         <div class="group-id-row">
-                            <span class="groupId">#{{ $group->id }}</span>
-                            <span><i class="glyphicon glyphicon-fire"></i>組織人氣: </span>
-                            <span><i class="glyphicon glyphicon-heart"></i>組織評價: </span>
+                            <span class="groupId">#id: {{ $group->id }}</span>
                         </div>
 
                         <h1 class="info-title">{{ $group->name }}</h1>
