@@ -12,6 +12,7 @@ class SimilarityCalculationJobRecord extends Model
 
     const USER_GIVEN_TYPE = 0;
     const EVENT_GIVEN_TYPE = 1;
+    const EVENT_TO_EVENT_TYPE = 2;
 
     const WAITING = 0;
     const RUNNING = 1;
@@ -22,6 +23,7 @@ class SimilarityCalculationJobRecord extends Model
     // type:
     // 0 -> user given
     // 1 -> event given
+    // 2 -> similarity of event and event
 
     // status:
     // 0 -> waiting
@@ -38,6 +40,11 @@ class SimilarityCalculationJobRecord extends Model
     	return $query->where('pass_id', $event_id)->where('type', self::EVENT_GIVEN_TYPE)->whereIn('status', self::$runningOrWaiting);
     }
 
+    public function scopeCountWaitingOrRunningJobForEventToEventQuery($query, int $event_id)
+    {
+        return $query->where('pass_id', $event_id)->where('type', self::EVENT_TO_EVENT_TYPE)->whereIn('status', self::$runningOrWaiting);
+    }
+
     public static function countWaitingOrRunningJobWithSameUserID(int $user_id)
     {
         return self::countWaitingOrRunningJobWithSameUserIDQuery($user_id)->get()->count();
@@ -45,7 +52,12 @@ class SimilarityCalculationJobRecord extends Model
 
     public static function countWaitingOrRunningJobWithSameEventID(int $event_id)
     {
-        return self::scopeCountWaitingOrRunningJobWithSameEventIDQuery($event_id)->get()->count();
+        return self::countWaitingOrRunningJobWithSameEventIDQuery($event_id)->get()->count();
+    }
+
+    public static function countWaitingOrRunningJobForEventToEvent(int $event_id)
+    {
+        return self::countWaitingOrRunningJobForEventToEventQuery($event_id)->get()->count();
     }
 
     public function toRunning()
