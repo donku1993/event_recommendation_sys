@@ -33,14 +33,14 @@ trait RecommendationTrait
 		// time compare, grade: 0 to 3
 		$mark += 3 * $this->time_compare($user, $event);
 
-		// address compare, grade: 0 to 1
-		$mark += 1 * $this->address_compare($user, $event);
+		// address compare, grade: 0 to 2
+		$mark += 2 * $this->address_compare($user, $event);
 
-		// user's marked groups are organizer or co_organizer? grade: 0 to 5
-		$mark += 5 * $this->is_created_by_marked_group($user, $event);
+		// user's marked groups are organizer or co_organizer? grade: 0 to 3
+		$mark += 3 * $this->is_created_by_marked_group($user, $event);
 
-		// user's marked events are create by the same organizer or co_organizer?: 0 to 5
-		$mark += 5 * $this->is_created_by_same_group_of_marked_event($user, $event);
+		// user's marked events are created by the same organizer or co_organizer?: 0 to 3
+		$mark += 3 * $this->is_created_by_same_group_of_marked_event($user, $event);
 
 		// user's marked events: compare the similarity of the events (cosine similarity): 0 to 8
 		$mark += 8 * $this->is_similarity_to_marked_events($user, $event);
