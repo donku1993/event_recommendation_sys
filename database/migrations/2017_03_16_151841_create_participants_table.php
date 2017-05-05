@@ -17,7 +17,6 @@ class CreateParticipantsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('event_id')->unsigned();
-            $table->integer('status')->unsigned()->default(0);
             $table->integer('grade_to_user')->nullable()->default(null);
             $table->integer('grade_to_event')->nullable()->default(null);
             $table->string('remark_to_user')->nullable()->default(null);

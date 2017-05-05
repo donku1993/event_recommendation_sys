@@ -11,7 +11,7 @@ use App\Models\Group;
 use App\Models\Helper;
 use App\Models\Participant;
 
-
+use App\Jobs\EventJoinConfirmMailSendingJob;
 use App\Jobs\hourlyDataUpdateJob;
 use App\Jobs\weeklyDataUpdateJob;
 use App\Jobs\monthlyDataUpdateJob;
@@ -307,6 +307,11 @@ class EventController extends Controller
                     'user_id' => $user->id,
                     'event_id' => $event->id
                 ]);
+
+            if ($participant)
+            {
+                dispatch(new EventJoinConfirmMailSendingJob($participant));
+            }
         }
 
         return back()->withInput();

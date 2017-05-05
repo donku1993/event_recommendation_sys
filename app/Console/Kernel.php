@@ -32,7 +32,11 @@ class Kernel extends ConsoleKernel
 
         $schedule->call(function () {
             dispatch(new hourlyDataUpdateJob());
-        })->hourly(5);
+        })->hourlyAt(5);
+
+        $schedule->call(function () {
+            dispatch(new dailyDataUpdateJob());
+        })->dailyAt('09:00');
 
         $schedule->call(function () {
             dispatch(new weeklyDataUpdateJob());
@@ -40,7 +44,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->call(function () {
             dispatch(new monthlyDataUpdateJob());
-        })->monthly(1, '01:00');
+        })->monthlyOn(1, '01:00');
     }
 
     /**
