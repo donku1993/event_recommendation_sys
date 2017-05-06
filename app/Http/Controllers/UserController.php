@@ -126,7 +126,6 @@ class UserController extends Controller
         $validate_array = array_merge(
                                 $this->basicValidationArray(),
                                 array(
-                                    'address_location' => 'integer',
                                     'year_of_volunteer' => 'integer',
                                     'self_introduction' => '',
                                 )
@@ -150,7 +149,6 @@ class UserController extends Controller
                     'gender' => $data['gender'],
                     'phone' => $data['phone'],
                     'year_of_volunteer' => $request->input('year_of_volunteer', $user->year_of_volunteer),
-                    'address_location' => $request->input('address_location', $user->address_location),
                     'self_introduction' => $request->input('self_introduction', $user->self_introduction),
                     'allow_email' => ($data['allow_email'] === 'true') ? 1 : 0,
                     'available_time' => $data['available_time'],
