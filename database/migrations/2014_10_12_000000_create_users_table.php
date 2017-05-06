@@ -22,7 +22,6 @@ class CreateUsersTable extends Migration
 
             $table->integer('type')->default(1);
             $table->string('phone', 20);
-            $table->integer('address_location')->nullable();
             $table->boolean('gender');
             $table->mediumText('self_introduction')->nullable();
             $table->integer('career');

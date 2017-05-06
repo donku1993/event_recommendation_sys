@@ -14,6 +14,7 @@ class CreateGroupsEventsRelationTable extends Migration
     public function up()
     {
         Schema::create('groups_events_relation', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('group_id')->unsigned();
             $table->integer('event_id')->unsigned();
             $table->boolean('main');
