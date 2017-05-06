@@ -248,13 +248,6 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="self_introduction" class="col-md-4 control-label">自我介紹:</label>
-                            <div class="col-md-6">
-                                <textarea class="form-control" name="self_introduction" rows="4" cols="50" placeholder="介紹一下你自己吧"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
                             <label for="allow-email" class="col-md-4 control-label">接收系統發送的活動邀請E-mail:</label>
 
                             <div class="col-md-6">

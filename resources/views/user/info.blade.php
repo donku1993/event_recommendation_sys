@@ -76,11 +76,11 @@
                             </div>
                         </div>
 
+
                         <div class="form-group">
                             <label for="self_introduction" class="col-md-4 control-label">自我介紹:</label>
                             <div class="col-md-6">
-                                    <p>{{ $user->self_introduction }}</p>
-                            </div>
+                                <textarea rows="4" cols="50" disabled="">{{ $user->self_introduction }}</textarea>
                         </div>
 
 
