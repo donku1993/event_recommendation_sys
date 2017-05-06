@@ -147,6 +147,14 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="self_introduction" class="col-md-4 control-label">自我介紹:</label>
+                                <div class="col-md-6">
+                                    <textarea class="form-control" name="self_introduction" rows="4" cols="50">{{ $user->self_introduction }}</textarea>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
                                 <label for="allow-email" class="col-md-4 control-label">通過E-mail發送活動邀請:</label>
                                 @if( $user->allow_email )
                                     <div class="col-md-6">

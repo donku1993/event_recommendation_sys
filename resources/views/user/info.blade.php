@@ -38,17 +38,13 @@
 
 
                         <div class="form-group">
-                            <label for="gender" class="col-md-4 control-label">性別</label>
+                            <label for="gender" class="col-md-4 control-label">性別:</label>
 
                             <div class="col-md-6">
                                 @if( $user->gender == 0 )
-                                    <label class="radio-inline">
-                                        <input type="radio" id="gender-m" name="gender" value="0" checked> 男
-                                    </label>
+                                    <label class="control-label">男</label>
                                 @else
-                                    <label class="radio-inline">
-                                        <input type="radio" id="gender-f" name="gender" value="1" checked> 女
-                                    </label>
+                                    <label class="control-label">女</label>
                                 @endif
 
                             </div>
@@ -71,14 +67,19 @@
                             <label for="available-area" class="col-md-4 control-label">經常活動的地區:</label>
 
                             <div class="col-md-6">
-                                <ul class="form-group">
                                 @foreach($constant_array['location']['value'] as $key => $value)
                                         @if( $user->available_area[$key] )
-                                            <li>{{ $value }}</li>
+                                            <label class="control-label">{{ $value }}</label><br>
                                         @endif
                                 @endforeach
-                                </ul>
 
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="self_introduction" class="col-md-4 control-label">自我介紹:</label>
+                            <div class="col-md-6">
+                                    <p>{{ $user->self_introduction }}</p>
                             </div>
                         </div>
 
