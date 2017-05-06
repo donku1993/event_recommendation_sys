@@ -55,7 +55,6 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker)
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
         'phone' => '6' . strval(rand(1000000, 9999999)),
-        'address_location' => rand(0, 8),
         'year_of_volunteer' => rand(0, 3),
         'gender' => rand(0, 1),
         'career' => rand(0, 5),
