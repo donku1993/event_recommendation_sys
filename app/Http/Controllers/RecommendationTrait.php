@@ -201,7 +201,7 @@ trait RecommendationTrait
 		{
 			if ($event->id != $user_marked_event->id)
 			{
-				$sim_grade_list->push($this->get_tanimoto_similarity($event, $user_marked_event));
+				$sim_grade_list->push($this->get_cosine_similarity($event, $user_marked_event));
 			}
 		}
 
@@ -230,7 +230,7 @@ trait RecommendationTrait
 		{
 			if ($event->id != $user_history_event->id)
 			{
-				$sim_grade_list->push($this->get_tanimoto_similarity($event, $user_history_event));
+				$sim_grade_list->push($this->get_cosine_similarity($event, $user_history_event));
 			}
 		}
 
@@ -261,7 +261,7 @@ trait RecommendationTrait
 		return 0;
 	}
 
-	protected function get_tanimoto_similarity(Event $event_1, Event $event_2)
+	protected function get_cosine_similarity(Event $event_1, Event $event_2)
 	{
 		$record = DB::table('similarity_event_to_event')
 					->where(function ($query) use ($event_1, $event_2)
@@ -279,12 +279,13 @@ trait RecommendationTrait
 			return $record->value;
 		}
 
-		$value = CosineSimilarity::tanimoto_similarity($event_1->toFeatures(), $event_2->toFeatures());
+		$value = CosineSimilarity::similarity($event_1->toFeatures(), $event_2->toFeatures());
 
 		DB::table('similarity_event_to_event')->insert([
 				'event_one_id' => $event_1->id,
 				'event_two_id' => $event_2->id,
-				'value' => $value
+				'value' => $value,
+				'created_at' => Carbon::now()
 			]);
 
 		return $value;
@@ -361,7 +362,7 @@ trait RecommendationTrait
 
 			foreach ($other_events as $event_2)
 			{
-				$value = CosineSimilarity::tanimoto_similarity($event_1->toFeatures(), $event_2->toFeatures());
+				$value = CosineSimilarity::similarity($event_1->toFeatures(), $event_2->toFeatures());
 
 				$record = DB::table('similarity_event_to_event')
 						->where(function ($query) use ($event_1, $event_2)
@@ -380,7 +381,10 @@ trait RecommendationTrait
 					{
 						DB::table('similarity_event_to_event')
 							->where('id', $record->id)
-							->update(['value' => $value]);
+							->update([
+									'value' => $value,
+									'updated_at' => Carbon::now()
+								]);
 					}
 				}
 				else
@@ -388,7 +392,8 @@ trait RecommendationTrait
 					DB::table('similarity_event_to_event')->insert([
 						'event_one_id' => $event_1->id,
 						'event_two_id' => $event_2->id,
-						'value' => $value
+						'value' => $value,
+						'created_at' => Carbon::now()
 					]);
 				}
 			}
