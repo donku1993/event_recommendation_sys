@@ -12,10 +12,6 @@ class CosineSimilarity {
 		return self::_dotProduct($vec1, $vec2) / (self::_absVector($vec1) * self::_absVector($vec2));
 	}
 
-	public static function tanimoto_similarity(array $vec1, array $vec2) {
-		return self::_dotProduct($vec1, $vec2) / (pow(self::_absVector($vec1), 2) + pow(self::_absVector($vec2), 2) - self::_dotProduct($vec1, $vec2));
-	}
-
 	protected static function _dotProduct(array $vec1, array $vec2) {
 		$result = 0;
 
