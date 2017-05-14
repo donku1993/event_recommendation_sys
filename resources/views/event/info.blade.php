@@ -115,10 +115,12 @@
                     <form id="evaluation-form" class="form-horizontal" role="form" action="{{ route('event.evaluation', $event->id) }}" method="POST" enctype="multipart/form-data">
                              <input type="hidden" name="_method" value="PUT">
                             {{ csrf_field() }}
-
                             <div class="panel panel-success">
                             <div class="panel-heading">評分</div>
                             <div class="panel-body">
+                            @if ( $status_array['is_participant_and_already_evaluated'] )
+                                <p style="text-align-last: center">你已為這個活動評分。謝謝你的參與。</p>
+                            @else
                                 <select class="check-value form-control" name="grade">
                                     @foreach ($constant_array['event_evaulation']['value'] as $key => $value)
                                         <option value="{{ $key }}">{{ $value }}</option>
@@ -128,8 +130,9 @@
                                 <div class="col-md-offset-5">
                                     <input type="submit" class="btn btn-success" name="submit" value="提交">
                                 </div>
+                            @endif
                             </div>
-                        </div>
+                            </div>
                     </form>
                     @endif
 
