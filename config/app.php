@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'Volunteer Activity Platform',
+    'name' => '義工活動平台',
 
     /*
     |--------------------------------------------------------------------------
