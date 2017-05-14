@@ -102,7 +102,7 @@ class Event extends Model
 
     public function participants()
     {
-    	return $this->belongsToMany('App\Models\User', 'participants', 'event_id', 'user_id')->withPivot('status', 'grade_to_user', 'grade_to_event', 'remark_to_user', 'remark_to_event')->orderBy('created_at', 'desc');
+    	return $this->belongsToMany('App\Models\User', 'participants', 'event_id', 'user_id')->withPivot('grade_to_user', 'grade_to_event', 'remark_to_user', 'remark_to_event')->orderBy('created_at', 'desc');
     }
 
     public function toFeatures()
