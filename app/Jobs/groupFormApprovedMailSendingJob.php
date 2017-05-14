@@ -40,7 +40,7 @@ class groupFormApprovedMailSendingJob implements ShouldQueue
         $group_form = $this->group_form;
 
         Mail::send('emails.group_form_approved', ['user' => $user, 'group_form' => $group_form], function($message) use ($user) {
-            $message->to($user->email)->subject('Volunteer activities Recommendation');
+            $message->to($user->email)->subject('Group Application already Approved.');
         });
     }
 }

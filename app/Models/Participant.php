@@ -26,7 +26,7 @@ class Participant extends Model
     {
         $event = $this->event;
 
-        if ($event && ($event->startDate->diffInDays(Carbon::now(), false) == 1))
+        if ($event && ($event->startDate->diffInDays(Carbon::now(), false) == -1))
         {
             dispatch(new EventJoinConfirmMailSendingJob($this));
         }
