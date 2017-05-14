@@ -59,17 +59,17 @@
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
                     @if( $status_array['is_admin'] )
-                        <li><a href="{{ url('group_form') }}">Check Group Form</a></li>
+                        <li><a href="{{ url('group_form') }}">查看組織申請</a></li>
                     @endif
                     @if( $status_array['is_manager'] || $status_array['is_admin'] )
-                        <li><a href="{{ url('event/create') }}">Create Event</a></li>
+                        <li><a href="{{ url('event/create') }}">建立活動</a></li>
                     @endif
                     @if( $status_array['is_login'] )
-                        <li><a href="{{ url('group/create') }}">Create Group</a></li>
+                        <li><a href="{{ url('group/create') }}">建立組織</a></li>
                     @endif
                     @if (Auth::guest())
-                        <li><a href="{{ route('login') }}">Login</a></li>
-                        <li><a href="{{ route('register') }}">Register</a></li>
+                        <li><a href="{{ route('login') }}">登入</a></li>
+                        <li><a href="{{ route('register') }}">註冊</a></li>
                     @else
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -80,12 +80,12 @@
                             <ul class="dropdown-menu" role="menu">
                                 <li>
                                     <a href="{{ route('user.info', Auth::user()->id) }}">
-                                        Profile
+                                        個人資料
                                     </a>
                                     <a href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        Logout
+                                        登出
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
