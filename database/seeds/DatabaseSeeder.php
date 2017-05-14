@@ -120,7 +120,7 @@ class DatabaseSeeder extends Seeder
             });
 
         // group with fake data (new group form)
-        factory(App\Models\User::class, 5)->states('group_manager')->create()
+        factory(App\Models\User::class, 5)->create()
             ->each(function($u)
             {
                 factory(App\Models\Group::class)->create([
@@ -131,7 +131,7 @@ class DatabaseSeeder extends Seeder
             });
 
         // group with fake data (waiting group form)
-        factory(App\Models\User::class, 5)->states('group_manager')->create()
+        factory(App\Models\User::class, 5)->create()
             ->each(function($u)
             {
                 factory(App\Models\Group::class)->states('waiting_group_form')->create([
@@ -142,7 +142,7 @@ class DatabaseSeeder extends Seeder
             });
 
         // group with fake data (rejected group form)
-        factory(App\Models\User::class, 5)->states('group_manager')->create()
+        factory(App\Models\User::class, 5)->create()
             ->each(function($u)
             {
                 factory(App\Models\Group::class)->states('rejected_group_form')->create([
