@@ -29,6 +29,7 @@ class EventController extends Controller
                 'is_event_manager' => $this->isEventManager($event),
                 'is_participant_can_evaluate' => $this->isParticipantCanEvaluate($event),
                 'is_manager_can_evaluate' => $this->isManagerCanEvaluate($event),
+                'is_participant_and_already_evaluated' => $this->isParticipantAndAlreadyEvaluated($event),
             ];
     }
 

@@ -108,6 +108,27 @@ trait ControllerHelperTrait
 		return ($this->isParticipant($event) && $this->isFinishedEvent($event));
 	}
 
+	public function isParticipantAndAlreadyEvaluated(Event $event = null)
+	{
+		if ($this->isParticipantCanEvaluate($event))
+		{
+			$participant = Participant::where('event_id', $event->id)->where('user_id', Auth::user()->id)->first();
+
+			if ($participant)
+			{
+				return (is_null($participant->grade_to_event)) ? false : true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 	public function isManagerCanEvaluate(Event $event = null)
 	{
 		return ($this->isEventManager($event) && $this->isFinishedEvent($event));
