@@ -111,6 +111,28 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
+                    @if( $status_array['is_participant_can_evaluate'] )
+                    <form id="evaluation-form" class="form-horizontal" role="form" action="{{ route('event.evaluation', $event->id) }}" method="POST" enctype="multipart/form-data">
+                             <input type="hidden" name="_method" value="PUT">
+                            {{ csrf_field() }}
+
+                            <div class="panel panel-success">
+                            <div class="panel-heading">評分</div>
+                            <div class="panel-body">
+                                <select class="check-value form-control" name="grade">
+                                    @foreach ($constant_array['event_evaulation']['value'] as $key => $value)
+                                        <option value="{{ $key }}">{{ $value }}</option>
+                                    @endforeach
+                                </select>
+                                <input type="text" class="form-control"  placeholder="寫上你的感想" name="remark">
+                                <div class="col-md-offset-5">
+                                    <input type="submit" class="btn btn-success" name="submit" value="提交">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    @endif
+
                     <div class="panel panel-success">
                         <div class="panel panel-heading"><i class="glyphicon glyphicon-info-sign"></i>活動內容</div>
                         <div class="panel panel-body">
@@ -138,20 +160,6 @@
                             {!! $event->remark !!}
                         </div>
                     </div>
-
-                    @if( $status_array['is_participant_can_evaluate'] )
-                        <div class="panel panel-success">
-                        <div class="panel-heading">評分</div>
-                        <div class="panel-body">
-                            <select class="check-value form-control" name="grade">
-                                @foreach ($constant_array['event_evaulation']['value'] as $key => $value)
-                                    <option value="{{ $key }}">{{ $value }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-
-                    @endif
 
 
                 </div>

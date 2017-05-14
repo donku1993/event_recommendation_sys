@@ -79,6 +79,7 @@
                     </div>
 
                     @if( $group_form->status == 0 || $group_form->status == 1 )
+                        @if( $status_array['is_admin'] )
                         <div class="group-form-remark " style="margin-bottom: 30px">
                             <label for="remark">Remark:</label>
                             <textarea name="remark" class="form-control" rows="4" placeholder="Enter the remark for the group as suggestion."></textarea>
@@ -86,6 +87,11 @@
 
                         <input class="btn btn-success" type="submit" name="approve" value="Approve">
                         <input class="btn btn-danger" style="right: 13px;position: absolute" type="submit" name="reject" value="Reject">
+                        @else
+                            <div class="col-md-11" style="text-align: center">
+                                <span class="label label-warning">審批中</span>
+                            </div>
+                        @endif
                     @elseif( $group_form->status == 2 )
                         <div class="group-form-remark " style="margin-bottom: 30px">
                             <label for="remark">Remark:</label>
