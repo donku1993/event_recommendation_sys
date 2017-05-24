@@ -100,20 +100,7 @@ trait RecommendationTrait
         	// 09:00-12:00
 			if ($user_avaliable_time[0] && $event_time_start->hour < 12)
 			{
-				if ($event_time_end->hour < 12)
-				{
-					$match = $event_time_start->diffInMinutes($event_time_end, false);
-					$end = true;
-				} else {
-					$match = $event_time_start->diffInMinutes($eighteen_oclock, false);
-				}
-			}
-
-			$event_time_start = $twelve_oclock;
-        	// 12:00-18:00
-			if (!$end && $user_avaliable_time[1] && $event_time_start->hour < 18)
-			{
-				if ($event_time_end->hour < 18)
+				if ($event_time_end->hour < 12 && $event_time_end > 9)
 				{
 					$match = $event_time_start->diffInMinutes($event_time_end, false);
 					$end = true;
@@ -121,12 +108,25 @@ trait RecommendationTrait
 					$match = $event_time_start->diffInMinutes($twelve_oclock, false);
 				}
 			}
+			$event_time_start = $twelve_oclock;
+
+        	// 12:00-18:00
+			if (!$end && $user_avaliable_time[1] && $event_time_start->hour < 18)
+			{
+				if ($event_time_end->hour < 18 && $event_time_end > 12)
+				{
+					$match = $event_time_start->diffInMinutes($event_time_end, false);
+					$end = true;
+				} else {
+					$match = $event_time_start->diffInMinutes($eighteen_oclock, false);
+				}
+			}
 			$event_time_start = $eighteen_oclock;
 
         	// 18:00-22:00
         	if (!$end && $user_avaliable_time[2] && $event_time_start->hour < 22)
         	{
-				if ($event_time_end->hour < 22)
+				if ($event_time_end->hour < 22 && $event_time_end > 18)
 				{
 					$match = $event_time_start->diffInMinutes($event_time_end, false);
 					$end = true;
